@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta HTTP-EQUIV="Content-Type" Content="text/html; charset=Shift_JIS">
+<title>はじめに</title>
+<link rel="stylesheet" type="text/css" href="help.css">
+</head>
+
+<body>
+
+<div align="center" class="title_box">
+<font size="4">HTML→テキスト変換ツール</font><br>
+<font size="7">H2Tconv</font><br>
+<font size="4">
+for Windows<br>
+Version 1.19
+</font>
+<br><br>
+</div>
+
+<h1>概要</h1>
+
+<p>
+<big><b>H2Tconv</b></big> は、ローカルあるいはインターネットからのHTML文書をテキストに変換するツールです。<br>
+HTML文書からタグを取り除き、段落、整形、見出し、横罫線、箇条書き等をテキストで再現します。またタイトルや日付等の情報を埋め込んだヘッダ／フッタを付けることもできます。
+</p>
+<p>
+変換したテキストは、クリップボードにコピーしたりファイルに出力したりできます。<br>
+複数HTMLファイルを変換した場合、結果を連結して一つにまとめることも可能。
+</p>
+
+<p>変換内容は以下の通りです。</p>
+<ul class="indent2">
+<li><b>h1</b>～<b>h6</b> はそれぞれ指定した見出し文字を先頭に付けます。<br>
+<li><b>p</b>、<b>div</b>、<b>center</b> 等は可能な限り整形します。<br>
+<li><b>hr</b> は指定文字による疑似罫線に変換。width の % 指定に対応。<br>
+<li><b>b</b>、<b>i</b>、<b>u</b> では、指定した文字を前後に付加できます。<br>
+<li><b>ul</b>、<b>ol</b> では指定した文字列によりインデントを行います。<br>
+<li><b>ul</b> 内では、<b>li</b> を指定したマーク文字列に変換します。<br>
+<li><b>ol</b> 内では自動的に連番をふります。type や start にも対応。<br>
+<li><b>dl</b> 内では、<b>dd</b> 部分を指定した文字列でインデントします。<br>
+<li><b>table</b>は、<b>tr</b> の行毎に <b>td</b> を指定文字で区切った形に変換します。<br>
+<li><b>img</b> は代替文字列で表示したり、ファイル名を挿入したりできます。<br>
+<li><b>a</b> のリンク先を埋め込むことができます。<br>
+<li>文字実体参照や数値文字参照を、対応する文字に変換します。<br>
+<li><b>pre</b>、<b>xmp</b> 外の連続する半角スペースはひとつにまとめます。<br>
+<li>指定した class の <b>div</b> や、<b>section</b>、<b>article</b>、<b>nav</b> の前に罫線を挿入可能。<br>
+<li>指定した class または id の要素(<b>div</b>、<b>table</b>、<b>ul</b>、<b>ol</b>、<b>dl</b>、<b>section</b>、<b>article</b>、<b>nav</b>)を削除。<br>
+<li>変換されたテキストに対して、さらに文字列置換も可能。<br>
+</ul>
+
+</body>
+</html>

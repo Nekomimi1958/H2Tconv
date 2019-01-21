@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta HTTP-EQUIV="Content-Type" Content="text/html; charset=Shift_JIS">
+<title>コマンドラインからの変換</title>
+<link rel="stylesheet" type="text/css" href="help.css">
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<param name="Keyword" value="コマンドラインからの変換">
+</object>
+</head>
+
+<body>
+
+<h1>コマンドラインからの変換</h1>
+
+<p>
+コマンドラインで変換対象を指定することによって、画面を表示せずに自動的に変換を行えます。<br>
+設定ファイルを指定しない場合は、基本的に前回起動時に画面で設定した内容になります。
+</p>
+
+<p>
+<b>書式</b><br>
+<b>H2Tconv</b> <i>入力HTMLファイル名</i> ... [<b>-I</b><i>設定ファイル名</i>] [<b>-O</b><i>出力ファイル名</i>] 
+</p>
+
+<p>
+<b><i>入力HTMLファイル名</i></b><br>
+　変換の対象となるHTML文書のファイル名をフルパスで指定します。HTML文書を含むディレクトリ名を指定することもできます。<br>
+　複数の対象を指定したい場合は、スペースで区切ってください。また、ファイル名部分にはワイルドカード(*、?)を用いることも可能です。ファイル名にスペースが含まれている場合は、ファイル名毎に &quot; で囲んでください。<br>
+　ディレクトリ名を指定した場合は、その階層下にあるすべてのHTML文書(*.*htm*)を検索して対象とします。<br>
+　なお、URL や インターネットショートカットファイル名を指定することもできます。
+</p>
+
+<p>
+<b>-I</b><i>設定ファイル名</i><br>
+　設定ファイルを指定できます。ドライブ名がない場合、実行ファイルのあるディレクトリからの相対ファイル名とみなします。
+</p>
+
+<p>
+<b>-O</b><i>出力ファイル名</i><br>
+　出力ファイルが一つの場合のファイル名を指定できます。ディレクトリ名も含めたフルパスで指定すると、画面での場所指定よりも優先されます(この後通常起動した場合の設定には影響しません)。
+</p>
+<br>
+
+<p>
+<b>例</b>:<br>
+　H2Tconv D:\Page\index.html<br>
+　H2Tconv D:\Page\*.html<br>
+　H2Tconv D:\Page\hoge1.html D:\Page\hoge2.html<br>
+　H2Tconv D:\Page<br>
+　H2Tconv D:\Page\index.html -Oindex.txt<br>
+　H2Tconv D:\Page\index.html -Ihoge.ini -Oindex.txt<br>
+　H2Tconv &quot;D:\Html Page\index.html&quot; -O&quot;D:\Temp Page\index.txt&quot;<br>
+　H2Tconv http://nekomimi.la.coocan.jp/<br>
+</p>
+
+</body>
+</html>

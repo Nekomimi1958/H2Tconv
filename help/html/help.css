@@ -1,0 +1,148 @@
+/* óvëf */
+P {
+  padding-left: 0.5em;
+  line-height: 150%;
+}
+
+DL {
+  line-height: 150%;
+  border-style: none none solid none;
+  border-width: 1px;
+  border-color: #666699;
+}
+
+DT {
+  font-weight: bold;
+  padding: 1px 4px;
+  background-color: #ddffff;
+}
+DT.no_bg {
+  font-weight: bold;
+  padding: 1px 4px;
+  background-color: transparent;
+}
+
+DD {
+  font-weight: normal;
+  margin-bottom: 0.5em;
+}
+
+LI {
+  margin-bottom: 0.5em;
+}
+
+H1 {
+  padding: 4px 10px;
+  background-color: #ddffff;
+  border-style: solid;
+  border-width: 1px 2px 2px 1px;
+  border-color: #669999;
+  font-size: large;
+}
+
+H2 {
+  padding: 4px 6px;
+  background-color: #ddffff;
+  border-style: solid;
+  border-width: 1px 2px 2px 1px;
+  border-color: #669999;
+  font-size: medium;
+}
+
+H3 {
+  padding: 2px 4px;
+  background-color: #ddffff;
+  border-style: none solid solid none;
+  border-width: 1px;
+  border-color: #669999;
+  font-size: small;
+}
+
+A {
+  font-weight: bold;
+}
+
+
+/* è¸ÇË */
+.title_box {
+  padding: 20px 20px;
+  background-color: #ccffff;
+  border-style: solid;
+  border-width: 1px 2px 2px 1px;
+  border-color: #669999;
+  letter-spacing: 0.25em;
+  font-weight: bold;
+}
+
+.small {
+  font-size: smaller;
+  line-height: 125%;
+}
+
+.indent1 {
+  padding-left: 1em;
+}
+
+.indent2 {
+  padding-left: 2em;
+}
+
+.margin1 {
+  margin-left: 1em;
+}
+
+.listNo {
+  margin-right: 0.5em;
+  padding: 1px 2px;
+  background-color: #cceeee;
+  border-style: none solid solid none;
+  border-width: 1px;
+  border-color: #669999;
+  font-weight: bold;
+  font-size: medium;
+}
+
+.subNo {
+  margin-right: 0.5em;
+  padding: 1px 2px;
+  background-color: #ccdddd;
+  border-style: none;
+  border-width: 1px;
+  border-color: #669999;
+  font-weight: bold;
+}
+
+.subItem {
+  padding: 1px 4px;
+  background-color: #cceeee;
+  border-style: none none solid none;
+  border-width: 1px;
+  border-color: #669999;
+  font-weight: bold;
+}
+
+.note_text {
+  background-color: #ffcccc;
+  color: #990000;
+  font-weight: bold;
+}
+
+.btn_frame {
+  margin-left: 0.25em;
+  margin-right: 0.25em;
+  padding: 1px 4px;
+  background-color: #dddddd;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #aaaaaa #666666 #666666 #aaaaaa;
+  font-weight: bold;
+  font-size: 90%;
+}
+
+.inp_box {
+  padding: 0px 40px 0px 4px;
+  background-color: #ffffff;
+  border-color: #666666;
+  border-style: solid;
+  border-width: 1px;
+}

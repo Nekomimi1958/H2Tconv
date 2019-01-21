@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta HTTP-EQUIV="Content-Type" Content="text/html; charset=Shift_JIS">
+<title>置換の設定</title>
+<link rel="stylesheet" type="text/css" href="help.css">
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<param name="Keyword" value="正規表現">
+	<param name="Keyword" value="置換の設定">
+</object>
+</head>
+
+<body>
+
+<h1>置換の設定</h1>
+
+<p>ここでは、変換後のテキストに対する文字列置換を設定できます。<br>
+<p>
+項目を追加するには、<b>検索文字列</b> と <b>置換文字列</b> を入力して<span class="btn_frame">追加</span>ボタンを押してください。<br>
+<b>検索文字列</b> を <b>/</b> (スラッシュ)で囲むと正規表現とみなされます。入力内容に誤りがあると、赤文字表示になって<span class="btn_frame">追加</span>ボタンが押せません。<br>
+<b>置換文字列</b> を空欄にすると、マッチした <b>検索文字列</b> の削除になります。<br>
+上部の一覧では、空白などが分かりやすいように &quot;検索文字列&quot; → &quot;置換文字列&quot; というように引用符で囲んで表示されます。<br>
+</p>
+<p>
+<b>例1:</b>　全角空白を半角空白に置換<br>
+　<span class="inp_box">&quot;　&quot; → &quot; &quot;</span><br>
+<b>例2:</b>　タブ文字を削除<br>
+　<span class="inp_box">&quot;/\t/&quot; → &quot;&quot;</span><br>
+<b>例3:</b>　連続する半角空白やタブ(混在可)を1個の半角空白に置換<br>
+　<span class="inp_box">&quot;/[ \t]{2,}/&quot; → &quot; &quot;</span>
+<p>
+<br>
+
+<p>
+内容を変更したい場合は、一覧の項目を選んで設定を変えてから<span class="btn_frame">変更</span>ボタンを押してください。<br>
+複数の項目がある場合、上から順番に置換処理が行われます。項目の位置は<span class="btn_frame">↑</span>/<span class="btn_frame">↓</span>ボタンで移動できます。<br>
+項目の削除は、<span class="btn_frame">削除</span>ボタンか<span class="btn_frame">DEL</span>キーで行ってください。<br>
+</p>
+<p>
+一覧の項目のチェックボックスによって、置換の有効/無効を個別に切り替えられます。
+</p>
+
+</body>
+</html>

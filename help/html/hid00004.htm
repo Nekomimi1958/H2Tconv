@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta HTTP-EQUIV="Content-Type" Content="text/html; charset=Shift_JIS">
+<title>入出力</title>
+<link rel="stylesheet" type="text/css" href="help.css">
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<param name="Keyword" value="開始ボタン">
+	<param name="Keyword" value="入出力">
+</object>
+</head>
+
+<body>
+
+<h1>入出力</h1>
+
+<p>このページでは、変換対象と出力先、および変換後の動作を指定します。</p>
+
+<dl>
+<dt>入力HTML文書
+<dd>変換の対象となるHTML文書を<span class="btn_frame">追加...</span>ボタンで指定するか、マウスで一覧にドラッグ＆ドロップしてください(ディレクトリや、ブラウザからのリンク項目も可)。<br>
+<span class="btn_frame">入力...</span>ボタンを押してファイル名やURLを直接入力することもできます。またクリップボードにファイル名やURLが入っている場合(複数行可)、<span class="btn_frame">貼付</span>ボタンを押すか、一覧にフォーカスがあれば <b>Ctrl</b> + <b>V</b> キーを押すと追加できます<br>
+対象が URL やインターネットショートカットファイル(<b>.url</b>)の場合、変換時にインターネットからファイルを取得します。その場合は変換前にインターネットに接続しておいてください。<br>
+<br>
+一覧で選択して <span class="btn_frame">解除</span>ボタンか <b>Delete</b> キーを押すと、対象から外されます。<br>
+また<span class="btn_frame">ソート</span>ボタンでソートしたり、<span class="btn_frame">上へ</span><span class="btn_frame">下へ</span>ボタンで一覧の順番を変更できます。<br>
+<img src="../images/chkbox.gif" alt="" border="0"> <b>一つに連結</b> がチェックされている場合は、この順番で連結されます。<br><br>
+
+<dt>テキスト出力先
+<dd>
+<img src="../images/radio.gif" alt="" border="0"> <b>クリップボード　</b><img src="../images/radio.gif" alt="" border="0"> <b>元と同じ　</b><img src="../images/radio.gif" alt="" border="0"> <b>場所指定</b><br>
+変換したテキストは、クリップボードにコピーするか、あるいは元のディレクトリや指定した場所のディレクトリへ出力させることができます。ただし、異なるディレクトリにある複数HTML文書を一つに連結する場合、「<b>元と同じ</b>」は指定できません。<br>
+出力ファイルが複数になる場合、自動的にHTMLファイル名の拡張子をTXTにしたファイル名になります。入力がURL指定の場合は、そのURLから適当なファイル名をつくります。<br>
+なお、<a href="hid00007.htm">その他の設定</a>ページで「<b>タイトルから出力ファイル名をつくる</b>」をチェックしていると、HTML文書のタイトルをファイル名にできます(URLの場合は変換時に取得して確定)。<br>
+<br>
+
+<img src="../images/chkbox.gif" alt="" border="0"> <b>一つに連結</b><br>
+　複数のHTML文書が指定されている場合、テキストに変換する際に、一覧の順番でそれらを一つにまとめます。文書毎の区切りを入れたいような場合には、<a href="hid00006.htm">ヘッダ／フッタ</a>ページで設定してください。<br>
+<br>
+
+<dt>変換後
+<dd>
+<img src="../images/chkbox.gif" alt="" border="0"> <b>元ファイルを削除</b><br>
+　変更した後、元のHTML文書(ローカルのみ)を削除します。<br>
+　※<a href="hid00007.htm">その他の設定</a>ページで、削除にごみ箱を使うかどうかを指定できます。<br>
+
+<img src="../images/chkbox.gif" alt="" border="0"> <b>アプリで開く</b><br>
+　結果テキストファイルを、指定したアプリケーションで開きます。<br>
+　ただし、出力ファイルが複数になる場合は無効です。<br><br>
+
+</dl>
+
+<p>
+<img src="../images/conv_btn.gif" alt="" border="0"> <b>開始ボタン</b><br>
+　全ての設定が終わったら、このボタンを押してください。テキストへの変換が開始されます。<br>
+　変換中に<span class="btn_frame">ESC</span>キーを押すと、処理を中断できます。<br>
+</p>
+<br><br>
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="はじめに">
+		<param name="Local" value="html\hid00001.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="インストール">
+		<param name="Local" value="html\hid00002.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="使い方">
+		<param name="Local" value="html\hid00003.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="入出力">
+			<param name="Local" value="html\hid00004.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="変換の設定">
+			<param name="Local" value="html\hid00005.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="置換の設定">
+			<param name="Local" value="html\hid00012.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="ヘッダ／フッタ">
+			<param name="Local" value="html\hid00006.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="その他の設定">
+			<param name="Local" value="html\hid00007.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="メニュー">
+			<param name="Local" value="html\hid00008.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="コマンドラインからの変換">
+			<param name="Local" value="html\hid00009.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="その他">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="変更履歴">
+			<param name="Local" value="html\hid00010.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="著作">
+			<param name="Local" value="html\hid00011.htm">
+			</OBJECT>
+	</UL>
+</UL>
+</BODY></HTML>
