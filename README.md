@@ -2,12 +2,12 @@
 
 H2Tconv is a HTML to text converter.  
 
-![Screenshot](screenshot.png)
+![Screenshot](screenshot_1.png)
 
 Supported language is Japanese only.  
 
 ## Download Executable File
-http://nekomimi.la.coocan.jp/freesoft/h2tconv.htm
+http://nekomimi.la.coocan.jp/freesoft/h2tconv.htm  
 
 ## Development Environment
 C++Builder 10.3 (BCC32)
