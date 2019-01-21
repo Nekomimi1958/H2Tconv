@@ -1,8 +1,9 @@
 # H2Tconv
 
+H2Tconv is a HTML to text converter.  
+
 ![Screenshot](screenshot.png)
 
-H2Tconv is a HTML to text converter.  
 Supported language is Japanese only.  
 
 ## Download Executable File
