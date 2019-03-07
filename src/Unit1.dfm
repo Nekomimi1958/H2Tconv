@@ -115,7 +115,7 @@ object H2TconvForm: TH2TconvForm
             Top = 22
             Width = 105
             Height = 17
-            Caption = #22580#25152#25351#23450'(&D)'
+            Caption = #22580#25152#25351#23450'(&L)'
             TabOrder = 2
             OnClick = DestRadioBtnClick
           end
@@ -1045,11 +1045,17 @@ object H2TconvForm: TH2TconvForm
               Width = 538
               Height = 205
               Align = alClient
+              DragMode = dmAutomatic
               ItemHeight = 13
               MultiSelect = True
+              PopupMenu = PopupMenu2
               TabOrder = 0
               OnClick = HtmFileListClick
+              OnDragDrop = HtmFileListDragDrop
+              OnDragOver = HtmFileListDragOver
+              OnEndDrag = HtmFileListEndDrag
               OnKeyDown = HtmFileListKeyDown
+              OnStartDrag = HtmFileListStartDrag
             end
           end
           object Panel1_1b: TPanel
@@ -1855,60 +1861,60 @@ object H2TconvForm: TH2TconvForm
         473)
       object Label21: TLabel
         Left = 24
-        Top = 306
+        Top = 334
         Width = 99
         Height = 13
         Caption = #34920#31034#20999#12426#26367#12360#12398#22522#28857
       end
       object Label23: TLabel
         Left = 24
-        Top = 138
+        Top = 166
         Width = 51
         Height = 13
         Caption = #20986#21147#12467#12540#12489
       end
       object RefSndBtn: TButton
         Left = 477
-        Top = 220
+        Top = 248
         Width = 40
         Height = 23
         Anchors = [akTop, akRight]
         Caption = '...'
-        TabOrder = 11
+        TabOrder = 12
         OnClick = RefSndBtnClick
       end
       object UseTrashCheck: TCheckBox
         Left = 196
-        Top = 178
+        Top = 206
         Width = 449
         Height = 17
         Caption = #21066#38500#12395#12372#12415#31665#12434#20351#12358
-        TabOrder = 9
+        TabOrder = 10
       end
       object SureKillCheck: TCheckBox
         Left = 24
-        Top = 178
+        Top = 206
         Width = 166
         Height = 17
         Caption = #21066#38500#12398#38555#12395#30906#35469#12377#12427
-        TabOrder = 8
+        TabOrder = 9
       end
       object TopMostCheck: TCheckBox
         Left = 24
-        Top = 271
+        Top = 299
         Width = 137
         Height = 17
         Caption = #24120#12395#25163#21069#12395#34920#31034
-        TabOrder = 13
+        TabOrder = 14
         OnClick = TopMostCheckClick
       end
       object CmpPosCombo: TComboBox
         Left = 142
-        Top = 303
+        Top = 331
         Width = 110
         Height = 21
         Style = csDropDownList
-        TabOrder = 14
+        TabOrder = 15
         Items.Strings = (
           #24038#19978
           #21491#19978
@@ -1925,59 +1931,59 @@ object H2TconvForm: TH2TconvForm
       end
       object Tit2NamCheck: TCheckBox
         Left = 24
-        Top = 51
+        Top = 75
         Width = 249
         Height = 17
         Caption = #12479#12452#12488#12523#12363#12425#20986#21147#12501#12449#12452#12523#21517#12434#12388#12367#12427
-        TabOrder = 1
+        TabOrder = 2
         OnClick = Tit2NamCheckClick
       end
       object AddNoCheck: TCheckBox
         Left = 24
-        Top = 103
+        Top = 131
         Width = 449
         Height = 17
         Caption = #20986#21147#12501#12449#12452#12523#21517#12364#37325#35079#12377#12427#12392#12365#36899#30058#12434#20184#21152
-        TabOrder = 6
+        TabOrder = 7
       end
       object TitLmtUpDown: TUpDown
         Left = 148
-        Top = 72
+        Top = 100
         Width = 16
         Height = 21
         Associate = TitLmtEdit
         Min = 8
         Max = 200
         Position = 8
-        TabOrder = 3
+        TabOrder = 4
       end
       object TitCvExChCheck: TCheckBox
         Left = 196
-        Top = 74
+        Top = 102
         Width = 137
         Height = 17
         Caption = '.\/:*?"<>| '#8594#20840#35282
-        TabOrder = 4
+        TabOrder = 5
       end
       object TitCvSpcCheck: TCheckBox
         Left = 359
-        Top = 74
+        Top = 102
         Width = 82
         Height = 17
         Caption = #31354#30333' '#8594' _'
-        TabOrder = 5
+        TabOrder = 6
       end
       object CodePageComboBox: TComboBox
         Left = 87
-        Top = 135
+        Top = 163
         Width = 165
         Height = 21
         Style = csDropDownList
-        TabOrder = 7
+        TabOrder = 8
       end
       object TitLmtEdit: TLabeledEdit
         Left = 108
-        Top = 72
+        Top = 100
         Width = 40
         Height = 21
         Alignment = taRightJustify
@@ -1986,14 +1992,14 @@ object H2TconvForm: TH2TconvForm
         EditLabel.Caption = #23383#25968#21046#38480
         LabelPosition = lpLeft
         NumbersOnly = True
-        TabOrder = 2
+        TabOrder = 3
         Text = '8'
         OnChange = TitLmtEditChange
         OnExit = NumberEditExit
       end
       object EndSoundEdit: TLabeledEdit
         Left = 87
-        Top = 221
+        Top = 249
         Width = 388
         Height = 21
         Anchors = [akLeft, akTop, akRight]
@@ -2001,16 +2007,25 @@ object H2TconvForm: TH2TconvForm
         EditLabel.Height = 13
         EditLabel.Caption = #32066#20102#38899
         LabelPosition = lpLeft
-        TabOrder = 10
+        TabOrder = 11
       end
       object PlySndBtn: TButton
         Left = 518
-        Top = 220
+        Top = 248
         Width = 32
         Height = 23
         Action = PlaySoundAction
         Anchors = [akTop, akRight]
-        TabOrder = 12
+        TabOrder = 13
+      end
+      object NaturalCheck: TCheckBox
+        Left = 24
+        Top = 46
+        Width = 449
+        Height = 17
+        Caption = #33258#28982#38918#12391#12477#12540#12488#12377#12427
+        TabOrder = 1
+        OnClick = NaturalCheckClick
       end
     end
   end
@@ -2089,13 +2104,13 @@ object H2TconvForm: TH2TconvForm
   end
   object OpenDialog1: TOpenDialog
     Options = [ofHideReadOnly, ofAllowMultiSelect, ofEnableSizing]
-    Left = 415
-    Top = 135
+    Left = 431
+    Top = 167
   end
   object PopupMenu1: TPopupMenu
     AutoHotkeys = maManual
-    Left = 489
-    Top = 58
+    Left = 505
+    Top = 74
     object PopTitleItem: TMenuItem
       Caption = '$TITLE '#12479#12452#12488#12523'(&T)'
       OnClick = PopRefItemClick
@@ -2140,8 +2155,8 @@ object H2TconvForm: TH2TconvForm
     end
   end
   object ActionList1: TActionList
-    Left = 332
-    Top = 58
+    Left = 340
+    Top = 74
     object ConvertAction: TAction
       Caption = #38283#22987
       HelpType = htContext
@@ -2178,12 +2193,32 @@ object H2TconvForm: TH2TconvForm
       OnExecute = DownRepActionExecute
       OnUpdate = DownRepActionUpdate
     end
+    object CopyListAction: TAction
+      Caption = #12467#12500#12540'(&C)'
+      ShortCut = 16451
+      OnExecute = CopyListActionExecute
+      OnUpdate = CopyListActionUpdate
+    end
+    object SelectAllAction: TAction
+      Caption = #12377#12409#12390#12434#36984#25246'(&A)'
+      OnExecute = SelectAllActionExecute
+      OnUpdate = SelectAllActionUpdate
+    end
+    object SaveListAction: TAction
+      Caption = #19968#35239#12434#12501#12449#12452#12523#12395#20445#23384'(&S)...'
+      OnExecute = SaveListActionExecute
+      OnUpdate = SaveListActionUpdate
+    end
+    object LoadListAction: TAction
+      Caption = #19968#35239#12434#12501#12449#12452#12523#12363#12425#35501#12415#36796#12416'(&L)...'
+      OnExecute = LoadListActionExecute
+    end
   end
   object ToolMenu: TPopupMenu
     HelpContext = 8
     OwnerDraw = True
-    Left = 415
-    Top = 58
+    Left = 431
+    Top = 74
     object LoadIniItem: TMenuItem
       Caption = #35373#23450#12501#12449#12452#12523#12434#35501#12415#36796#12416'(&L)'
       OnClick = LoadIniItemClick
@@ -2226,12 +2261,39 @@ object H2TconvForm: TH2TconvForm
   end
   object SaveDialog1: TSaveDialog
     Options = [ofOverwritePrompt, ofHideReadOnly, ofEnableSizing]
-    Left = 489
-    Top = 135
+    Left = 505
+    Top = 167
   end
   object ApplicationEvents1: TApplicationEvents
     OnMessage = ApplicationEvents1Message
-    Left = 332
-    Top = 135
+    Left = 340
+    Top = 167
+  end
+  object PopupMenu2: TPopupMenu
+    Left = 506
+    Top = 119
+    object C1: TMenuItem
+      Action = CopyListAction
+    end
+    object SelectAllItem: TMenuItem
+      Action = SelectAllAction
+      ShortCut = 16449
+    end
+    object Sep_1: TMenuItem
+      Caption = '-'
+    end
+    object SaveListItem: TMenuItem
+      Action = SaveListAction
+    end
+    object L1: TMenuItem
+      Action = LoadListAction
+    end
+  end
+  object ScrollTimer: TTimer
+    Enabled = False
+    Interval = 100
+    OnTimer = ScrollTimerTimer
+    Left = 506
+    Top = 215
   end
 end

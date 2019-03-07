@@ -4,6 +4,7 @@
 //----------------------------------------------------------------------//
 #ifndef Unit1H
 #define Unit1H
+
 //---------------------------------------------------------------------------
 #include <Winapi.ShellAPI.hpp>
 #include <System.Classes.hpp>
@@ -49,9 +50,13 @@ __published:	// IDE 管理のコンポーネント
 	TAction *AddRepAction;
 	TAction *ChgRepAction;
 	TAction *ConvertAction;
+	TAction *CopyListAction;
 	TAction *DelRepAction;
 	TAction *DownRepAction;
+	TAction *LoadListAction;
 	TAction *PlaySoundAction;
+	TAction *SaveListAction;
+	TAction *SelectAllAction;
 	TAction *UpRepAction;
 	TActionList *ActionList1;
 	TApplicationEvents *ApplicationEvents1;
@@ -91,6 +96,7 @@ __published:	// IDE 管理のコンポーネント
 	TCheckBox *KillCheck;
 	TCheckBox *LinkCheck;
 	TCheckBox *LinkCrCheck;
+	TCheckBox *NaturalCheck;
 	TCheckBox *OpenAppCheck;
 	TCheckBox *PstHdrCheck;
 	TCheckBox *SureKillCheck;
@@ -163,9 +169,11 @@ __published:	// IDE 管理のコンポーネント
 	TMenuItem *AbautInf1Item;
 	TMenuItem *AboutInf2Item;
 	TMenuItem *AboutItem;
+	TMenuItem *C1;
 	TMenuItem *DefaultIniItem;
 	TMenuItem *GoWebItem;
 	TMenuItem *HelpItem;
+	TMenuItem *L1;
 	TMenuItem *LoadIniItem;
 	TMenuItem *PopDatTimItem;
 	TMenuItem *PopDescItem;
@@ -177,6 +185,9 @@ __published:	// IDE 管理のコンポーネント
 	TMenuItem *PopLine3Item;
 	TMenuItem *PopTitleItem;
 	TMenuItem *SaveIniItem;
+	TMenuItem *SaveListItem;
+	TMenuItem *SelectAllItem;
+	TMenuItem *Sep_1;
 	TMenuItem *Sep_m_1;
 	TMenuItem *Sep_m_2;
 	TMenuItem *Sep_p_1;
@@ -192,6 +203,7 @@ __published:	// IDE 管理のコンポーネント
 	TPanel *Panel2;
 	TPanel *Panel3;
 	TPopupMenu *PopupMenu1;
+	TPopupMenu *PopupMenu2;
 	TPopupMenu *ToolMenu;
 	TRadioButton *ClipRadioBtn;
 	TRadioButton *SamDirRadioBtn;
@@ -205,6 +217,7 @@ __published:	// IDE 管理のコンポーネント
 	TTabSheet *TabSheet3;
 	TTabSheet *TabSheet4;
 	TTabSheet *TabSheet5;
+	TTimer *ScrollTimer;
 	TUpDown *BlkLmtUpDown;
 	TUpDown *LnWidUpDown;
 	TUpDown *TitLmtUpDown;
@@ -222,6 +235,7 @@ __published:	// IDE 管理のコンポーネント
 	void __fastcall DelBtnClick(TObject *Sender);
 	void __fastcall ClrBtnClick(TObject *Sender);
 	void __fastcall SortBtnClick(TObject *Sender);
+	void __fastcall NaturalCheckClick(TObject *Sender);
 	void __fastcall UpItemBtnClick(TObject *Sender);
 	void __fastcall DowItemBtnClick(TObject *Sender);
 	void __fastcall HtmFileListKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
@@ -268,12 +282,25 @@ __published:	// IDE 管理のコンポーネント
 	void __fastcall DownRepActionExecute(TObject *Sender);
 	void __fastcall DownRepActionUpdate(TObject *Sender);
 	void __fastcall PageControl1Change(TObject *Sender);
+	void __fastcall SaveListActionExecute(TObject *Sender);
+	void __fastcall SaveListActionUpdate(TObject *Sender);
+	void __fastcall LoadListActionExecute(TObject *Sender);
+	void __fastcall CopyListActionExecute(TObject *Sender);
+	void __fastcall CopyListActionUpdate(TObject *Sender);
+	void __fastcall HtmFileListStartDrag(TObject *Sender, TDragObject *&DragObject);
+	void __fastcall HtmFileListDragOver(TObject *Sender, TObject *Source, int X, int Y, TDragState State, bool &Accept);
+	void __fastcall HtmFileListDragDrop(TObject *Sender, TObject *Source, int X, int Y);
+	void __fastcall HtmFileListEndDrag(TObject *Sender, TObject *Target, int X, int Y);
+	void __fastcall ScrollTimerTimer(TObject *Sender);
+	void __fastcall SelectAllActionExecute(TObject *Sender);
+	void __fastcall SelectAllActionUpdate(TObject *Sender);
 
 private:	// ユーザー宣言
 	UnicodeString VersionStr;	//バージョン
 	UnicodeString LastDir;		//参照ディレクトリ
 	UnicodeString OrgDir;		//変換元のディレクトリ
 	UnicodeString LastIniDir;	//設定ディレクトリ
+	UnicodeString LastTxtDir;
 
 	int  DestMode;				//出力先
 	int  PopTag;
@@ -282,6 +309,7 @@ private:	// ユーザー宣言
 	bool Converting;
 	bool AutoStart;
 	bool InhUpdateInf;
+	int  PrevListIdx;
 
 	HtmConv *HC;
 

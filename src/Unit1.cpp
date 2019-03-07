@@ -26,6 +26,8 @@ TH2TconvForm *H2TconvForm;
 HINSTANCE	  hHHctrl	  = NULL;
 FUNC_HtmlHelp lpfHtmlHelp = NULL;
 
+bool NaturalOrder;
+
 //---------------------------------------------------------------------------
 //ローカルフック
 //  ダイアログなどの位置調整
@@ -59,6 +61,16 @@ LRESULT CALLBACK DlgHookProc(int code, WPARAM wParam, LPARAM lParam)
 	}
 
 	return ::CallNextHookEx(hDlgHook, code, wParam, lParam);
+}
+
+//---------------------------------------------------------------------------
+//ソート用比較関数
+//---------------------------------------------------------------------------
+int __fastcall SortComp_Name(TStringList *List, int Index1, int Index2)
+{
+	UnicodeString s1 = List->Strings[Index1];
+	UnicodeString s2 = List->Strings[Index2];
+	return NaturalOrder? StrCmpLogicalW(s1.c_str(), s2.c_str()) : CompareText(s1, s2);
 }
 
 //---------------------------------------------------------------------------
@@ -198,8 +210,11 @@ void __fastcall TH2TconvForm::FormShow(TObject *Sender)
 
 	//その他の一般設定
 	LastIniDir = IniFile->ReadString(sct, "LastIniDir",	ExtractFileDir(Application->ExeName));
+	LastTxtDir = IniFile->ReadString(sct, "LastTxtDir",	ExtractFileDir(Application->ExeName));
 
 	ConvBtnC->Parent = H2TconvForm;
+
+	PrevListIdx = -1;
 }
 
 //---------------------------------------------------------------------------
@@ -220,10 +235,11 @@ void __fastcall TH2TconvForm::FormClose(TObject *Sender, TCloseAction &Action)
 		}
 		IniFile->WriteBool(   sct, "Compact",		Compact);
 		IniFile->WriteInteger(sct, "CompactPos",	CmpPosCombo->ItemIndex);
-		IniFile->WriteBool(   sct, "TopMost",		TopMostCheck->Checked);
+		IniFile->WriteBool(   sct, "TopMost",		TopMostCheck);
 
 		//各種設定を保存
 		IniFile->WriteString(sct, "LastIniDir",		LastIniDir);
+		IniFile->WriteString(sct, "LastTxtDir",		LastTxtDir);
 
 		SaveIniFile();
 	}
@@ -323,19 +339,17 @@ void __fastcall TH2TconvForm::WmDropped(TMessage &msg)
 		Screen->Cursor = crHourGlass;
 		StatusBar1->SimpleText = "ドロップ項目を取得中...";
 
+		std::unique_ptr<TStringList> lst(new TStringList());
 		for (int i=0; i<DroppedList->Count; i++) {
 			UnicodeString fnam = DroppedList->Strings[i];
 			if (EndsStr("\\", fnam))
-				get_all_files(fnam, "*.*htm*", HtmFileList->Items, DropSubCheck->Checked);
-			else if (HtmFileList->Items->IndexOf(fnam)==-1)
-				HtmFileList->Items->Add(fnam);
+				get_all_files(fnam, "*.*htm*", lst.get(), DropSubCheck->Checked);
+			else if (lst->IndexOf(fnam)==-1)
+				lst->Add(fnam);
 		}
 
-		if (lastn==0) {
-			HtmFileList->Sorted = true;
-			HtmFileList->Sorted = false;
-		}
-
+		if (lastn==0) lst->CustomSort(SortComp_Name);
+		HtmFileList->Items->Assign(lst.get());
 		UpdateInf(true);
 
 		Screen->Cursor = crDefault;
@@ -383,6 +397,9 @@ void __fastcall TH2TconvForm::LoadIniFile(UnicodeString fnam)
 	UseTrashCheck->Checked	= ini_file->ReadBool(  sct, "UseTrashCan",		true);
 	DropSubCheck->Checked	= ini_file->ReadBool(  sct, "DropSubdir",		true);
 	CodePageComboBox->ItemIndex = ini_file->ReadInteger(sct, "OutCodePage",	0);
+
+	NaturalCheck->Checked	= ini_file->ReadBool(  sct, "SortNatural",		true);
+	NaturalOrder			= NaturalCheck->Checked;
 
 	sct = "Convert";
 	LnWidUpDown->Position	  = ini_file->ReadInteger(sct, "LineWidth",		DEF_LINE_WIDTH);
@@ -461,31 +478,32 @@ void __fastcall TH2TconvForm::SaveIniFile(UnicodeString fnam)
 	UnicodeString sct = "Option";
 	ini_file->WriteInteger(sct, "Destination",	DestMode);
 	ini_file->WriteString( sct, "LastDir",		LastDir);
-	ini_file->WriteBool(   sct, "OpenApp",		OpenAppCheck->Checked);
+	ini_file->WriteBool(   sct, "OpenApp",		OpenAppCheck);
 	ini_file->WriteString( sct, "AppName",		AppNameEdit->Text);
 	ini_file->WriteString( sct, "DstDir", 		DstDirEdit->Text);
-	ini_file->WriteBool(   sct, "JoinText",		JoinCheck->Checked);
-	ini_file->WriteBool(   sct, "Title2Name",	Tit2NamCheck->Checked);
+	ini_file->WriteBool(   sct, "JoinText",		JoinCheck);
+	ini_file->WriteBool(   sct, "Title2Name",	Tit2NamCheck);
 	ini_file->WriteString( sct, "TitleLimit",	TitLmtEdit->Text);
-	ini_file->WriteBool(   sct, "TitleCvExCh",	TitCvExChCheck->Checked);
-	ini_file->WriteBool(   sct, "TitleCvSpc",	TitCvSpcCheck->Checked);
-	ini_file->WriteBool(   sct, "AddSerNo",		AddNoCheck->Checked);
-	ini_file->WriteBool(   sct, "KillHtml",		KillCheck->Checked);
-	ini_file->WriteBool(   sct, "SureKill",		SureKillCheck->Checked);
-	ini_file->WriteBool(   sct, "InsertHead",	InsHdCheck->Checked);
-	ini_file->WriteBool(   sct, "InsertFoot",	InsFtCheck->Checked);
+	ini_file->WriteBool(   sct, "TitleCvExCh",	TitCvExChCheck);
+	ini_file->WriteBool(   sct, "TitleCvSpc",	TitCvSpcCheck);
+	ini_file->WriteBool(   sct, "AddSerNo",		AddNoCheck);
+	ini_file->WriteBool(   sct, "KillHtml",		KillCheck);
+	ini_file->WriteBool(   sct, "SureKill",		SureKillCheck);
+	ini_file->WriteBool(   sct, "InsertHead",	InsHdCheck);
+	ini_file->WriteBool(   sct, "InsertFoot",	InsFtCheck);
 	ini_file->WriteString( sct, "HeadText",		str_to_esc(HeadMemo->Lines->Text));
 	ini_file->WriteString( sct, "FootText",		str_to_esc(FootMemo->Lines->Text));
 	ini_file->WriteString( sct, "EndSound",		EndSoundEdit->Text);
-	ini_file->WriteBool(   sct, "UseTrashCan",	UseTrashCheck->Checked);
-	ini_file->WriteBool(   sct, "DropSubdir",	DropSubCheck->Checked);
+	ini_file->WriteBool(   sct, "UseTrashCan",	UseTrashCheck);
+	ini_file->WriteBool(   sct, "DropSubdir",	DropSubCheck);
 	ini_file->WriteInteger(sct, "OutCodePage",	CodePageComboBox->ItemIndex);
+	ini_file->WriteBool(   sct, "SortNatural",	NaturalCheck);
 
 	sct = "Convert";
 	ini_file->WriteString( sct, "LineWidth",	LnWidEdit->Text);
-	ini_file->WriteBool(   sct, "ForceCr",		FrcCrCheck->Checked);
+	ini_file->WriteBool(   sct, "ForceCr",		FrcCrCheck);
 	ini_file->WriteString( sct, "BlankLnLimit",	BlkLmtEdit->Text);
-	ini_file->WriteBool(   sct, "NoPostHdr",	PstHdrCheck->Checked);
+	ini_file->WriteBool(   sct, "NoPostHdr",	PstHdrCheck);
 	ini_file->WriteString( sct, "HrLineStr",	HrStrEdit->Text);
 	ini_file->WriteString( sct, "H1Str",		H1Edit->Text);
 	ini_file->WriteString( sct, "H2Str",		H2Edit->Text);
@@ -501,23 +519,23 @@ void __fastcall TH2TconvForm::SaveIniFile(UnicodeString fnam)
 	ini_file->WriteString( sct, "U_KetStr",		U_KetEdit->Text);
 	ini_file->WriteString( sct, "IndentStr",	IndentEdit->Text);
 	ini_file->WriteString( sct, "UlMarkStr",	MarkEdit->Text);
-	ini_file->WriteBool(   sct, "ZenNumber",	ZenNoCheck->Checked);
+	ini_file->WriteBool(   sct, "ZenNumber",	ZenNoCheck);
 	ini_file->WriteString( sct, "CellSepStr",	CelSepEdit->Text);
-	ini_file->WriteBool(   sct, "UseAltStr",	AltCheck->Checked);
-	ini_file->WriteBool(   sct, "AddImgSrc",	ImgSrcCheck->Checked);
+	ini_file->WriteBool(   sct, "UseAltStr",	AltCheck);
+	ini_file->WriteBool(   sct, "AddImgSrc",	ImgSrcCheck);
 	ini_file->WriteString( sct, "AltBraStr",	AltBraEdit->Text);
 	ini_file->WriteString( sct, "AltKetStr",	AltKetEdit->Text);
 	ini_file->WriteString( sct, "DefAltStr",	DefAltEdit->Text);
-	ini_file->WriteBool(   sct, "InsertLink",	LinkCheck->Checked);
-	ini_file->WriteBool(   sct, "OnlyExLink", 	ExtLnkCheck->Checked);
-	ini_file->WriteBool(   sct, "AddCrLink", 	LinkCrCheck->Checked);
+	ini_file->WriteBool(   sct, "InsertLink",	LinkCheck);
+	ini_file->WriteBool(   sct, "OnlyExLink", 	ExtLnkCheck);
+	ini_file->WriteBool(   sct, "AddCrLink", 	LinkCrCheck);
 	ini_file->WriteString( sct, "LinkBraStr",	LnkBraEdit->Text);
 	ini_file->WriteString( sct, "LinkKetStr",	LnkKetEdit->Text);
 	ini_file->WriteString( sct, "InsLineStr",	InsLineStrEdit->Text);
 	ini_file->WriteString( sct, "InsHrClass",	InsHrClsEdit->Text);
-	ini_file->WriteBool(   sct, "InsHrSct",		InsHrSctCheckBox->Checked);
-	ini_file->WriteBool(   sct, "InsHrArt",		InsHrArtCheckBox->Checked);
-	ini_file->WriteBool(   sct, "InsHrNav",		InsHrNavCheckBox->Checked);
+	ini_file->WriteBool(   sct, "InsHrSct",		InsHrSctCheckBox);
+	ini_file->WriteBool(   sct, "InsHrArt",		InsHrArtCheckBox);
+	ini_file->WriteBool(   sct, "InsHrNav",		InsHrNavCheckBox);
 	ini_file->WriteString( sct, "DelBlkCls",	DelBlkClsEdit->Text);
 	ini_file->WriteString( sct, "DelBlkId",		DelBlkIdEdit->Text);
 
@@ -536,6 +554,95 @@ void __fastcall TH2TconvForm::SaveIniFile(UnicodeString fnam)
 		Caption = UnicodeString().sprintf(_T("%s - [%s]"), Application->Title.c_str(), ExtractFileName(fnam).c_str());
 		delete ini_file;
 	}
+}
+
+//---------------------------------------------------------------------------
+//一覧のドラッグ＆ドロップ操作
+//---------------------------------------------------------------------------
+void __fastcall TH2TconvForm::HtmFileListStartDrag(TObject *Sender, TDragObject *&DragObject)
+{
+	PrevListIdx = -1;
+}
+//---------------------------------------------------------------------------
+void __fastcall TH2TconvForm::HtmFileListDragOver(TObject *Sender, TObject *Source,
+	int X, int Y, TDragState State, bool &Accept)
+{
+	ScrollTimer->Enabled = false;
+
+	TListBox *lp = (TListBox*)Sender;
+	Accept = (Source == Sender) && (lp->ItemIndex!=-1);
+
+	int ch = lp->ClientHeight;
+	int ih = ((TListBox*)lp)->ItemHeight;
+	if (lp->TopIndex>0 && Y<(ih - 4)) {
+		//上へスクロール
+		ScrollTimer->Interval = 100;
+		ScrollTimer->Tag	  = (Y<=0)? -2 : -1;
+		ScrollTimer->Enabled  = true;
+	}
+	else if (Y>(ch - (ih - 4))) {
+		//下へスクロール
+		ScrollTimer->Interval = 100; 
+		ScrollTimer->Tag	  = (Y>=ch)? 2 : 1;
+		ScrollTimer->Enabled  = true;
+	}
+	else if (Accept) {
+		int idx = lp->ItemAtPos(Point(X, Y), true);
+		draw_ListItemLine(lp, PrevListIdx);		//直前のドロップ先表示を消去
+		draw_ListItemLine(lp, idx);				//新しいドロップ先表示を描画
+		PrevListIdx = idx;
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TH2TconvForm::HtmFileListDragDrop(TObject *Sender, TObject *Source, int X, int Y)
+{
+	ScrollTimer->Enabled  = false;
+
+	TListBox *lp = (TListBox*)Sender;
+	int idx = lp->ItemAtPos(Point(X, Y), true);
+	draw_ListItemLine(lp, PrevListIdx);		//直前のドロップ先表示を消去
+	if (idx!=-1) {
+		if (lp->SelCount>0 && lp->SelCount<lp->Count) {
+			//選択項目を切り取って待避
+			std::unique_ptr<TStringList> lst(new TStringList());
+			int ins_idx = idx;
+			int i = 0;
+			while (i<lp->Count) {
+				if (lp->Selected[i]) {
+					lst->Add(lp->Items->Strings[i]);
+					lp->Items->Delete(i);
+					if (i<ins_idx) ins_idx--;
+				}
+				else i++;
+			}
+			if (ins_idx<idx) ins_idx++;
+
+			//移動先に挿入
+			for (int i=lst->Count-1; i>=0; i--) {
+				lp->Items->Insert(ins_idx, lst->Strings[i]);
+			}
+	
+			lp->ItemIndex = idx;
+		}
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TH2TconvForm::HtmFileListEndDrag(TObject *Sender, TObject *Target, int X, int Y)
+{
+	ScrollTimer->Enabled = false;
+}
+//---------------------------------------------------------------------------
+void __fastcall TH2TconvForm::ScrollTimerTimer(TObject *Sender)
+{
+	TListBox *lp = HtmFileList;
+	int last_top = lp->TopIndex;
+	lp->TopIndex = lp->TopIndex + ((TComponent*)Sender)->Tag;
+	if (lp->TopIndex!=last_top) {
+		draw_ListItemLine(lp, PrevListIdx);		//直前のドロップ先表示を消去
+		PrevListIdx = -1;
+		lp->Invalidate();
+	}
+	else ScrollTimer->Enabled = false;
 }
 
 //---------------------------------------------------------------------
@@ -571,15 +678,18 @@ void __fastcall TH2TconvForm::AddBtnClick(TObject *Sender)
 	TListBox *lp = HtmFileList;
 	int lastn = lp->Count;
 	if (OpenDialog1->Execute()) {
+		LastDir = ExtractFileDir(OpenDialog1->FileName);
+
+ 		std::unique_ptr<TStringList> lst(new TStringList());
+		lst->Assign(lp->Items);
+
  		for (int i=0; i<OpenDialog1->Files->Count; i++) {
 			UnicodeString fnam = OpenDialog1->Files->Strings[i];
-			if (lp->Items->IndexOf(fnam)==-1) lp->Items->Add(fnam);
+			if (lst->IndexOf(fnam)==-1) lst->Add(fnam);
 		}
-		LastDir = ExtractFileDir(OpenDialog1->FileName);
-		if (lastn==0) {
-			lp->Sorted = true;
-			lp->Sorted = false;
-		}
+
+		if (lastn==0) lst->CustomSort(SortComp_Name);
+		lp->Items->Assign(lst.get());
 	}
 
 	UpdateInf(true);
@@ -628,6 +738,7 @@ void __fastcall TH2TconvForm::ClrBtnClick(TObject *Sender)
 	FilNamEdit->Text = EmptyStr;
 	UpdateInf(true);
 }
+
 //---------------------------------------------------------------------------
 //ソート
 //---------------------------------------------------------------------
@@ -638,8 +749,11 @@ void __fastcall TH2TconvForm::SortBtnClick(TObject *Sender)
 
 	Screen->Cursor = crHourGlass;
 	UnicodeString lbuf = (lp->ItemIndex!=-1)? lp->Items->Strings[lp->ItemIndex] : EmptyStr;
-	lp->Sorted = true;
-	lp->Sorted = false;
+
+	std::unique_ptr<TStringList> lst(new TStringList());
+	lst->Assign(lp->Items);
+	lst->CustomSort(SortComp_Name);
+	lp->Items->Assign(lst.get());
 
 	if (!lbuf.IsEmpty()) {
 		lp->ItemIndex = lp->Items->IndexOf(lbuf);
@@ -648,6 +762,12 @@ void __fastcall TH2TconvForm::SortBtnClick(TObject *Sender)
 	}
 	Screen->Cursor = crDefault;
 }
+//---------------------------------------------------------------------------
+void __fastcall TH2TconvForm::NaturalCheckClick(TObject *Sender)
+{
+	NaturalOrder = NaturalCheck->Checked;
+}
+
 //---------------------------------------------------------------------------
 //一つ上へ
 //---------------------------------------------------------------------
@@ -685,15 +805,15 @@ void __fastcall TH2TconvForm::DowItemBtnClick(TObject *Sender)
 //一覧上でのキー操作
 //---------------------------------------------------------------------
 void __fastcall TH2TconvForm::HtmFileListKeyDown(TObject *Sender,
-      WORD &Key, TShiftState Shift)
+	WORD &Key, TShiftState Shift)
 {
-	switch (Key) {
-	case VK_DELETE:
+	UnicodeString KeyStr = get_KeyStr(Key, Shift);	if (KeyStr.IsEmpty()) return;
+
+	if (SameText(KeyStr, "DEL")) {
 		DelBtnClick(NULL);
-		break;
-	case 'V':
-		if (Shift.Contains(ssCtrl)) PasteBtnClick(NULL);
-		break;
+	}
+	else if (SameText(KeyStr, "Ctrl+V")) {
+		PasteBtnClick(NULL);
 	}
 }
 
@@ -815,10 +935,10 @@ void __fastcall TH2TconvForm::SetFrmStyle()
 		SortBtn->Caption	  = "ソート";
 		SortBtn->Width		  = w;
 		SortBtn->Left		  = ClrBtn->Left + w + 12;
-		UpItemBtn->Caption	  = "上へ";
+		UpItemBtn->Caption	  = "上へ(&U)";
 		UpItemBtn->Width	  = w;
 		UpItemBtn->Left 	  = SortBtn->Left + w + 2;
-		DowItemBtn->Caption   = "下へ";
+		DowItemBtn->Caption   = "下へ(&D)";
 		DowItemBtn->Width	  = w;
 		DowItemBtn->Left	  = UpItemBtn->Left + w + 2;
 		Panel3->Height		  = TabSheet3->Height/2;
@@ -1161,6 +1281,7 @@ void __fastcall TH2TconvForm::RepCheckListBoxClick(TObject *Sender)
 		ToStrEdit->Text    = get_tkn_r(lbuf, "\t");
 	}
 }
+
 //---------------------------------------------------------------------------
 //置換設定の追加
 //---------------------------------------------------------------------------
@@ -1572,6 +1693,84 @@ void __fastcall TH2TconvForm::AbautMeasureItem(TObject *Sender,
 		Width += 8;
 	//高さを調整
 	Height += 2;
+}
+
+//---------------------------------------------------------------------------
+//コピー
+//---------------------------------------------------------------------------
+void __fastcall TH2TconvForm::CopyListActionExecute(TObject *Sender)
+{
+	TListBox *lp = HtmFileList;
+	std::unique_ptr<TStringList> cb_buf(new TStringList());
+	for (int i=0; i<lp->Count; i++) {
+		if (lp->Selected[i]) cb_buf->Add(lp->Items->Strings[i]);
+	}
+	lp->ClearSelection();
+	Clipboard()->AsText = cb_buf->Text;
+}
+//---------------------------------------------------------------------------
+void __fastcall TH2TconvForm::CopyListActionUpdate(TObject *Sender)
+{
+	((TAction *)Sender)->Enabled = (HtmFileList->SelCount>0);
+}
+//---------------------------------------------------------------------------
+//すべて選択
+//---------------------------------------------------------------------------
+void __fastcall TH2TconvForm::SelectAllActionExecute(TObject *Sender)
+{
+	HtmFileList->SelectAll();
+}
+//---------------------------------------------------------------------------
+void __fastcall TH2TconvForm::SelectAllActionUpdate(TObject *Sender)
+{
+	((TAction *)Sender)->Enabled = (HtmFileList->Count>0);
+}
+
+//---------------------------------------------------------------------------
+//一覧をファイルに保存
+//---------------------------------------------------------------------------
+void __fastcall TH2TconvForm::SaveListActionExecute(TObject *Sender)
+{
+	SaveDialog1->Title		= "一覧の内容に名前を付けて保存";
+	SaveDialog1->Filter 	= "一覧ファイル (*.txt)|*.TXT";
+	SaveDialog1->DefaultExt = "TXT";
+	SaveDialog1->FileName	= "*.txt";
+	SaveDialog1->InitialDir	= LastTxtDir;
+	if (SaveDialog1->Execute()) {
+		try {
+			HtmFileList->Items->SaveToFile(SaveDialog1->FileName, TEncoding::UTF8);
+			LastTxtDir = ExtractFileDir(SaveDialog1->FileName);
+		}
+		catch (...) {
+			MessageDlg("保存に失敗しました。", mtError, TMsgDlgButtons() << mbOK, 0);
+		}
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TH2TconvForm::SaveListActionUpdate(TObject *Sender)
+{
+	((TAction *)Sender)->Enabled = (HtmFileList->Count>0);
+}
+//---------------------------------------------------------------------------
+//一覧をファイルから読み込む
+//---------------------------------------------------------------------------
+void __fastcall TH2TconvForm::LoadListActionExecute(TObject *Sender)
+{
+	OpenDialog1->Title		= "一覧ファイルを読み込む";
+	OpenDialog1->Filter 	= "一覧ファイル (*.txt)|*.TXT";
+	OpenDialog1->FileName	= "*.txt";
+	OpenDialog1->InitialDir = LastTxtDir;
+	if (OpenDialog1->Execute()) {
+		std::unique_ptr<TStringList> fbuf(new TStringList());
+		fbuf->LoadFromFile(OpenDialog1->FileName);
+		HtmFileList->Clear();
+		for (int i=0; i<fbuf->Count; i++) {
+			UnicodeString lbuf = Trim(fbuf->Strings[i]);
+			if (lbuf.IsEmpty()) continue;
+			HtmFileList->Items->Add(lbuf);
+		}
+		LastTxtDir = ExtractFileDir(OpenDialog1->FileName);
+	}
 }
 
 //---------------------------------------------------------------------------

@@ -37,6 +37,11 @@ bool is_regex_slash(UnicodeString s);
 bool chk_RegExPtn(UnicodeString ptn);
 
 void ClearKeyBuff(bool key_only = false);
+UnicodeString get_ShiftStr(TShiftState Shift);
+UnicodeString get_KeyStr(WORD Key);
+UnicodeString get_KeyStr(WORD Key, TShiftState Shift);
+
+void draw_ListItemLine(TCustomListBox *lp, int idx);
 
 UnicodeString get_VersionStr(UnicodeString fnam);
 

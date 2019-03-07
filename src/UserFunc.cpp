@@ -391,6 +391,118 @@ void ClearKeyBuff(
 }
 
 //---------------------------------------------------------------------------
+//シフト状態を文字列に
+//---------------------------------------------------------------------------
+UnicodeString get_ShiftStr(TShiftState Shift)
+{
+	UnicodeString sftstr;
+	if (Shift.Contains(ssShift)) sftstr += "Shift+";
+	if (Shift.Contains(ssCtrl))  sftstr += "Ctrl+";
+	if (Shift.Contains(ssAlt))   sftstr += "Alt+";
+	return  sftstr;
+}
+
+//---------------------------------------------------------------------------
+//キーを文字列に変換
+//---------------------------------------------------------------------------
+UnicodeString get_KeyStr(WORD Key)
+{
+	UnicodeString keystr;
+
+	switch (Key) {
+	case VK_RETURN: 	keystr = "ENTER";	break;
+	case VK_ESCAPE: 	keystr = "ESC";		break;
+	case VK_PAUSE:  	keystr = "PAUSE";	break;
+	case VK_SPACE:  	keystr = "SPACE";	break;
+	case VK_TAB:		keystr = "TAB";		break;
+	case VK_LEFT:   	keystr = "LEFT";	break;
+	case VK_RIGHT:  	keystr = "RIGHT";	break;
+	case VK_DOWN:		keystr = "DOWN";	break;
+	case VK_UP:			keystr = "UP";		break;
+	case VK_PRIOR:		keystr = "PGUP";	break;
+	case VK_NEXT:		keystr = "PGDN";	break;
+	case VK_HOME:		keystr = "HOME";	break;
+	case VK_END:		keystr = "END";		break;
+	case VK_INSERT:		keystr = "INS";		break;
+	case VK_DELETE: 	keystr = "DEL";		break;
+	case VK_BACK: 		keystr = "BKSP";	break;
+	case VK_F1:			keystr = "F1";		break;
+	case VK_F2:			keystr = "F2";		break;
+	case VK_F3:			keystr = "F3";		break;
+	case VK_F4:			keystr = "F4";		break;
+	case VK_F5:			keystr = "F5";		break;
+	case VK_F6:			keystr = "F6";		break;
+	case VK_F7:			keystr = "F7";		break;
+	case VK_F8:			keystr = "F8";		break;
+	case VK_F9:			keystr = "F9";		break;
+	case VK_F10:		keystr = "F10";		break;
+	case VK_F11:		keystr = "F11";		break;
+	case VK_F12:		keystr = "F12";		break;
+	case VK_APPS:		keystr = "APP";		break;
+	case VK_OEM_1:		keystr = ":"; 		break;
+	case VK_OEM_2:		keystr = "/";		break;
+	case VK_OEM_3:		keystr = "@";		break;
+	case VK_OEM_4:		keystr = "[";		break;
+	case VK_OEM_5:		keystr = "\\";		break;
+	case VK_OEM_6:		keystr = "]";		break;
+	case VK_OEM_MINUS:  keystr = "-";		break;
+	case VK_OEM_PLUS:   keystr = ";";		 break;
+	case VK_OEM_COMMA:  keystr = ",";		break;
+	case VK_OEM_PERIOD: keystr = ".";		break;
+	case VK_OEM_102:    keystr = "＼";		break;
+
+	case VK_NUMPAD0:	keystr = "10Key_0";	break;
+	case VK_NUMPAD1:	keystr = "10Key_1";	break;
+	case VK_NUMPAD2:	keystr = "10Key_2";	break;
+	case VK_NUMPAD3:	keystr = "10Key_3";	break;
+	case VK_NUMPAD4:	keystr = "10Key_4";	break;
+	case VK_NUMPAD5:	keystr = "10Key_5";	break;
+	case VK_NUMPAD6:	keystr = "10Key_6";	break;
+	case VK_NUMPAD7:	keystr = "10Key_7";	break;
+	case VK_NUMPAD8:	keystr = "10Key_8";	break;
+	case VK_NUMPAD9:	keystr = "10Key_9";	break;
+	case VK_MULTIPLY:	keystr = "10Key_*";	break;
+	case VK_ADD:		keystr = "10Key_+";	break;
+	case VK_SUBTRACT:	keystr = "10Key_-";	break;
+	case VK_DIVIDE:		keystr = "10Key_/";	break;
+	case VK_DECIMAL:	keystr = "10Key_.";	break;
+	case VK_OEM_7:	  	keystr = "^";		break;
+
+	default:
+		if (_istalnum(Key)) keystr = (char)Key; else keystr = EmptyStr;
+	}
+
+	return  keystr;
+}
+//---------------------------------------------------------------------------
+//キーとシフト状態を文字列に
+//---------------------------------------------------------------------------
+UnicodeString get_KeyStr(WORD Key, TShiftState Shift)
+{
+	UnicodeString keystr = get_KeyStr(Key);
+	return !keystr.IsEmpty()? get_ShiftStr(Shift) + keystr : EmptyStr;
+}
+
+//---------------------------------------------------------------------------
+//リストボックスの項目に罫線を描画 (背景の反転色)
+//---------------------------------------------------------------------------
+void draw_ListItemLine(TCustomListBox *lp, int idx)
+{
+	TPenMode org_md = lp->Canvas->Pen->Mode;
+	int		 org_wd = lp->Canvas->Pen->Width;
+	lp->Canvas->Pen->Mode  = pmNot;
+	lp->Canvas->Pen->Width = 2;
+	if (idx!=-1) {
+		TRect r = lp->ItemRect(idx);
+		int   y = (lp->ItemIndex<idx)? r.Bottom : r.Top;
+		lp->Canvas->MoveTo(0, y);
+		lp->Canvas->LineTo(lp->Width, y);
+	}
+	lp->Canvas->Pen->Mode  = org_md;
+	lp->Canvas->Pen->Width = org_wd;
+}
+
+//---------------------------------------------------------------------------
 //アプリケーションの製品バージョン取得
 //※ n.n.n.n → n.nn に変換
 //---------------------------------------------------------------------------

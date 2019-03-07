@@ -33,6 +33,7 @@ public:
 	void WriteString(UnicodeString sct, UnicodeString key, UnicodeString v = EmptyStr);
 	void WriteInteger(UnicodeString sct, UnicodeString key, int v);
 	void WriteBool(UnicodeString sct, UnicodeString key, bool v);
+	void WriteBool(UnicodeString sct, UnicodeString key, TCheckBox *cp);
 	void WriteFontInf(UnicodeString sct, TFont *f);
 	void LoadFormPos(TForm *frm, int w, int h);
 	void SaveFormPos(TForm *frm);

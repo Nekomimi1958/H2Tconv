@@ -214,6 +214,11 @@ void UsrIniFile::WriteBool(UnicodeString sct, UnicodeString key, bool v)
 {
 	WriteString(sct, key, v? "1" : "0");
 }
+//---------------------------------------------------------------------------
+void UsrIniFile::WriteBool(UnicodeString sct, UnicodeString key, TCheckBox *cp)
+{
+	WriteString(sct, key, cp->Checked? "1" : "0");
+}
 
 //---------------------------------------------------------------------------
 void UsrIniFile::WriteFontInf(UnicodeString sct, TFont *f)
