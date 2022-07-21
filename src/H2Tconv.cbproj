@@ -65,7 +65,7 @@
         <SanitizedProjectName>H2Tconv</SanitizedProjectName>
         <_TCHARMapping>wchar_t</_TCHARMapping>
         <VerInfo_Locale>1041</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=HTML→テキスト変換ツール H2Tconv;FileVersion=1.2.1.0;InternalName=;LegalCopyright=2015 Nekomimi;LegalTrademarks=;OriginalFilename=H2Tconv.exe;ProductName=H2Tconv;ProductVersion=1.2.1.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=HTML→テキスト変換ツール H2Tconv;FileVersion=1.2.2.0;InternalName=;LegalCopyright=2015 Nekomimi;LegalTrademarks=;OriginalFilename=H2Tconv.exe;ProductName=H2Tconv;ProductVersion=1.2.2.0;Comments=</VerInfo_Keys>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
         <Icon_MainIcon>$(BDS)\bin\cbuilder_PROJECTICON.ico</Icon_MainIcon>
@@ -95,7 +95,7 @@
         <DCC_SymbolReferenceInfo>2</DCC_SymbolReferenceInfo>
         <UWP_CppLogo44>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_44.png</UWP_CppLogo44>
         <UWP_CppLogo150>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_150.png</UWP_CppLogo150>
-        <VerInfo_Release>1</VerInfo_Release>
+        <VerInfo_Release>2</VerInfo_Release>
         <BCC_PCHInject>H2TconvPCH1.h</BCC_PCHInject>
         <BCC_UseClassicCompiler>false</BCC_UseClassicCompiler>
     </PropertyGroup>

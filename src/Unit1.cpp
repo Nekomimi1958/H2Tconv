@@ -1201,7 +1201,8 @@ void __fastcall TH2TconvForm::MarkdownCheckClick(TObject *Sender)
 		ImgSrcCheck->Checked = true;
 		AltBraEdit->Text     = "![";
 		AltKetEdit->Text     = "]";
-		LinkCrCheck->Checked = true;
+		LinkCheck->Checked   = true;
+		LinkCrCheck->Checked = false;
 		LnkBraEdit->Text     = "(";
 		LnkKetEdit->Text     = ")";
 		InsLineStrEdit->Text = "-";
