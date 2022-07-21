@@ -4,6 +4,7 @@
 //----------------------------------------------------------------------//
 #include <vcl.h>
 #pragma hdrstop
+
 #include "usr_shell.h"
 
 //---------------------------------------------------------------------------
@@ -33,124 +34,88 @@ DWORD get_DropMode(IDataObject *pDataObj, DWORD grfKeyState, POINTL pt)
 //---------------------------------------------------------------------------
 // TDropSource クラス
 //---------------------------------------------------------------------------
-class TDropSource : public IDropSource
+HRESULT __stdcall TDropSource::QueryInterface(REFIID riid, void **ppv)
 {
-public:
-	TDropSource() : FRefCount(0)
-	{
-	}
+	IUnknown *punk = NULL;
+	if		(riid == IID_IUnknown)		punk = static_cast<IUnknown*>(this);
+	else if (riid == IID_IDropSource)	punk = static_cast<IDropSource*>(this);
 
-	HRESULT __stdcall QueryInterface(REFIID riid, void **ppv)
-	{
-		IUnknown *punk = NULL;
-		if		(riid == IID_IUnknown)		punk = static_cast<IUnknown*>(this);
-		else if (riid == IID_IDropSource)	punk = static_cast<IDropSource*>(this);
-
-		*ppv = punk;
-		if (punk) {
-			punk->AddRef();
-			return S_OK;
-		}
-		else
-			return E_NOINTERFACE;
-	}
-
-	ULONG __stdcall AddRef()
-	{
-		InterlockedIncrement(&FRefCount);
-		return (ULONG)FRefCount;
-	}
-
-	ULONG __stdcall Release()
-	{
-		ULONG ret = (ULONG)InterlockedDecrement(&FRefCount);
-		if (ret==0) delete this;
-		return ret;
-	}
-
-	HRESULT __stdcall QueryContinueDrag(BOOL fEsc, DWORD grfKeyState)
-	{
-		//ESC、または両方のボタンが押されたら中止
-		if (fEsc || (grfKeyState & (MK_LBUTTON|MK_RBUTTON))==(MK_LBUTTON|MK_RBUTTON))
-			return DRAGDROP_S_CANCEL;
-		//マウスボタンが離された場合はドロップ処理へ
-		if ((grfKeyState & (MK_LBUTTON|MK_RBUTTON))==0)
-			return DRAGDROP_S_DROP;
+	*ppv = punk;
+	if (punk) {
+		punk->AddRef();
 		return S_OK;
 	}
 
-	HRESULT __stdcall GiveFeedback(DWORD dwEffect)
-	{
-		return DRAGDROP_S_USEDEFAULTCURSORS;
-	}
-
-private:
-	LONG FRefCount;
-};
+	return E_NOINTERFACE;
+}
+//---------------------------------------------------------------------------
+ULONG __stdcall TDropSource::AddRef()
+{
+	InterlockedIncrement(&FRefCount);
+	return (ULONG)FRefCount;
+}
+//---------------------------------------------------------------------------
+ULONG __stdcall TDropSource::Release()
+{
+	ULONG ret = (ULONG)InterlockedDecrement(&FRefCount);
+	if (ret==0) delete this;
+	return ret;
+}
+//---------------------------------------------------------------------------
+HRESULT __stdcall TDropSource::QueryContinueDrag(BOOL fEsc, DWORD grfKeyState)
+{
+	//ESC、または両方のボタンが押されたら中止
+	if (fEsc || (grfKeyState & (MK_LBUTTON|MK_RBUTTON))==(MK_LBUTTON|MK_RBUTTON))
+		return DRAGDROP_S_CANCEL;
+	//マウスボタンが離された場合はドロップ処理へ
+	if ((grfKeyState & (MK_LBUTTON|MK_RBUTTON))==0)
+		return DRAGDROP_S_DROP;
+	return S_OK;
+}
+//---------------------------------------------------------------------------
+HRESULT __stdcall TDropSource::GiveFeedback(DWORD dwEffect)
+{
+	return DRAGDROP_S_USEDEFAULTCURSORS;
+}
 
 //---------------------------------------------------------------------------
 // TDropTarget クラス
 //---------------------------------------------------------------------------
-class TDropTargetBase : public IDropTarget
+TDropTargetBase::TDropTargetBase()
 {
-protected:
-	unsigned int refCount;
-
-	TDropTargetBase()
-	{
-		refCount = 0;
-	}
-
-	~TDropTargetBase() { }
-
-	virtual HRESULT __stdcall QueryInterface(const IID& iid, void **ppv)
-	{
-		if (IsEqualIID(iid, IID_IUnknown) || IsEqualIID(iid, IID_IDropTarget))
-			*ppv = static_cast<IDropTarget *>(this);
-		else {
-			*ppv = NULL;
-			return E_NOINTERFACE;
-		}
-		AddRef();
-		return S_OK;
-	}
-
-	virtual ULONG __stdcall AddRef()
-	{
-		refCount++;
-		return refCount;
-	}
-
-	virtual ULONG __stdcall Release()
-	{
-		refCount--;
-		if (refCount==0) {
-			delete this;
-			return 0;
-		}
-		else
-			return refCount;
-	}
-};
+	refCount = 0;
+}
 //---------------------------------------------------------------------------
-class TDropTarget : public TDropTargetBase
+HRESULT __stdcall TDropTargetBase::QueryInterface(const IID& iid, void **ppv)
 {
-public:
-	static void CreateInstance(IDropTarget **pp)
-	{
-		if (pp) {
-			TDropTarget *p = new TDropTarget();
-			p->QueryInterface(IID_IDropTarget, (void **)pp);
-		}
+	if (IsEqualIID(iid, IID_IUnknown) || IsEqualIID(iid, IID_IDropTarget)) {
+		*ppv = static_cast<IDropTarget *>(this);
+	}
+	else {
+		*ppv = NULL;
+		return E_NOINTERFACE;
 	}
 
-private:
-	virtual HRESULT __stdcall DragEnter(IDataObject *pDataObj, DWORD grfKeyState, POINTL pt, DWORD *pdwEffect);
-	virtual HRESULT __stdcall DragOver(DWORD grfKeyState, POINTL pt, DWORD *pdwEffect);
-	virtual HRESULT __stdcall DragLeave();
-	virtual HRESULT __stdcall Drop(IDataObject *pDataObj, DWORD grfKeyState, POINTL pt, DWORD *pdwEffect);
-};
+	AddRef();
+	return S_OK;
+}
+//---------------------------------------------------------------------------
+ULONG __stdcall TDropTargetBase::AddRef()
+{
+	refCount++;
+	return refCount;
+}
+//---------------------------------------------------------------------------
+ULONG __stdcall TDropTargetBase::Release()
+{
+	refCount--;
+	if (refCount>0) return refCount;
+	delete this;
+	return 0;
+}
 
+//---------------------------------------------------------------------------
+// TDropTarget クラス
 //---------------------------------------------------------------------------
 HRESULT __stdcall TDropTarget::DragEnter(IDataObject *pDataObj, DWORD grfKeyState, POINTL pt, DWORD *pdwEffect)
 {

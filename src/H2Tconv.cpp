@@ -2,11 +2,8 @@
 // H2Tconv																//
 //																		//
 //----------------------------------------------------------------------//
-#include <vcl.h>
-#pragma hdrstop
-#include <tchar.h>
-
 USEFORM("Unit1.cpp", H2TconvForm);
+
 //---------------------------------------------------------------------------
 int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 {

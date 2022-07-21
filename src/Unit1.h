@@ -6,7 +6,6 @@
 #define Unit1H
 
 //---------------------------------------------------------------------------
-#include <Winapi.ShellAPI.hpp>
 #include <System.Classes.hpp>
 #include <System.Actions.hpp>
 #include <Vcl.Controls.hpp>
@@ -25,6 +24,7 @@
 #include <Vcl.Clipbrd.hpp>
 #include "usr_shell.h"
 #include "htmconv.h"
+#include <Vcl.Mask.hpp>
 
 //---------------------------------------------------------------------------
 #define SUPPORT_URL	_T("http://nekomimi.la.coocan.jp/")
@@ -38,8 +38,8 @@ typedef HWND (WINAPI *FUNC_HtmlHelp)(HWND, LPCWSTR, UINT, DWORD);
 #define DSTMOD_SELDIR  2	//場所指定
 
 // 最小画面サイズ
-#define NRM_MIN_WD	580
-#define NRM_MIN_HI	560
+#define NRM_MIN_WD	600
+#define NRM_MIN_HI	580
 #define CMP_MIN_WD	224
 #define CMP_MIN_HI	110
 
@@ -55,6 +55,7 @@ __published:	// IDE 管理のコンポーネント
 	TAction *DownRepAction;
 	TAction *LoadListAction;
 	TAction *PlaySoundAction;
+	TAction *SaveIniAction;
 	TAction *SaveListAction;
 	TAction *SelectAllAction;
 	TAction *UpRepAction;
@@ -96,6 +97,7 @@ __published:	// IDE 管理のコンポーネント
 	TCheckBox *KillCheck;
 	TCheckBox *LinkCheck;
 	TCheckBox *LinkCrCheck;
+	TCheckBox *MarkdownCheck;
 	TCheckBox *NaturalCheck;
 	TCheckBox *OpenAppCheck;
 	TCheckBox *PstHdrCheck;
@@ -144,6 +146,7 @@ __published:	// IDE 管理のコンポーネント
 	TLabeledEdit *DelBlkClsEdit;
 	TLabeledEdit *DelBlkIdEdit;
 	TLabeledEdit *EndSoundEdit;
+	TLabeledEdit *FilExtEdit;
 	TLabeledEdit *FilNamEdit;
 	TLabeledEdit *FromStrEdit;
 	TLabeledEdit *H1Edit;
@@ -184,6 +187,7 @@ __published:	// IDE 管理のコンポーネント
 	TMenuItem *PopLine2Item;
 	TMenuItem *PopLine3Item;
 	TMenuItem *PopTitleItem;
+	TMenuItem *SaveAsIniItem;
 	TMenuItem *SaveIniItem;
 	TMenuItem *SaveListItem;
 	TMenuItem *SelectAllItem;
@@ -260,7 +264,7 @@ __published:	// IDE 管理のコンポーネント
 	void __fastcall TitLmtEditChange(TObject *Sender);
 	void __fastcall MenuBtnClick(TObject *Sender);
 	void __fastcall LoadIniItemClick(TObject *Sender);
-	void __fastcall SaveIniItemClick(TObject *Sender);
+	void __fastcall SaveAsIniItemClick(TObject *Sender);
 	void __fastcall DefaultIniItemClick(TObject *Sender);
 	void __fastcall HelpItemClick(TObject *Sender);
 	void __fastcall AbautInfItemDrawItem(TObject *Sender, TCanvas *ACanvas, TRect &ARect, bool Selected);
@@ -294,8 +298,18 @@ __published:	// IDE 管理のコンポーネント
 	void __fastcall ScrollTimerTimer(TObject *Sender);
 	void __fastcall SelectAllActionExecute(TObject *Sender);
 	void __fastcall SelectAllActionUpdate(TObject *Sender);
+	void __fastcall FilExtEditChange(TObject *Sender);
+	void __fastcall MarkdownCheckClick(TObject *Sender);
+	void __fastcall SaveIniActionExecute(TObject *Sender);
+	void __fastcall SaveIniActionUpdate(TObject *Sender);
+	void __fastcall DstDirEditChange(TObject *Sender);
 
 private:	// ユーザー宣言
+	TIniFile* IniFile;
+	UnicodeString IniName;
+
+	bool OptLocked;
+
 	UnicodeString VersionStr;	//バージョン
 	UnicodeString LastDir;		//参照ディレクトリ
 	UnicodeString OrgDir;		//変換元のディレクトリ

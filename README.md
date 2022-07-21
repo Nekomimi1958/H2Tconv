@@ -10,4 +10,4 @@ Supported language is Japanese only.
 http://nekomimi.la.coocan.jp/freesoft/h2tconv.htm  
 
 ## Development Environment
-C++Builder 10.3 (BCC32)
+C++Builder 11.1.5 (BCC32C)

@@ -4,12 +4,11 @@ object H2TconvForm: TH2TconvForm
   HelpContext = 1
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'H2Tconv'
-  ClientHeight = 524
-  ClientWidth = 570
+  ClientHeight = 550
+  ClientWidth = 590
   Color = clBtnFace
   ParentFont = True
   KeyPreview = True
-  OldCreateOrder = False
   ShowHint = True
   OnClose = FormClose
   OnCreate = FormCreate
@@ -17,14 +16,13 @@ object H2TconvForm: TH2TconvForm
   OnResize = FormResize
   OnShow = FormShow
   DesignSize = (
-    570
-    524)
-  PixelsPerInch = 96
-  TextHeight = 13
+    590
+    550)
+  TextHeight = 15
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 505
-    Width = 570
+    Top = 531
+    Width = 590
     Height = 19
     DoubleBuffered = True
     Panels = <
@@ -40,11 +38,11 @@ object H2TconvForm: TH2TconvForm
   object PageControl1: TPageControl
     Left = 0
     Top = 0
-    Width = 570
-    Height = 505
+    Width = 590
+    Height = 531
     ActivePage = TabSheet1
     Align = alClient
-    TabHeight = 22
+    TabHeight = 24
     TabOrder = 0
     TabWidth = 100
     OnChange = PageControl1Change
@@ -53,18 +51,18 @@ object H2TconvForm: TH2TconvForm
       Caption = #20837#20986#21147
       object Panel1_2: TPanel
         Left = 0
-        Top = 268
-        Width = 562
+        Top = 292
+        Width = 582
         Height = 205
         Align = alBottom
         BevelOuter = bvNone
         BorderWidth = 4
         TabOrder = 1
         DesignSize = (
-          562
+          582
           205)
         object ArrowImg: TImage
-          Left = 259
+          Left = 269
           Top = 0
           Width = 37
           Height = 16
@@ -87,17 +85,18 @@ object H2TconvForm: TH2TconvForm
             9999999999999033333333333000333333333338888888888888803333333333
             3000}
           Transparent = True
+          ExplicitLeft = 259
         end
         object GrpBox1_2: TGroupBox
           Left = 4
           Top = 18
-          Width = 554
+          Width = 574
           Height = 82
           Anchors = [akLeft, akRight, akBottom]
           Caption = #12486#12461#12473#12488#20986#21147#20808'(&O)'
           TabOrder = 0
           DesignSize = (
-            554
+            574
             82)
           object SamDirRadioBtn: TRadioButton
             Tag = 1
@@ -113,22 +112,23 @@ object H2TconvForm: TH2TconvForm
             Tag = 2
             Left = 216
             Top = 22
-            Width = 105
+            Width = 98
             Height = 17
             Caption = #22580#25152#25351#23450'(&L)'
             TabOrder = 2
             OnClick = DestRadioBtnClick
           end
           object DstDirEdit: TEdit
-            Left = 312
+            Left = 320
             Top = 20
-            Width = 200
-            Height = 21
+            Width = 210
+            Height = 23
             Anchors = [akLeft, akTop, akRight]
             TabOrder = 3
+            OnChange = DstDirEditChange
           end
           object RefDstBtn: TButton
-            Left = 514
+            Left = 532
             Top = 19
             Width = 32
             Height = 23
@@ -156,29 +156,45 @@ object H2TconvForm: TH2TconvForm
             OnClick = JoinCheckClick
           end
           object FilNamEdit: TLabeledEdit
-            Left = 312
+            Left = 216
             Top = 53
-            Width = 200
-            Height = 21
+            Width = 289
+            Height = 23
             Anchors = [akLeft, akTop, akRight]
-            EditLabel.Width = 60
-            EditLabel.Height = 13
+            EditLabel.Width = 64
+            EditLabel.Height = 15
             EditLabel.Caption = #12501#12449#12452#12523#21517'(&F)'
             LabelPosition = lpLeft
             TabOrder = 6
+            Text = ''
             OnChange = FilNamEditChange
+          end
+          object FilExtEdit: TLabeledEdit
+            Left = 516
+            Top = 53
+            Width = 48
+            Height = 23
+            Hint = #25313#24373#23376
+            Anchors = [akTop, akRight]
+            EditLabel.Width = 3
+            EditLabel.Height = 15
+            EditLabel.Caption = '.'
+            LabelPosition = lpLeft
+            TabOrder = 7
+            Text = ''
+            OnChange = FilExtEditChange
           end
         end
         object GrpBox1_3: TGroupBox
           Left = 4
           Top = 115
-          Width = 458
+          Width = 478
           Height = 82
           Anchors = [akLeft, akTop, akRight]
           Caption = #22793#25563#24460'(&E)'
           TabOrder = 1
           DesignSize = (
-            458
+            478
             82)
           object OpenAppCheck: TCheckBox
             Left = 16
@@ -190,7 +206,7 @@ object H2TconvForm: TH2TconvForm
             TabOrder = 1
           end
           object RefAppBtn: TButton
-            Left = 418
+            Left = 438
             Top = 49
             Width = 32
             Height = 23
@@ -202,8 +218,8 @@ object H2TconvForm: TH2TconvForm
           object AppNameEdit: TEdit
             Left = 128
             Top = 50
-            Width = 288
-            Height = 21
+            Width = 308
+            Height = 23
             Anchors = [akLeft, akRight, akBottom]
             TabOrder = 2
           end
@@ -217,7 +233,7 @@ object H2TconvForm: TH2TconvForm
           end
         end
         object ConvBtn: TBitBtn
-          Left = 482
+          Left = 502
           Top = 125
           Width = 72
           Height = 72
@@ -1015,8 +1031,8 @@ object H2TconvForm: TH2TconvForm
       object Panel1_1: TPanel
         Left = 0
         Top = 0
-        Width = 562
-        Height = 268
+        Width = 582
+        Height = 292
         Align = alClient
         BevelOuter = bvNone
         BorderWidth = 4
@@ -1024,17 +1040,17 @@ object H2TconvForm: TH2TconvForm
         object GrpBox1_1: TGroupBox
           Left = 4
           Top = 4
-          Width = 550
-          Height = 260
+          Width = 570
+          Height = 284
           Align = alLeft
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = #20837#21147'HTML'#25991#26360'(&I)'
           TabOrder = 0
           object Panel1_1a: TPanel
             Left = 2
-            Top = 15
-            Width = 546
-            Height = 213
+            Top = 17
+            Width = 566
+            Height = 235
             Align = alClient
             BevelOuter = bvNone
             BorderWidth = 4
@@ -1042,11 +1058,11 @@ object H2TconvForm: TH2TconvForm
             object HtmFileList: TListBox
               Left = 4
               Top = 4
-              Width = 538
-              Height = 205
+              Width = 558
+              Height = 227
               Align = alClient
               DragMode = dmAutomatic
-              ItemHeight = 13
+              ItemHeight = 15
               MultiSelect = True
               PopupMenu = PopupMenu2
               TabOrder = 0
@@ -1060,17 +1076,17 @@ object H2TconvForm: TH2TconvForm
           end
           object Panel1_1b: TPanel
             Left = 2
-            Top = 228
-            Width = 546
+            Top = 252
+            Width = 566
             Height = 30
             Align = alBottom
             BevelOuter = bvNone
             TabOrder = 1
             DesignSize = (
-              546
+              566
               30)
             object DowItemBtn: TButton
-              Left = 468
+              Left = 485
               Top = 0
               Width = 55
               Height = 25
@@ -1079,7 +1095,7 @@ object H2TconvForm: TH2TconvForm
               OnClick = DowItemBtnClick
             end
             object UpItemBtn: TButton
-              Left = 415
+              Left = 426
               Top = 0
               Width = 55
               Height = 25
@@ -1088,7 +1104,7 @@ object H2TconvForm: TH2TconvForm
               OnClick = UpItemBtnClick
             end
             object SortBtn: TButton
-              Left = 359
+              Left = 367
               Top = 0
               Width = 55
               Height = 25
@@ -1097,7 +1113,7 @@ object H2TconvForm: TH2TconvForm
               OnClick = SortBtnClick
             end
             object ClrBtn: TButton
-              Left = 284
+              Left = 297
               Top = 0
               Width = 55
               Height = 25
@@ -1106,7 +1122,7 @@ object H2TconvForm: TH2TconvForm
               OnClick = ClrBtnClick
             end
             object DelBtn: TButton
-              Left = 229
+              Left = 238
               Top = 0
               Width = 55
               Height = 25
@@ -1115,7 +1131,7 @@ object H2TconvForm: TH2TconvForm
               OnClick = DelBtnClick
             end
             object PasteBtn: TButton
-              Left = 144
+              Left = 156
               Top = 0
               Width = 70
               Height = 25
@@ -1124,7 +1140,7 @@ object H2TconvForm: TH2TconvForm
               OnClick = PasteBtnClick
             end
             object InputBtn: TButton
-              Left = 75
+              Left = 82
               Top = 0
               Width = 70
               Height = 25
@@ -1151,82 +1167,88 @@ object H2TconvForm: TH2TconvForm
       ImageIndex = 1
       object GrpBox2_3: TGroupBox
         Left = 8
-        Top = 62
-        Width = 548
+        Top = 60
+        Width = 564
         Height = 50
         Caption = #35211#20986#12375'(&H)'
         TabOrder = 1
         object H1Edit: TLabeledEdit
           Left = 40
           Top = 20
-          Width = 50
-          Height = 21
-          EditLabel.Width = 12
-          EditLabel.Height = 13
+          Width = 60
+          Height = 23
+          EditLabel.Width = 13
+          EditLabel.Height = 15
           EditLabel.Caption = 'h1'
           LabelPosition = lpLeft
           TabOrder = 0
+          Text = ''
         end
         object H2Edit: TLabeledEdit
-          Left = 129
+          Left = 131
           Top = 20
-          Width = 50
-          Height = 21
-          EditLabel.Width = 12
-          EditLabel.Height = 13
+          Width = 60
+          Height = 23
+          EditLabel.Width = 13
+          EditLabel.Height = 15
           EditLabel.Caption = 'h2'
           LabelPosition = lpLeft
           TabOrder = 1
+          Text = ''
         end
         object H3Edit: TLabeledEdit
-          Left = 218
+          Left = 221
           Top = 20
-          Width = 50
-          Height = 21
-          EditLabel.Width = 12
-          EditLabel.Height = 13
+          Width = 60
+          Height = 23
+          EditLabel.Width = 13
+          EditLabel.Height = 15
           EditLabel.Caption = 'h3'
           LabelPosition = lpLeft
           TabOrder = 2
+          Text = ''
         end
         object H4Edit: TLabeledEdit
-          Left = 307
+          Left = 312
           Top = 20
-          Width = 50
-          Height = 21
-          EditLabel.Width = 12
-          EditLabel.Height = 13
+          Width = 60
+          Height = 23
+          EditLabel.Width = 13
+          EditLabel.Height = 15
           EditLabel.Caption = 'h4'
           LabelPosition = lpLeft
           TabOrder = 3
+          Text = ''
         end
         object H5Edit: TLabeledEdit
-          Left = 396
+          Left = 402
           Top = 20
-          Width = 50
-          Height = 21
-          EditLabel.Width = 12
-          EditLabel.Height = 13
+          Width = 60
+          Height = 23
+          EditLabel.Width = 13
+          EditLabel.Height = 15
           EditLabel.Caption = 'h5'
           LabelPosition = lpLeft
           TabOrder = 4
+          Text = ''
         end
         object H6Edit: TLabeledEdit
-          Left = 485
+          Left = 493
           Top = 20
-          Width = 50
-          Height = 21
-          EditLabel.Width = 12
-          EditLabel.Height = 13
+          Width = 60
+          Height = 23
+          EditLabel.Width = 13
+          EditLabel.Height = 15
           EditLabel.Caption = 'h6'
           LabelPosition = lpLeft
           TabOrder = 5
+          Text = ''
         end
       end
       object GrpBox2_1: TGroupBox
         Left = 8
         Top = 4
-        Width = 548
+        Width = 564
         Height = 50
         Caption = #34892
         TabOrder = 0
@@ -1234,7 +1256,7 @@ object H2TconvForm: TH2TconvForm
           Left = 80
           Top = 20
           Width = 16
-          Height = 21
+          Height = 23
           Associate = LnWidEdit
           Min = 1
           Max = 250
@@ -1245,7 +1267,7 @@ object H2TconvForm: TH2TconvForm
           Left = 348
           Top = 20
           Width = 16
-          Height = 21
+          Height = 23
           Associate = BlkLmtEdit
           Min = 1
           Position = 1
@@ -1271,10 +1293,10 @@ object H2TconvForm: TH2TconvForm
           Left = 308
           Top = 20
           Width = 40
-          Height = 21
+          Height = 23
           Alignment = taRightJustify
-          EditLabel.Width = 72
-          EditLabel.Height = 13
+          EditLabel.Width = 78
+          EditLabel.Height = 15
           EditLabel.Caption = #36899#32154#31354#34892#21046#38480
           LabelPosition = lpLeft
           NumbersOnly = True
@@ -1287,10 +1309,10 @@ object H2TconvForm: TH2TconvForm
           Left = 40
           Top = 20
           Width = 40
-          Height = 21
+          Height = 23
           Alignment = taRightJustify
-          EditLabel.Width = 24
-          EditLabel.Height = 13
+          EditLabel.Width = 26
+          EditLabel.Height = 15
           EditLabel.Caption = #26689#25968
           LabelPosition = lpLeft
           NumbersOnly = True
@@ -1301,28 +1323,29 @@ object H2TconvForm: TH2TconvForm
         end
       end
       object GrpBox2_2: TGroupBox
-        Left = 408
-        Top = 120
+        Left = 424
+        Top = 116
         Width = 148
         Height = 50
         Caption = 'HR'#32619#32218
         TabOrder = 5
         object HrStrEdit: TLabeledEdit
-          Left = 75
+          Left = 77
           Top = 20
           Width = 60
-          Height = 21
-          EditLabel.Width = 48
-          EditLabel.Height = 13
+          Height = 23
+          EditLabel.Width = 52
+          EditLabel.Height = 15
           EditLabel.Caption = #32619#32218#25991#23383
           LabelPosition = lpLeft
           TabOrder = 0
+          Text = ''
         end
       end
       object GrpBox2_7: TGroupBox
         Left = 8
-        Top = 178
-        Width = 388
+        Top = 172
+        Width = 400
         Height = 50
         Caption = #31623#26465#26360#12365'(&K)'
         TabOrder = 6
@@ -1338,29 +1361,31 @@ object H2TconvForm: TH2TconvForm
           Left = 64
           Top = 20
           Width = 60
-          Height = 21
-          EditLabel.Width = 45
-          EditLabel.Height = 13
+          Height = 23
+          EditLabel.Width = 49
+          EditLabel.Height = 15
           EditLabel.Caption = #12452#12531#12487#12531#12488
           LabelPosition = lpLeft
           TabOrder = 0
+          Text = ''
         end
         object MarkEdit: TLabeledEdit
           Left = 189
           Top = 20
           Width = 60
-          Height = 21
-          EditLabel.Width = 27
-          EditLabel.Height = 13
+          Height = 23
+          EditLabel.Width = 30
+          EditLabel.Height = 15
           EditLabel.Caption = #12510#12540#12463
           LabelPosition = lpLeft
           TabOrder = 1
+          Text = ''
         end
       end
       object GrpBox2_9: TGroupBox
         Left = 8
-        Top = 236
-        Width = 548
+        Top = 228
+        Width = 564
         Height = 50
         Caption = #30011#20687'(&I)'
         TabOrder = 8
@@ -1374,16 +1399,16 @@ object H2TconvForm: TH2TconvForm
           OnClick = AltCheckClick
         end
         object AltKetEdit: TEdit
-          Left = 499
+          Left = 517
           Top = 20
           Width = 36
-          Height = 21
+          Height = 23
           TabOrder = 4
         end
         object ImgSrcCheck: TCheckBox
           Left = 280
           Top = 22
-          Width = 97
+          Width = 84
           Height = 17
           Caption = #12501#12449#12452#12523#21517
           TabOrder = 2
@@ -1393,29 +1418,31 @@ object H2TconvForm: TH2TconvForm
           Left = 172
           Top = 20
           Width = 77
-          Height = 21
-          EditLabel.Width = 44
-          EditLabel.Height = 13
+          Height = 23
+          EditLabel.Width = 49
+          EditLabel.Height = 15
           EditLabel.Caption = #12487#12501#12457#12523#12488
           LabelPosition = lpLeft
           TabOrder = 1
+          Text = ''
         end
         object AltBraEdit: TLabeledEdit
-          Left = 458
+          Left = 476
           Top = 20
           Width = 36
-          Height = 21
-          EditLabel.Width = 23
-          EditLabel.Height = 13
+          Height = 23
+          EditLabel.Width = 25
+          EditLabel.Height = 15
           EditLabel.Caption = #22258#12415
           LabelPosition = lpLeft
           TabOrder = 3
+          Text = ''
         end
       end
       object GrpBox2_10: TGroupBox
         Left = 8
-        Top = 294
-        Width = 548
+        Top = 284
+        Width = 564
         Height = 50
         Caption = #12522#12531#12463'(&L)'
         TabOrder = 9
@@ -1429,10 +1456,10 @@ object H2TconvForm: TH2TconvForm
           OnClick = LinkCheckClick
         end
         object LnkKetEdit: TEdit
-          Left = 499
+          Left = 517
           Top = 21
           Width = 36
-          Height = 21
+          Height = 23
           TabOrder = 4
         end
         object ExtLnkCheck: TCheckBox
@@ -1452,118 +1479,123 @@ object H2TconvForm: TH2TconvForm
           TabOrder = 2
         end
         object LnkBraEdit: TLabeledEdit
-          Left = 458
+          Left = 476
           Top = 21
           Width = 36
-          Height = 21
-          EditLabel.Width = 23
-          EditLabel.Height = 13
+          Height = 23
+          EditLabel.Width = 25
+          EditLabel.Height = 15
           EditLabel.Caption = #22258#12415
           LabelPosition = lpLeft
           TabOrder = 3
+          Text = ''
         end
       end
       object GrpBox2_4: TGroupBox
         Left = 8
-        Top = 120
-        Width = 124
+        Top = 116
+        Width = 128
         Height = 50
         Caption = #22826#23383'(&B)'
         TabOrder = 2
         object B_KetEdit: TEdit
-          Left = 81
+          Left = 82
           Top = 20
-          Width = 36
-          Height = 21
+          Width = 38
+          Height = 23
           TabOrder = 1
         end
         object B_BraEdit: TLabeledEdit
           Left = 40
           Top = 20
-          Width = 36
-          Height = 21
-          EditLabel.Width = 23
-          EditLabel.Height = 13
+          Width = 38
+          Height = 23
+          EditLabel.Width = 25
+          EditLabel.Height = 15
           EditLabel.Caption = #22258#12415
           LabelPosition = lpLeft
           TabOrder = 0
+          Text = ''
         end
       end
       object GrpBox2_5: TGroupBox
-        Left = 140
-        Top = 120
-        Width = 124
+        Left = 144
+        Top = 116
+        Width = 128
         Height = 50
         Caption = #26012#20307'(&I)'
         TabOrder = 3
         object I_KetEdit: TEdit
-          Left = 81
+          Left = 82
           Top = 20
-          Width = 36
-          Height = 21
+          Width = 38
+          Height = 23
           TabOrder = 1
         end
         object I_BraEdit: TLabeledEdit
           Left = 40
           Top = 20
-          Width = 36
-          Height = 21
-          EditLabel.Width = 23
-          EditLabel.Height = 13
+          Width = 38
+          Height = 23
+          EditLabel.Width = 25
+          EditLabel.Height = 15
           EditLabel.Caption = #22258#12415
           LabelPosition = lpLeft
           TabOrder = 0
+          Text = ''
         end
       end
       object GrpBox2_6: TGroupBox
-        Left = 272
-        Top = 120
-        Width = 124
+        Left = 280
+        Top = 116
+        Width = 128
         Height = 50
         Caption = #19979#32218'(&U)'
         TabOrder = 4
         object U_KetEdit: TEdit
-          Left = 81
+          Left = 82
           Top = 20
-          Width = 36
-          Height = 21
+          Width = 38
+          Height = 23
           TabOrder = 1
         end
         object U_BraEdit: TLabeledEdit
           Left = 40
           Top = 20
-          Width = 36
-          Height = 21
-          EditLabel.Width = 23
-          EditLabel.Height = 13
+          Width = 38
+          Height = 23
+          EditLabel.Width = 25
+          EditLabel.Height = 15
           EditLabel.Caption = #22258#12415
           LabelPosition = lpLeft
           TabOrder = 0
+          Text = ''
         end
       end
       object GrpBox2_8: TGroupBox
-        Left = 408
-        Top = 178
+        Left = 424
+        Top = 172
         Width = 148
         Height = 50
         Caption = #34920'(&T)'
         TabOrder = 7
         object CelSepEdit: TLabeledEdit
-          Left = 75
+          Left = 77
           Top = 20
           Width = 60
-          Height = 21
-          EditLabel.Width = 52
-          EditLabel.Height = 13
+          Height = 23
+          EditLabel.Width = 56
+          EditLabel.Height = 15
           EditLabel.Caption = #12475#12523#21306#20999#12426
           LabelPosition = lpLeft
           TabOrder = 0
+          Text = ''
         end
       end
       object GrpBox2_11: TGroupBox
         Left = 8
-        Top = 352
-        Width = 548
+        Top = 340
+        Width = 564
         Height = 50
         Caption = #12467#12531#12486#12531#12484#21306#20999#12426#32619#32218
         TabOrder = 10
@@ -1571,13 +1603,14 @@ object H2TconvForm: TH2TconvForm
           Left = 172
           Top = 20
           Width = 121
-          Height = 21
+          Height = 23
           Hint = '; '#12391#21306#20999#12387#12390#35079#25968#25351#23450#21487#33021
-          EditLabel.Width = 56
-          EditLabel.Height = 13
+          EditLabel.Width = 60
+          EditLabel.Height = 15
           EditLabel.Caption = '<div> class'
           LabelPosition = lpLeft
           TabOrder = 1
+          Text = ''
         end
         object InsHrNavCheckBox: TCheckBox
           Left = 471
@@ -1607,45 +1640,57 @@ object H2TconvForm: TH2TconvForm
           Left = 64
           Top = 20
           Width = 36
-          Height = 21
-          EditLabel.Width = 48
-          EditLabel.Height = 13
+          Height = 23
+          EditLabel.Width = 52
+          EditLabel.Height = 15
           EditLabel.Caption = #32619#32218#25991#23383
           LabelPosition = lpLeft
           TabOrder = 0
+          Text = ''
         end
       end
       object GrpBox2_12: TGroupBox
         Left = 8
-        Top = 410
-        Width = 548
+        Top = 396
+        Width = 564
         Height = 50
         Caption = #25351#23450#37096#20998#12398#21066#38500
         TabOrder = 11
         object DelBlkClsEdit: TLabeledEdit
           Left = 40
           Top = 20
-          Width = 232
-          Height = 21
+          Width = 240
+          Height = 23
           Hint = '; '#12391#21306#20999#12387#12390#35079#25968#25351#23450#21487#33021
-          EditLabel.Width = 23
-          EditLabel.Height = 13
+          EditLabel.Width = 25
+          EditLabel.Height = 15
           EditLabel.Caption = 'class'
           LabelPosition = lpLeft
           TabOrder = 0
+          Text = ''
         end
         object DelBlkIdEdit: TLabeledEdit
-          Left = 304
+          Left = 308
           Top = 20
-          Width = 231
-          Height = 21
+          Width = 240
+          Height = 23
           Hint = '; '#12391#21306#20999#12387#12390#35079#25968#25351#23450#21487#33021
-          EditLabel.Width = 8
-          EditLabel.Height = 13
+          EditLabel.Width = 10
+          EditLabel.Height = 15
           EditLabel.Caption = 'id'
           LabelPosition = lpLeft
           TabOrder = 1
+          Text = ''
         end
+      end
+      object MarkdownCheck: TCheckBox
+        Left = 20
+        Top = 462
+        Width = 541
+        Height = 17
+        Caption = 'Markdown '#35352#27861#12434#26377#21177#12395#12377#12427'('#35373#23450#20869#23481#12364#12487#12501#12457#12523#12488#12395#21021#26399#21270#12373#12428#12414#12377')'#12290
+        TabOrder = 12
+        OnClick = MarkdownCheckClick
       end
     end
     object TabSheet5: TTabSheet
@@ -1654,14 +1699,14 @@ object H2TconvForm: TH2TconvForm
       ImageIndex = 4
       object Panel1: TPanel
         Left = 0
-        Top = 344
-        Width = 562
+        Top = 368
+        Width = 582
         Height = 129
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 0
         DesignSize = (
-          562
+          582
           129)
         object AddItemBtn: TButton
           Left = 8
@@ -1706,33 +1751,35 @@ object H2TconvForm: TH2TconvForm
         object FromStrEdit: TLabeledEdit
           Left = 8
           Top = 24
-          Width = 545
-          Height = 21
+          Width = 565
+          Height = 23
           Anchors = [akLeft, akTop, akRight]
           BevelEdges = [beLeft, beTop, beRight]
-          EditLabel.Width = 188
-          EditLabel.Height = 13
+          EditLabel.Width = 203
+          EditLabel.Height = 15
           EditLabel.Caption = #26908#32034#25991#23383#21015' (/ '#65374' / '#12391#22258#12416#12392#27491#35215#34920#29694')'
           TabOrder = 0
+          Text = ''
         end
         object ToStrEdit: TLabeledEdit
           Left = 8
           Top = 66
-          Width = 545
-          Height = 21
+          Width = 565
+          Height = 23
           Anchors = [akLeft, akTop, akRight]
           BevelEdges = [beLeft, beTop, beRight]
-          EditLabel.Width = 60
-          EditLabel.Height = 13
+          EditLabel.Width = 65
+          EditLabel.Height = 15
           EditLabel.Caption = #32622#25563#25991#23383#21015
           TabOrder = 1
+          Text = ''
         end
       end
       object RepCheckListBox: TCheckListBox
         Left = 0
         Top = 0
-        Width = 562
-        Height = 344
+        Width = 582
+        Height = 368
         Align = alClient
         Style = lbOwnerDrawFixed
         TabOrder = 1
@@ -1746,27 +1793,27 @@ object H2TconvForm: TH2TconvForm
       ImageIndex = 2
       object Panel2: TPanel
         Left = 0
-        Top = 193
-        Width = 562
-        Height = 280
+        Top = 239
+        Width = 582
+        Height = 258
         Align = alClient
         BevelOuter = bvNone
         Caption = 'Panel2'
         TabOrder = 1
         DesignSize = (
-          562
-          280)
+          582
+          258)
         object GrpBox3_2: TGroupBox
           Left = 8
-          Top = 4
-          Width = 543
-          Height = 270
+          Top = 6
+          Width = 563
+          Height = 246
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = #12501#12483#12479'(&F)'
           TabOrder = 0
           DesignSize = (
-            543
-            270)
+            563
+            246)
           object InsFtCheck: TCheckBox
             Left = 16
             Top = 20
@@ -1778,8 +1825,8 @@ object H2TconvForm: TH2TconvForm
           object FootMemo: TMemo
             Left = 16
             Top = 46
-            Width = 511
-            Height = 216
+            Width = 531
+            Height = 192
             Anchors = [akLeft, akTop, akRight, akBottom]
             ScrollBars = ssVertical
             TabOrder = 2
@@ -1787,7 +1834,7 @@ object H2TconvForm: TH2TconvForm
           end
           object RefMac2Btn: TButton
             Tag = 1
-            Left = 349
+            Left = 369
             Top = 16
             Width = 160
             Height = 25
@@ -1801,26 +1848,26 @@ object H2TconvForm: TH2TconvForm
       object Panel3: TPanel
         Left = 0
         Top = 0
-        Width = 562
-        Height = 193
+        Width = 582
+        Height = 239
         Align = alTop
         BevelOuter = bvNone
         Caption = 'Panel3'
         TabOrder = 0
         DesignSize = (
-          562
-          193)
+          582
+          239)
         object GrpBox3_1: TGroupBox
           Left = 8
           Top = 4
-          Width = 543
-          Height = 177
+          Width = 563
+          Height = 229
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = #12504#12483#12480'(&H)'
           TabOrder = 0
           DesignSize = (
-            543
-            177)
+            563
+            229)
           object InsHdCheck: TCheckBox
             Left = 16
             Top = 20
@@ -1832,15 +1879,15 @@ object H2TconvForm: TH2TconvForm
           object HeadMemo: TMemo
             Left = 16
             Top = 46
-            Width = 511
-            Height = 123
+            Width = 531
+            Height = 175
             Anchors = [akLeft, akTop, akRight, akBottom]
             ScrollBars = ssVertical
             TabOrder = 2
             WordWrap = False
           end
           object RefMac1Btn: TButton
-            Left = 349
+            Left = 369
             Top = 16
             Width = 160
             Height = 25
@@ -1857,24 +1904,24 @@ object H2TconvForm: TH2TconvForm
       Caption = #12381#12398#20182#12398#35373#23450
       ImageIndex = 4
       DesignSize = (
-        562
-        473)
+        582
+        497)
       object Label21: TLabel
         Left = 24
         Top = 334
-        Width = 99
-        Height = 13
+        Width = 107
+        Height = 15
         Caption = #34920#31034#20999#12426#26367#12360#12398#22522#28857
       end
       object Label23: TLabel
         Left = 24
         Top = 166
-        Width = 51
-        Height = 13
+        Width = 55
+        Height = 15
         Caption = #20986#21147#12467#12540#12489
       end
       object RefSndBtn: TButton
-        Left = 477
+        Left = 497
         Top = 248
         Width = 40
         Height = 23
@@ -1912,7 +1959,7 @@ object H2TconvForm: TH2TconvForm
         Left = 142
         Top = 331
         Width = 110
-        Height = 21
+        Height = 23
         Style = csDropDownList
         TabOrder = 15
         Items.Strings = (
@@ -1950,7 +1997,7 @@ object H2TconvForm: TH2TconvForm
         Left = 148
         Top = 100
         Width = 16
-        Height = 21
+        Height = 23
         Associate = TitLmtEdit
         Min = 8
         Max = 200
@@ -1977,7 +2024,7 @@ object H2TconvForm: TH2TconvForm
         Left = 87
         Top = 163
         Width = 165
-        Height = 21
+        Height = 23
         Style = csDropDownList
         TabOrder = 8
       end
@@ -1985,10 +2032,10 @@ object H2TconvForm: TH2TconvForm
         Left = 108
         Top = 100
         Width = 40
-        Height = 21
+        Height = 23
         Alignment = taRightJustify
-        EditLabel.Width = 48
-        EditLabel.Height = 13
+        EditLabel.Width = 52
+        EditLabel.Height = 15
         EditLabel.Caption = #23383#25968#21046#38480
         LabelPosition = lpLeft
         NumbersOnly = True
@@ -2000,17 +2047,18 @@ object H2TconvForm: TH2TconvForm
       object EndSoundEdit: TLabeledEdit
         Left = 87
         Top = 249
-        Width = 388
-        Height = 21
+        Width = 408
+        Height = 23
         Anchors = [akLeft, akTop, akRight]
-        EditLabel.Width = 36
-        EditLabel.Height = 13
+        EditLabel.Width = 39
+        EditLabel.Height = 15
         EditLabel.Caption = #32066#20102#38899
         LabelPosition = lpLeft
         TabOrder = 11
+        Text = ''
       end
       object PlySndBtn: TButton
-        Left = 518
+        Left = 538
         Top = 248
         Width = 32
         Height = 23
@@ -2030,10 +2078,10 @@ object H2TconvForm: TH2TconvForm
     end
   end
   object CmpBtnPanel: TPanel
-    Left = 516
+    Left = 536
     Top = 1
     Width = 58
-    Height = 20
+    Height = 24
     Anchors = [akTop, akRight]
     BevelOuter = bvNone
     TabOrder = 1
@@ -2041,7 +2089,7 @@ object H2TconvForm: TH2TconvForm
       Left = 30
       Top = 0
       Width = 24
-      Height = 20
+      Height = 24
       Caption = #9660
       Flat = True
       Font.Charset = SHIFTJIS_CHARSET
@@ -2056,7 +2104,7 @@ object H2TconvForm: TH2TconvForm
       Left = 2
       Top = 0
       Width = 24
-      Height = 20
+      Height = 24
       Hint = #12513#12491#12517#12540
       HelpContext = 8
       Flat = True
@@ -2105,12 +2153,12 @@ object H2TconvForm: TH2TconvForm
   object OpenDialog1: TOpenDialog
     Options = [ofHideReadOnly, ofAllowMultiSelect, ofEnableSizing]
     Left = 431
-    Top = 167
+    Top = 183
   end
   object PopupMenu1: TPopupMenu
     AutoHotkeys = maManual
     Left = 505
-    Top = 74
+    Top = 66
     object PopTitleItem: TMenuItem
       Caption = '$TITLE '#12479#12452#12488#12523'(&T)'
       OnClick = PopRefItemClick
@@ -2156,7 +2204,7 @@ object H2TconvForm: TH2TconvForm
   end
   object ActionList1: TActionList
     Left = 340
-    Top = 74
+    Top = 66
     object ConvertAction: TAction
       Caption = #38283#22987
       HelpType = htContext
@@ -2213,25 +2261,33 @@ object H2TconvForm: TH2TconvForm
       Caption = #19968#35239#12434#12501#12449#12452#12523#12363#12425#35501#12415#36796#12416'(&L)...'
       OnExecute = LoadListActionExecute
     end
+    object SaveIniAction: TAction
+      Caption = #35373#23450#12501#12449#12452#12523#12434#19978#26360#12365#20445#23384'(&S)'
+      OnExecute = SaveIniActionExecute
+      OnUpdate = SaveIniActionUpdate
+    end
   end
   object ToolMenu: TPopupMenu
     HelpContext = 8
     OwnerDraw = True
     Left = 431
-    Top = 74
+    Top = 66
     object LoadIniItem: TMenuItem
       Caption = #35373#23450#12501#12449#12452#12523#12434#35501#12415#36796#12416'(&L)'
       OnClick = LoadIniItemClick
     end
     object SaveIniItem: TMenuItem
-      Caption = #35373#23450#12395#21517#21069#12434#20184#12369#12390#20445#23384'(&S)'
-      OnClick = SaveIniItemClick
+      Action = SaveIniAction
+    end
+    object SaveAsIniItem: TMenuItem
+      Caption = #35373#23450#12395#21517#21069#12434#20184#12369#12390#20445#23384'(&A)'
+      OnClick = SaveAsIniItemClick
     end
     object Sep_m_1: TMenuItem
       Caption = '-'
     end
     object DefaultIniItem: TMenuItem
-      Caption = #35373#23450#12434#12487#12501#12457#12523#12488#12395#25147#12377
+      Caption = #35373#23450#12434#12487#12501#12457#12523#12488#12395#25147#12377'(&R)'
       OnClick = DefaultIniItemClick
     end
     object Sep_m_2: TMenuItem
@@ -2242,7 +2298,7 @@ object H2TconvForm: TH2TconvForm
       OnClick = HelpItemClick
     end
     object AboutItem: TMenuItem
-      Caption = #12496#12540#12472#12519#12531#24773#22577'(&A)'
+      Caption = #12496#12540#12472#12519#12531#24773#22577'(&V)'
       object AbautInf1Item: TMenuItem
         Tag = 1001
         OnDrawItem = AbautInfItemDrawItem
@@ -2262,12 +2318,12 @@ object H2TconvForm: TH2TconvForm
   object SaveDialog1: TSaveDialog
     Options = [ofOverwritePrompt, ofHideReadOnly, ofEnableSizing]
     Left = 505
-    Top = 167
+    Top = 183
   end
   object ApplicationEvents1: TApplicationEvents
     OnMessage = ApplicationEvents1Message
     Left = 340
-    Top = 167
+    Top = 119
   end
   object PopupMenu2: TPopupMenu
     Left = 506
@@ -2293,7 +2349,7 @@ object H2TconvForm: TH2TconvForm
     Enabled = False
     Interval = 100
     OnTimer = ScrollTimerTimer
-    Left = 506
-    Top = 215
+    Left = 338
+    Top = 183
   end
 end

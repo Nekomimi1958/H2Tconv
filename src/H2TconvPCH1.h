@@ -1,0 +1,10 @@
+#include <vcl.h>
+#include <tchar.h>
+#include <mbstring.h>
+#include <mmsystem.h>
+#include <algorithm>
+#include <memory>
+#include <IdURI.hpp>
+#include <RegularExpressions.hpp>
+#include <System.IniFiles.hpp>
+#include <Vcl.FileCtrl.hpp>

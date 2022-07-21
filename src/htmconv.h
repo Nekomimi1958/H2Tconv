@@ -14,19 +14,29 @@ int check_UTF8(BYTE *bp, int size);
 int get_MemoryCodePage(TMemoryStream *ms);
 
 //---------------------------------------------------------------------------
+#define NO_CRSPC_PTN	"^(#{1,6}|\\s*[\\*\\+\\-]|\\s*\\d+\\.)\\s.+"
+
+//---------------------------------------------------------------------------
 class HtmConv {
 private:
 	UnicodeString TxtLineBuf;
 	TStringList *AlignList;
 	bool Skip;
 	bool fPRE, fXMP;
+	int  BQ_level;
 
 	void DelTagBlock(TStringList *lst, UnicodeString start_wd, UnicodeString end_wd);
 	void DelAtrBlock(TStringList *lst, UnicodeString anam, UnicodeString aval);
 	UnicodeString GetTagAtr(UnicodeString s, UnicodeString t, UnicodeString a);
 	UnicodeString GetTag(UnicodeString s);
+	void AddText(UnicodeString s);
 	void FlushText();
 	void AddLine(UnicodeString hrstr = EmptyStr, UnicodeString wdstr = EmptyStr, UnicodeString alstr = EmptyStr);
+
+	void DecLevel(int &n)
+	{
+		n = std::max(n - 1, 0);
+	}
 
 public:
 	HtmConv();
@@ -36,6 +46,8 @@ public:
 	TStringList *TxtBuf;		//テキスト出力バッファ
 	UnicodeString  TempDir;
 	int OutCodePage;			//ファイル保存時のコードページ
+
+	bool IsMarkdown;			//Markdown 有効
 
 	UnicodeString  HeadStr;		//ヘッダ
 	UnicodeString  FootStr;		//フッタ
