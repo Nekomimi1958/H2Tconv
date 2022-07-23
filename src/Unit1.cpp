@@ -6,6 +6,7 @@
 #include <Vcl.HtmlHelpViewer.hpp>
 #pragma link "Vcl.HTMLHelpViewer"
 
+#include "UIniFile.h"
 #include "UserFunc.h"
 #include "Unit1.h"
 
@@ -135,7 +136,7 @@ void __fastcall TH2TconvForm::FormCreate(TObject *Sender)
 	}
 
 	//設定の読込
-	IniFile = new TIniFile(ChangeFileExt(Application->ExeName, ".INI"));
+	IniFile = new UsrIniFile(ChangeFileExt(Application->ExeName, ".INI"));
 	IniName = EmptyStr;
 	if (!IniNam.IsEmpty()){
 		get_file_name_r(IniNam);
@@ -252,7 +253,7 @@ void __fastcall TH2TconvForm::FormClose(TObject *Sender, TCloseAction &Action)
 
 		IniFile->WriteBool(   sct, "Compact",		Compact);
 		IniFile->WriteInteger(sct, "CompactPos",	CmpPosCombo->ItemIndex);
-		IniFile->WriteBool(   sct, "TopMost",		TopMostCheck->Checked);
+		IniFile->WriteBool(   sct, "TopMost",		TopMostCheck);
 
 		//各種設定を保存
 		IniFile->WriteString(sct, "LastIniDir",		LastIniDir);
@@ -381,39 +382,39 @@ void __fastcall TH2TconvForm::WmDropped(TMessage &msg)
 //---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::LoadIniFile(UnicodeString fnam)
 {
-	TIniFile *ini_file;
+	UsrIniFile *ini_file;
 	if (!fnam.IsEmpty())
-		ini_file = new TIniFile(fnam);
+		ini_file = new UsrIniFile(fnam);
 	else
 		ini_file = IniFile;
 
 	OptLocked = true;
 
 	UnicodeString sct = "Option";
-	LastDir 				= ini_file->ReadString( sct, "LastDir",		EmptyStr);
-	OpenAppCheck->Checked	= ini_file->ReadBool(   sct, "OpenApp",		false);
+	LastDir 				= ini_file->ReadString( sct, "LastDir");
+	OpenAppCheck->Checked	= ini_file->ReadBool(   sct, "OpenApp");
 	AppNameEdit->Text		= ini_file->ReadString( sct, "AppName",		"notepad");
 	DestMode				= ini_file->ReadInteger(sct, "Destination",	DSTMOD_CLIPBD);
 	UpdateInf(true);
-	DstDirEdit->Text		= ini_file->ReadString( sct, "DstDir",		EmptyStr);
+	DstDirEdit->Text		= ini_file->ReadString( sct, "DstDir");
 	FilExtEdit->Text		= ini_file->ReadString( sct, "FileExt",		"txt");
-	JoinCheck->Checked		= ini_file->ReadBool(   sct, "JoinText",	false);
-	Tit2NamCheck->Checked	= ini_file->ReadBool(   sct, "Title2Name",	false);
+	JoinCheck->Checked		= ini_file->ReadBool(   sct, "JoinText");
+	Tit2NamCheck->Checked	= ini_file->ReadBool(   sct, "Title2Name");
 	TitLmtUpDown->Position	= ini_file->ReadInteger(sct, "TitleLimit",	40);
 	TitLmtEdit->Text		= TitLmtUpDown->Position;
-	TitCvExChCheck->Checked	= ini_file->ReadBool(   sct, "TitleCvExCh",	false);
-	TitCvSpcCheck->Checked	= ini_file->ReadBool(   sct, "TitleCvSpc",	false);
+	TitCvExChCheck->Checked	= ini_file->ReadBool(   sct, "TitleCvExCh");
+	TitCvSpcCheck->Checked	= ini_file->ReadBool(   sct, "TitleCvSpc");
 	Tit2NamCheckClick(NULL);
-	AddNoCheck->Checked 	= ini_file->ReadBool(   sct, "AddSerNo",	false);
-	KillCheck->Checked		= ini_file->ReadBool(   sct, "KillHtml",	false);
-	SureKillCheck->Checked	= ini_file->ReadBool(   sct, "SureKill",	false);
-	InsHdCheck->Checked 	= ini_file->ReadBool(   sct, "InsertHead",	false);
-	InsFtCheck->Checked 	= ini_file->ReadBool(   sct, "InsertFoot",	false);
+	AddNoCheck->Checked 	= ini_file->ReadBool(   sct, "AddSerNo");
+	KillCheck->Checked		= ini_file->ReadBool(   sct, "KillHtml");
+	SureKillCheck->Checked	= ini_file->ReadBool(   sct, "SureKill");
+	InsHdCheck->Checked 	= ini_file->ReadBool(   sct, "InsertHead");
+	InsFtCheck->Checked 	= ini_file->ReadBool(   sct, "InsertFoot");
 	HeadMemo->Lines->Text
 		= esc_to_str(ini_file->ReadString(sct, "HeadText", "タイトル [$TITLE]\\n$LINE2"));
 	FootMemo->Lines->Text
 		= esc_to_str(ini_file->ReadString(sct, "FootText", EmptyStr));
-	EndSoundEdit->Text		= ini_file->ReadString(sct, "EndSound",		EmptyStr);
+	EndSoundEdit->Text		= ini_file->ReadString(sct, "EndSound");
 	UseTrashCheck->Checked	= ini_file->ReadBool(  sct, "UseTrashCan",	true);
 	DropSubCheck->Checked	= ini_file->ReadBool(  sct, "DropSubdir",	true);
 	CodePageComboBox->ItemIndex = ini_file->ReadInteger(sct, "OutCodePage",	0);
@@ -422,11 +423,11 @@ void __fastcall TH2TconvForm::LoadIniFile(UnicodeString fnam)
 	NaturalOrder			= NaturalCheck->Checked;
 
 	sct                       = "Convert";
-	MarkdownCheck->Checked    = ini_file->ReadBool(   sct, "Markdown",		false);
+	MarkdownCheck->Checked    = ini_file->ReadBool(   sct, "Markdown");
 	LnWidUpDown->Position     = ini_file->ReadInteger(sct, "LineWidth",		DEF_LINE_WIDTH);
 	LnWidEdit->Text           = LnWidUpDown->Position;
-	FrcCrCheck->Checked       = ini_file->ReadBool(   sct, "ForceCr",		false);
-	PstHdrCheck->Checked      = ini_file->ReadBool(   sct, "NoPostHdr",		false);
+	FrcCrCheck->Checked       = ini_file->ReadBool(   sct, "ForceCr");
+	PstHdrCheck->Checked      = ini_file->ReadBool(   sct, "NoPostHdr");
 	BlkLmtUpDown->Position    = ini_file->ReadInteger(sct, "BlankLnLimit", 	DEF_BLANK_LN_LIMIT);
 	BlkLmtEdit->Text          = BlkLmtUpDown->Position;
 	HrStrEdit->Text           = ini_file->ReadString( sct, "HrLineStr",		"─");
@@ -436,47 +437,44 @@ void __fastcall TH2TconvForm::LoadIniFile(UnicodeString fnam)
 	H4Edit->Text              = ini_file->ReadString( sct, "H4Str",			"◆");
 	H5Edit->Text              = ini_file->ReadString( sct, "H5Str",			"◇");
 	H6Edit->Text              = ini_file->ReadString( sct, "H6Str",			"△");
-	B_BraEdit->Text           = ini_file->ReadString( sct, "B_BraStr",		EmptyStr);
-	B_KetEdit->Text           = ini_file->ReadString( sct, "B_KetStr",		EmptyStr);
-	I_BraEdit->Text           = ini_file->ReadString( sct, "I_BraStr",		EmptyStr);
-	I_KetEdit->Text           = ini_file->ReadString( sct, "I_KetStr",		EmptyStr);
-	U_BraEdit->Text           = ini_file->ReadString( sct, "U_BraStr",		EmptyStr);
-	U_KetEdit->Text           = ini_file->ReadString( sct, "U_KetStr",		EmptyStr);
+	B_BraEdit->Text           = ini_file->ReadString( sct, "B_BraStr");
+	B_KetEdit->Text           = ini_file->ReadString( sct, "B_KetStr");
+	I_BraEdit->Text           = ini_file->ReadString( sct, "I_BraStr");
+	I_KetEdit->Text           = ini_file->ReadString( sct, "I_KetStr");
+	U_BraEdit->Text           = ini_file->ReadString( sct, "U_BraStr");
+	U_KetEdit->Text           = ini_file->ReadString( sct, "U_KetStr");
 	IndentEdit->Text          = ini_file->ReadString( sct, "IndentStr",		"\\s\\s");
 	MarkEdit->Text            = ini_file->ReadString( sct, "UlMarkStr",		"・");
-	ZenNoCheck->Checked       = ini_file->ReadBool(   sct, "ZenNumber",		false);
+	ZenNoCheck->Checked       = ini_file->ReadBool(   sct, "ZenNumber");
 	CelSepEdit->Text          = ini_file->ReadString( sct, "CellSepStr",	"\\t");
-	AltCheck->Checked         = ini_file->ReadBool(   sct, "UseAltStr",		false);
-	ImgSrcCheck->Checked      = ini_file->ReadBool(   sct, "AddImgSrc",		false);
+	AltCheck->Checked         = ini_file->ReadBool(   sct, "UseAltStr");
+	ImgSrcCheck->Checked      = ini_file->ReadBool(   sct, "AddImgSrc");
 	AltBraEdit->Text          = ini_file->ReadString( sct, "AltBraStr",		"[");
 	AltKetEdit->Text          = ini_file->ReadString( sct, "AltKetStr",		"]");
 	DefAltEdit->Text          = ini_file->ReadString( sct, "DefAltStr",		"画像");
-	LinkCheck->Checked        = ini_file->ReadBool(   sct, "InsertLink",	false);
+	LinkCheck->Checked        = ini_file->ReadBool(   sct, "InsertLink");
 	ExtLnkCheck->Checked      = ini_file->ReadBool(   sct, "OnlyExLink",	true);
-	LinkCrCheck->Checked      = ini_file->ReadBool(   sct, "AddCrLink",		false);
+	LinkCrCheck->Checked      = ini_file->ReadBool(   sct, "AddCrLink");
 	LnkBraEdit->Text          = ini_file->ReadString( sct, "LinkBraStr",	"（");
 	LnkKetEdit->Text          = ini_file->ReadString( sct, "LinkKetStr",	"）");
 	InsLineStrEdit->Text      = ini_file->ReadString( sct, "InsLineStr",	"─");
-	InsHrClsEdit->Text        = ini_file->ReadString( sct, "InsHrClass",	EmptyStr);
-	InsHrSctCheckBox->Checked = ini_file->ReadBool(   sct, "InsHrSct",		false);
-	InsHrArtCheckBox->Checked = ini_file->ReadBool(   sct, "InsHrArt",		false);
-	InsHrNavCheckBox->Checked = ini_file->ReadBool(   sct, "InsHrNav",		false);
-	DelBlkClsEdit->Text       = ini_file->ReadString( sct, "DelBlkCls",		EmptyStr);
-	DelBlkIdEdit->Text        = ini_file->ReadString( sct, "DelBlkId",		EmptyStr);
+	InsHrClsEdit->Text        = ini_file->ReadString( sct, "InsHrClass");
+	InsHrSctCheckBox->Checked = ini_file->ReadBool(   sct, "InsHrSct");
+	InsHrArtCheckBox->Checked = ini_file->ReadBool(   sct, "InsHrArt");
+	InsHrNavCheckBox->Checked = ini_file->ReadBool(   sct, "InsHrNav");
+	DelBlkClsEdit->Text       = ini_file->ReadString( sct, "DelBlkCls");
+	DelBlkIdEdit->Text        = ini_file->ReadString( sct, "DelBlkId");
 
 	sct = "Replace";
 	TCheckListBox *lp = RepCheckListBox;
 	lp->Clear();
 	for (int i=1;;i++) {
-		UnicodeString f_str = ini_file->ReadString(sct, "FromStr" + IntToStr(i),	EmptyStr);
-		UnicodeString t_str = ini_file->ReadString(sct, "ToStr" + IntToStr(i),		EmptyStr);
+		UnicodeString f_str = ini_file->ReadString(sct, "FromStr" + IntToStr(i));
+		UnicodeString t_str = ini_file->ReadString(sct, "ToStr" + IntToStr(i));
 		if (f_str.IsEmpty()) break;
 		int idx = lp->Items->Add(f_str + "\t" + t_str);
-		lp->Checked[idx] = ini_file->ReadBool(sct, "Enabled" + IntToStr(i),	false);
+		lp->Checked[idx] = ini_file->ReadBool(sct, "Enabled" + IntToStr(i));
 	}
-
-	AltCheckClick(NULL);
-	LinkCheckClick(NULL);
 
 	if (!fnam.IsEmpty()) {
 		IniName = fnam;
@@ -495,42 +493,42 @@ void __fastcall TH2TconvForm::LoadIniFile(UnicodeString fnam)
 //---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::SaveIniFile(UnicodeString fnam)
 {
-	TIniFile *ini_file;
+	UsrIniFile *ini_file;
 	if (!fnam.IsEmpty())
-		ini_file = new TIniFile(fnam);
+		ini_file = new UsrIniFile(fnam);
 	else
 		ini_file = IniFile;
 
 	UnicodeString sct = "Option";
 	ini_file->WriteInteger(sct, "Destination",	DestMode);
 	ini_file->WriteString( sct, "LastDir",		LastDir);
-	ini_file->WriteBool(   sct, "OpenApp",		OpenAppCheck->Checked);
+	ini_file->WriteBool(   sct, "OpenApp",		OpenAppCheck);
 	ini_file->WriteString( sct, "AppName",		AppNameEdit->Text);
 	ini_file->WriteString( sct, "DstDir", 		DstDirEdit->Text);
 	ini_file->WriteString( sct, "FileExt", 		FilExtEdit->Text);
-	ini_file->WriteBool(   sct, "JoinText",		JoinCheck->Checked);
-	ini_file->WriteBool(   sct, "Title2Name",	Tit2NamCheck->Checked);
+	ini_file->WriteBool(   sct, "JoinText",		JoinCheck);
+	ini_file->WriteBool(   sct, "Title2Name",	Tit2NamCheck);
 	ini_file->WriteString( sct, "TitleLimit",	TitLmtEdit->Text);
-	ini_file->WriteBool(   sct, "TitleCvExCh",	TitCvExChCheck->Checked);
-	ini_file->WriteBool(   sct, "TitleCvSpc",	TitCvSpcCheck->Checked);
-	ini_file->WriteBool(   sct, "AddSerNo",		AddNoCheck->Checked);
-	ini_file->WriteBool(   sct, "KillHtml",		KillCheck->Checked);
-	ini_file->WriteBool(   sct, "SureKill",		SureKillCheck->Checked);
-	ini_file->WriteBool(   sct, "InsertHead",	InsHdCheck->Checked);
-	ini_file->WriteBool(   sct, "InsertFoot",	InsFtCheck->Checked);
+	ini_file->WriteBool(   sct, "TitleCvExCh",	TitCvExChCheck);
+	ini_file->WriteBool(   sct, "TitleCvSpc",	TitCvSpcCheck);
+	ini_file->WriteBool(   sct, "AddSerNo",		AddNoCheck);
+	ini_file->WriteBool(   sct, "KillHtml",		KillCheck);
+	ini_file->WriteBool(   sct, "SureKill",		SureKillCheck);
+	ini_file->WriteBool(   sct, "InsertHead",	InsHdCheck);
+	ini_file->WriteBool(   sct, "InsertFoot",	InsFtCheck);
 	ini_file->WriteString( sct, "HeadText",		str_to_esc(HeadMemo->Lines->Text));
 	ini_file->WriteString( sct, "FootText",		str_to_esc(FootMemo->Lines->Text));
 	ini_file->WriteString( sct, "EndSound",		EndSoundEdit->Text);
-	ini_file->WriteBool(   sct, "UseTrashCan",	UseTrashCheck->Checked);
-	ini_file->WriteBool(   sct, "DropSubdir",	DropSubCheck->Checked);
+	ini_file->WriteBool(   sct, "UseTrashCan",	UseTrashCheck);
+	ini_file->WriteBool(   sct, "DropSubdir",	DropSubCheck);
 	ini_file->WriteInteger(sct, "OutCodePage",	CodePageComboBox->ItemIndex);
-	ini_file->WriteBool(   sct, "SortNatural",	NaturalCheck->Checked);
+	ini_file->WriteBool(   sct, "SortNatural",	NaturalCheck);
 
 	sct = "Convert";
 	ini_file->WriteString( sct, "LineWidth",	LnWidEdit->Text);
-	ini_file->WriteBool(   sct, "ForceCr",		FrcCrCheck->Checked);
+	ini_file->WriteBool(   sct, "ForceCr",		FrcCrCheck);
 	ini_file->WriteString( sct, "BlankLnLimit",	BlkLmtEdit->Text);
-	ini_file->WriteBool(   sct, "NoPostHdr",	PstHdrCheck->Checked);
+	ini_file->WriteBool(   sct, "NoPostHdr",	PstHdrCheck);
 	ini_file->WriteString( sct, "HrLineStr",	HrStrEdit->Text);
 	ini_file->WriteString( sct, "H1Str",		H1Edit->Text);
 	ini_file->WriteString( sct, "H2Str",		H2Edit->Text);
@@ -546,24 +544,24 @@ void __fastcall TH2TconvForm::SaveIniFile(UnicodeString fnam)
 	ini_file->WriteString( sct, "U_KetStr",		U_KetEdit->Text);
 	ini_file->WriteString( sct, "IndentStr",	IndentEdit->Text);
 	ini_file->WriteString( sct, "UlMarkStr",	MarkEdit->Text);
-	ini_file->WriteBool(   sct, "ZenNumber",	ZenNoCheck->Checked);
+	ini_file->WriteBool(   sct, "ZenNumber",	ZenNoCheck);
 	ini_file->WriteString( sct, "CellSepStr",	CelSepEdit->Text);
-	ini_file->WriteBool(   sct, "UseAltStr",	AltCheck->Checked);
-	ini_file->WriteBool(   sct, "AddImgSrc",	ImgSrcCheck->Checked);
-	ini_file->WriteBool(   sct, "Markdown",		MarkdownCheck->Checked);
+	ini_file->WriteBool(   sct, "UseAltStr",	AltCheck);
+	ini_file->WriteBool(   sct, "AddImgSrc",	ImgSrcCheck);
+	ini_file->WriteBool(   sct, "Markdown",		MarkdownCheck);
 	ini_file->WriteString( sct, "AltBraStr",	AltBraEdit->Text);
 	ini_file->WriteString( sct, "AltKetStr",	AltKetEdit->Text);
 	ini_file->WriteString( sct, "DefAltStr",	DefAltEdit->Text);
-	ini_file->WriteBool(   sct, "InsertLink",	LinkCheck->Checked);
-	ini_file->WriteBool(   sct, "OnlyExLink", 	ExtLnkCheck->Checked);
-	ini_file->WriteBool(   sct, "AddCrLink", 	LinkCrCheck->Checked);
+	ini_file->WriteBool(   sct, "InsertLink",	LinkCheck);
+	ini_file->WriteBool(   sct, "OnlyExLink", 	ExtLnkCheck);
+	ini_file->WriteBool(   sct, "AddCrLink", 	LinkCrCheck);
 	ini_file->WriteString( sct, "LinkBraStr",	LnkBraEdit->Text);
 	ini_file->WriteString( sct, "LinkKetStr",	LnkKetEdit->Text);
 	ini_file->WriteString( sct, "InsLineStr",	InsLineStrEdit->Text);
 	ini_file->WriteString( sct, "InsHrClass",	InsHrClsEdit->Text);
-	ini_file->WriteBool(   sct, "InsHrSct",		InsHrSctCheckBox->Checked);
-	ini_file->WriteBool(   sct, "InsHrArt",		InsHrArtCheckBox->Checked);
-	ini_file->WriteBool(   sct, "InsHrNav",		InsHrNavCheckBox->Checked);
+	ini_file->WriteBool(   sct, "InsHrSct",		InsHrSctCheckBox);
+	ini_file->WriteBool(   sct, "InsHrArt",		InsHrArtCheckBox);
+	ini_file->WriteBool(   sct, "InsHrNav",		InsHrNavCheckBox);
 	ini_file->WriteString( sct, "DelBlkCls",	DelBlkClsEdit->Text);
 	ini_file->WriteString( sct, "DelBlkId",		DelBlkIdEdit->Text);
 
@@ -575,6 +573,8 @@ void __fastcall TH2TconvForm::SaveIniFile(UnicodeString fnam)
 		ini_file->WriteString(sct, "ToStr" + IntToStr(i + 1),	"\"" + get_tkn_r(lbuf, "\t") + "\"");
 		ini_file->WriteBool(sct, "Enabled" + IntToStr(i + 1),	RepCheckListBox->Checked[i]);
 	}
+
+	ini_file->UpdateFile();
 
 	if (!fnam.IsEmpty()) {
 		Caption = UnicodeString().sprintf(_T("%s - [%s]"), Application->Title.c_str(), ExtractFileName(fnam).c_str());
@@ -668,7 +668,9 @@ void __fastcall TH2TconvForm::ScrollTimerTimer(TObject *Sender)
 		PrevListIdx = -1;
 		lp->Invalidate();
 	}
-	else ScrollTimer->Enabled = false;
+	else {
+		ScrollTimer->Enabled = false;
+	}
 }
 
 //---------------------------------------------------------------------
@@ -1194,7 +1196,8 @@ void __fastcall TH2TconvForm::MarkdownCheckClick(TObject *Sender)
 		I_KetEdit->Text      = "*";
 		U_BraEdit->Text      = EmptyStr;
 		U_KetEdit->Text      = EmptyStr;
-		IndentEdit->Text     = "\\s\\s";
+		HrStrEdit->Text      = "-";
+		IndentEdit->Text     = "\\s\\s\\s\\s";
 		MarkEdit->Text       = "*\\s";
 		ZenNoCheck->Checked  = false;
 		AltCheck->Checked    = true;
@@ -1267,21 +1270,6 @@ void __fastcall TH2TconvForm::RefDstBtnClick(TObject *Sender)
 	}
 }
 
-//---------------------------------------------------------------------------
-void __fastcall TH2TconvForm::AltCheckClick(TObject *Sender)
-{
-	DefAltEdit->Enabled   = AltCheck->Checked;
-	AltBraEdit->Enabled   = (AltCheck->Checked || ImgSrcCheck->Checked);
-	AltKetEdit->Enabled   = (AltCheck->Checked || ImgSrcCheck->Checked);
-}
-//---------------------------------------------------------------------------
-void __fastcall TH2TconvForm::LinkCheckClick(TObject *Sender)
-{
-	ExtLnkCheck->Enabled = LinkCheck->Checked;
-	LnkBraEdit->Enabled  = LinkCheck->Checked;
-	LnkKetEdit->Enabled  = LinkCheck->Checked;
-	LinkCrCheck->Enabled = LinkCheck->Checked;
-}
 //---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::DestRadioBtnClick(TObject *Sender)
 {
@@ -1554,7 +1542,7 @@ void __fastcall TH2TconvForm::ConvertExecute(TObject *Sender)
 	HC->ZenNumber	 = ZenNoCheck->Checked;
 	HC->CellSepStr	 = esc_to_str(CelSepEdit->Text);
 	HC->UseAlt		 = AltCheck->Checked;
-	HC->AddImgSrc	 = AltCheck->Checked && ImgSrcCheck->Checked;
+	HC->AddImgSrc	 = ImgSrcCheck->Checked;
 	HC->IsMarkdown	 = MarkdownCheck->Checked;
 	HC->DefAltStr	 = esc_to_str(DefAltEdit->Text);
 	HC->AltBraStr	 = esc_to_str(AltBraEdit->Text);
@@ -1750,10 +1738,58 @@ void __fastcall TH2TconvForm::ConvertActionUpdate(TObject *Sender)
 //---------------------------------------------------------------------------
 //メニュー
 //---------------------------------------------------------------------------
-void __fastcall TH2TconvForm::MenuBtnClick(TObject *Sender)
+void __fastcall TH2TconvForm::MenuActionExecute(TObject *Sender)
 {
 	TPoint p = MenuBtn->ClientToScreen(Point(MenuBtn->Left + 8, MenuBtn->Top + 8));
 	ToolMenu->Popup(p.x, p.y);
+}
+//---------------------------------------------------------------------------
+TColor __fastcall TH2TconvForm::MdWinColor(UnicodeString text, UnicodeString s, bool i_sw)
+{
+	bool ok = true;
+	if (MarkdownCheck->Checked) {
+		ok = text.IsEmpty();
+		if (!ok) {
+			TStringDynArray itm = SplitString(s, "\t");
+			for (int i=0; i<itm.Length && !ok; i++) {
+				ok = (i_sw? SameText(text, itm[i]) : SameStr(text, itm[i]));
+			} 
+		}
+	}
+	return !ok? clWebPink : clWindow;
+}
+//---------------------------------------------------------------------------
+void __fastcall TH2TconvForm::MenuActionUpdate(TObject *Sender)
+{
+	DefAltEdit->Enabled = AltCheck->Checked;
+	AltBraEdit->Enabled = (AltCheck->Checked || ImgSrcCheck->Checked);
+	AltKetEdit->Enabled = (AltCheck->Checked || ImgSrcCheck->Checked);
+
+	ExtLnkCheck->Enabled = LinkCheck->Checked;
+	LnkBraEdit->Enabled  = LinkCheck->Checked;
+	LnkKetEdit->Enabled  = LinkCheck->Checked;
+	LinkCrCheck->Enabled = LinkCheck->Checked;
+
+	H1Edit->Color     = MdWinColor(H1Edit->Text, "#\\s");
+	H2Edit->Color     = MdWinColor(H2Edit->Text, "##\\s");
+	H3Edit->Color     = MdWinColor(H3Edit->Text, "###\\s");
+	H4Edit->Color     = MdWinColor(H4Edit->Text, "####\\s");
+	H5Edit->Color     = MdWinColor(H5Edit->Text, "#####\\s");
+	H6Edit->Color     = MdWinColor(H6Edit->Text, "######\\s");
+	B_BraEdit->Color  = MdWinColor(B_BraEdit->Text, "**\t__");
+	B_KetEdit->Color  = MdWinColor(B_KetEdit->Text, "**\t__");
+	I_BraEdit->Color  = MdWinColor(I_BraEdit->Text, "*\t_");
+	I_KetEdit->Color  = MdWinColor(I_KetEdit->Text, "*\t_");
+	U_BraEdit->Color  = MdWinColor(U_BraEdit->Text, "<u>", true);
+	U_KetEdit->Color  = MdWinColor(U_KetEdit->Text, "</u>", true);
+	HrStrEdit->Color  = MdWinColor(HrStrEdit->Text, "-\t_\t*");
+	IndentEdit->Color = MdWinColor(IndentEdit->Text, "\\s\\s\t\\s\\s\\s\\s\t\\t");
+	MarkEdit->Color   = MdWinColor(MarkEdit->Text, "*\\s\t+\\s\t-\\s");
+	AltBraEdit->Color = MdWinColor(AltBraEdit->Text, "![");
+	AltKetEdit->Color = MdWinColor(AltKetEdit->Text, "]");
+	LnkBraEdit->Color = MdWinColor(LnkBraEdit->Text, "(");
+	LnkKetEdit->Color = MdWinColor(LnkKetEdit->Text, ")");
+	InsLineStrEdit->Color = MdWinColor(InsLineStrEdit->Text, "-\t_\t*");
 }
 //---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::AbautMeasureItem(TObject *Sender,

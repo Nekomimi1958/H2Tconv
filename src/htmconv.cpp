@@ -403,7 +403,7 @@ UnicodeString HtmConv::GetTagAtr(UnicodeString s, UnicodeString t, UnicodeString
 				flag = 0;
 			}
 			else if (c==' ') {	//タグ確定
-				tag = tag.Trim();
+				tag  = tag.Trim();
 				atr  = EmptyStr;
 				flag = 2;
 			}
@@ -416,9 +416,15 @@ UnicodeString HtmConv::GetTagAtr(UnicodeString s, UnicodeString t, UnicodeString
 				atr = atr.Trim();
 				flag = 3;
 			}
-			else if (c==' ') atr = EmptyStr;
-			else if (c=='>') flag = 0;
-			else atr.cat_sprintf(_T("%c"), c);
+			else if (c==' ') {
+				atr = EmptyStr;
+			}
+			else if (c=='>') {
+				flag = 0;
+			}
+			else {
+				atr.cat_sprintf(_T("%c"), c);
+			}
 			break;
 		case 3:
 			if (c=='>') {
@@ -441,7 +447,9 @@ UnicodeString HtmConv::GetTagAtr(UnicodeString s, UnicodeString t, UnicodeString
 					if (c=='>') flag = 0; else flag = 2;
 				}
 			}
-			else vstr.cat_sprintf(_T("%c"), c);
+			else {
+				vstr.cat_sprintf(_T("%c"), c);
+			}
 			break;
 		}
 
@@ -875,7 +883,9 @@ bool HtmConv::LoadFile(UnicodeString fnam)
 				break;
 			}
 		}
-		else return false;
+		else {
+			return false;
+		}
 	}
 
 	if (!UrlStr.IsEmpty()) {
@@ -1540,6 +1550,7 @@ void HtmConv::Convert(
 				DecLevel(tag_level);
 			}
 			else if (tag=="IMG" && (UseAlt || AddImgSrc)) {
+				bool is_md = IsMarkdown && AltBraStr=="![" && AltKetStr=="]";
 				TxtLineBuf += AltBraStr;
 				if (UseAlt) {
 					tmpstr = GetTagAtr(lbuf, tag, "ALT");
@@ -1556,7 +1567,7 @@ void HtmConv::Convert(
 							fnam = BaseStr + fnam;
 						} while (0);
 						//"(ファイル名)" 後置
-						if (IsMarkdown) {
+						if (is_md) {
 							TxtLineBuf += AltKetStr;
 							TxtLineBuf.cat_sprintf(_T("(%s)"), fnam.c_str());
 						}
@@ -1564,10 +1575,19 @@ void HtmConv::Convert(
 						else {
 							if (UseAlt) TxtLineBuf.UCAT_TSTR(" ");
 							TxtLineBuf += fnam;
+							TxtLineBuf += AltKetStr;
 						}
 					}
 				}
-				if (!IsMarkdown) TxtLineBuf += AltKetStr;
+				else {
+					if (is_md) {
+						TxtLineBuf += AltKetStr;
+						TxtLineBuf += "()";
+					}
+					else {
+						TxtLineBuf += AltKetStr;
+					}
+				}
 			}
 			else if (tag=="HEAD") {
 				Skip = true;

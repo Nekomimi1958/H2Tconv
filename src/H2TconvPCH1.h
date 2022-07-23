@@ -6,5 +6,4 @@
 #include <memory>
 #include <IdURI.hpp>
 #include <RegularExpressions.hpp>
-#include <System.IniFiles.hpp>
 #include <Vcl.FileCtrl.hpp>

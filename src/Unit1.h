@@ -22,9 +22,9 @@
 #include <Vcl.AppEvnts.hpp>
 #include <Vcl.CheckLst.hpp>
 #include <Vcl.Clipbrd.hpp>
+#include <Vcl.Mask.hpp>
 #include "usr_shell.h"
 #include "htmconv.h"
-#include <Vcl.Mask.hpp>
 
 //---------------------------------------------------------------------------
 #define SUPPORT_URL	_T("http://nekomimi.la.coocan.jp/")
@@ -225,6 +225,7 @@ __published:	// IDE 管理のコンポーネント
 	TUpDown *BlkLmtUpDown;
 	TUpDown *LnWidUpDown;
 	TUpDown *TitLmtUpDown;
+	TAction *MenuAction;
 
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
@@ -245,8 +246,6 @@ __published:	// IDE 管理のコンポーネント
 	void __fastcall HtmFileListKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
 	void __fastcall RefAppBtnClick(TObject *Sender);
 	void __fastcall LnWidEditChange(TObject *Sender);
-	void __fastcall AltCheckClick(TObject *Sender);
-	void __fastcall LinkCheckClick(TObject *Sender);
 	void __fastcall BlkLmtEditaChange(TObject *Sender);
 	void __fastcall RefDstBtnClick(TObject *Sender);
 	void __fastcall DestRadioBtnClick(TObject *Sender);
@@ -262,7 +261,6 @@ __published:	// IDE 管理のコンポーネント
 	void __fastcall Tit2NamCheckClick(TObject *Sender);
 	void __fastcall NumberEditExit(TObject *Sender);
 	void __fastcall TitLmtEditChange(TObject *Sender);
-	void __fastcall MenuBtnClick(TObject *Sender);
 	void __fastcall LoadIniItemClick(TObject *Sender);
 	void __fastcall SaveAsIniItemClick(TObject *Sender);
 	void __fastcall DefaultIniItemClick(TObject *Sender);
@@ -303,9 +301,10 @@ __published:	// IDE 管理のコンポーネント
 	void __fastcall SaveIniActionExecute(TObject *Sender);
 	void __fastcall SaveIniActionUpdate(TObject *Sender);
 	void __fastcall DstDirEditChange(TObject *Sender);
+	void __fastcall MenuActionUpdate(TObject *Sender);
+	void __fastcall MenuActionExecute(TObject *Sender);
 
 private:	// ユーザー宣言
-	TIniFile* IniFile;
 	UnicodeString IniName;
 
 	bool OptLocked;
@@ -338,6 +337,7 @@ private:	// ユーザー宣言
 	void __fastcall LoadIniFile(UnicodeString fnam = EmptyStr);
 	void __fastcall SaveIniFile(UnicodeString fnam = EmptyStr);
 	void __fastcall ReplaceEx(UnicodeString &src);
+	TColor __fastcall MdWinColor(UnicodeString text, UnicodeString s, bool i_sw = false);
 
 public:		// ユーザー宣言
 	__fastcall TH2TconvForm(TComponent* Owner);

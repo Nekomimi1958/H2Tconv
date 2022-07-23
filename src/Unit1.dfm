@@ -1396,7 +1396,6 @@ object H2TconvForm: TH2TconvForm
           Height = 17
           Caption = #20195#26367#25991#23383#21015
           TabOrder = 0
-          OnClick = AltCheckClick
         end
         object AltKetEdit: TEdit
           Left = 517
@@ -1412,7 +1411,6 @@ object H2TconvForm: TH2TconvForm
           Height = 17
           Caption = #12501#12449#12452#12523#21517
           TabOrder = 2
-          OnClick = AltCheckClick
         end
         object DefAltEdit: TLabeledEdit
           Left = 172
@@ -1453,7 +1451,6 @@ object H2TconvForm: TH2TconvForm
           Height = 17
           Caption = #25407#20837#12377#12427
           TabOrder = 0
-          OnClick = LinkCheckClick
         end
         object LnkKetEdit: TEdit
           Left = 517
@@ -2105,8 +2102,7 @@ object H2TconvForm: TH2TconvForm
       Top = 0
       Width = 24
       Height = 24
-      Hint = #12513#12491#12517#12540
-      HelpContext = 8
+      Action = MenuAction
       Flat = True
       Font.Charset = SHIFTJIS_CHARSET
       Font.Color = clWindowText
@@ -2147,7 +2143,6 @@ object H2TconvForm: TH2TconvForm
         FFFF00FFFF00FFFF00FFFF00FF000000000000000000FF00FFFF00FFFF00FF00
         0000000000000000FF00FFFF00FFFF00FFFF00FFFF00FF000000}
       ParentFont = False
-      OnClick = MenuBtnClick
     end
   end
   object OpenDialog1: TOpenDialog
@@ -2157,7 +2152,7 @@ object H2TconvForm: TH2TconvForm
   end
   object PopupMenu1: TPopupMenu
     AutoHotkeys = maManual
-    Left = 505
+    Left = 509
     Top = 66
     object PopTitleItem: TMenuItem
       Caption = '$TITLE '#12479#12452#12488#12523'(&T)'
@@ -2266,6 +2261,10 @@ object H2TconvForm: TH2TconvForm
       OnExecute = SaveIniActionExecute
       OnUpdate = SaveIniActionUpdate
     end
+    object MenuAction: TAction
+      OnExecute = MenuActionExecute
+      OnUpdate = MenuActionUpdate
+    end
   end
   object ToolMenu: TPopupMenu
     HelpContext = 8
@@ -2317,7 +2316,7 @@ object H2TconvForm: TH2TconvForm
   end
   object SaveDialog1: TSaveDialog
     Options = [ofOverwritePrompt, ofHideReadOnly, ofEnableSizing]
-    Left = 505
+    Left = 509
     Top = 183
   end
   object ApplicationEvents1: TApplicationEvents
@@ -2326,7 +2325,7 @@ object H2TconvForm: TH2TconvForm
     Top = 119
   end
   object PopupMenu2: TPopupMenu
-    Left = 506
+    Left = 510
     Top = 119
     object C1: TMenuItem
       Action = CopyListAction
