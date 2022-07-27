@@ -1252,6 +1252,13 @@ object H2TconvForm: TH2TconvForm
         Height = 50
         Caption = #34892
         TabOrder = 0
+        object PstHdrLabel: TLabel
+          Left = 412
+          Top = 23
+          Width = 104
+          Height = 15
+          Caption = #35211#20986#12375#24460#12434#31354#12369#12394#12356
+        end
         object LnWidUpDown: TUpDown
           Left = 80
           Top = 20
@@ -1284,10 +1291,10 @@ object H2TconvForm: TH2TconvForm
         object PstHdrCheck: TCheckBox
           Left = 396
           Top = 22
-          Width = 149
+          Width = 152
           Height = 17
-          Caption = #35211#20986#12375#24460#12434#31354#12369#12394#12356' '
           TabOrder = 5
+          StyleElements = [seClient, seBorder]
         end
         object BlkLmtEdit: TLabeledEdit
           Left = 308
@@ -1349,12 +1356,18 @@ object H2TconvForm: TH2TconvForm
         Height = 50
         Caption = #31623#26465#26360#12365'(&K)'
         TabOrder = 6
+        object ZenNoLabel: TLabel
+          Left = 296
+          Top = 23
+          Width = 63
+          Height = 15
+          Caption = #25968#23383#12399#20840#35282
+        end
         object ZenNoCheck: TCheckBox
           Left = 280
           Top = 22
-          Width = 97
+          Width = 105
           Height = 17
-          Caption = #25968#23383#12399#20840#35282
           TabOrder = 2
         end
         object IndentEdit: TLabeledEdit
@@ -1444,6 +1457,13 @@ object H2TconvForm: TH2TconvForm
         Height = 50
         Caption = #12522#12531#12463'(&L)'
         TabOrder = 9
+        object LinkCrLabel: TLabel
+          Left = 296
+          Top = 24
+          Width = 72
+          Height = 15
+          Caption = #21069#24460#12395#25913#34892#12434
+        end
         object LinkCheck: TCheckBox
           Left = 16
           Top = 23
@@ -1470,9 +1490,8 @@ object H2TconvForm: TH2TconvForm
         object LinkCrCheck: TCheckBox
           Left = 280
           Top = 23
-          Width = 113
+          Width = 111
           Height = 17
-          Caption = #21069#24460#12395#25913#34892#12434
           TabOrder = 2
         end
         object LnkBraEdit: TLabeledEdit
@@ -2077,7 +2096,7 @@ object H2TconvForm: TH2TconvForm
   object CmpBtnPanel: TPanel
     Left = 536
     Top = 1
-    Width = 58
+    Width = 54
     Height = 24
     Anchors = [akTop, akRight]
     BevelOuter = bvNone
@@ -2087,6 +2106,7 @@ object H2TconvForm: TH2TconvForm
       Top = 0
       Width = 24
       Height = 24
+      Align = alRight
       Caption = #9660
       Flat = True
       Font.Charset = SHIFTJIS_CHARSET
@@ -2098,11 +2118,12 @@ object H2TconvForm: TH2TconvForm
       OnClick = CompactBtnClick
     end
     object MenuBtn: TSpeedButton
-      Left = 2
+      Left = 0
       Top = 0
       Width = 24
       Height = 24
       Action = MenuAction
+      Align = alLeft
       Flat = True
       Font.Charset = SHIFTJIS_CHARSET
       Font.Color = clWindowText
@@ -2143,6 +2164,7 @@ object H2TconvForm: TH2TconvForm
         FFFF00FFFF00FFFF00FFFF00FF000000000000000000FF00FFFF00FFFF00FF00
         0000000000000000FF00FFFF00FFFF00FFFF00FFFF00FF000000}
       ParentFont = False
+      ExplicitLeft = 2
     end
   end
   object OpenDialog1: TOpenDialog
@@ -2262,6 +2284,8 @@ object H2TconvForm: TH2TconvForm
       OnUpdate = SaveIniActionUpdate
     end
     object MenuAction: TAction
+      Hint = #12513#12491#12517#12540
+      ShortCut = 32845
       OnExecute = MenuActionExecute
       OnUpdate = MenuActionUpdate
     end
@@ -2269,18 +2293,23 @@ object H2TconvForm: TH2TconvForm
   object ToolMenu: TPopupMenu
     HelpContext = 8
     OwnerDraw = True
+    OnPopup = ToolMenuPopup
     Left = 431
     Top = 66
     object LoadIniItem: TMenuItem
-      Caption = #35373#23450#12501#12449#12452#12523#12434#35501#12415#36796#12416'(&L)'
+      Caption = #35373#23450#12501#12449#12452#12523#12434#35501#12415#36796#12416'(&L)...'
       OnClick = LoadIniItemClick
     end
     object SaveIniItem: TMenuItem
       Action = SaveIniAction
     end
     object SaveAsIniItem: TMenuItem
-      Caption = #35373#23450#12395#21517#21069#12434#20184#12369#12390#20445#23384'(&A)'
+      Caption = #35373#23450#12395#21517#21069#12434#20184#12369#12390#20445#23384'(&A)...'
       OnClick = SaveAsIniItemClick
+    end
+    object FileHistItem: TMenuItem
+      Caption = #26368#36817#38283#12356#12383#35373#23450#12501#12449#12452#12523
+      OnClick = FileHistItemClick
     end
     object Sep_m_1: TMenuItem
       Caption = '-'

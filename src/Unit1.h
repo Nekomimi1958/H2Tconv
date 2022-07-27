@@ -24,6 +24,7 @@
 #include <Vcl.Clipbrd.hpp>
 #include <Vcl.Mask.hpp>
 #include "usr_shell.h"
+#include "file_hist.h"
 #include "htmconv.h"
 
 //---------------------------------------------------------------------------
@@ -226,6 +227,10 @@ __published:	// IDE 管理のコンポーネント
 	TUpDown *LnWidUpDown;
 	TUpDown *TitLmtUpDown;
 	TAction *MenuAction;
+	TLabel *PstHdrLabel;
+	TLabel *ZenNoLabel;
+	TLabel *LinkCrLabel;
+	TMenuItem *FileHistItem;
 
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
@@ -303,19 +308,22 @@ __published:	// IDE 管理のコンポーネント
 	void __fastcall DstDirEditChange(TObject *Sender);
 	void __fastcall MenuActionUpdate(TObject *Sender);
 	void __fastcall MenuActionExecute(TObject *Sender);
+	void __fastcall ToolMenuPopup(TObject *Sender);
+	void __fastcall FileHistItemClick(TObject *Sender);
 
 private:	// ユーザー宣言
 	UnicodeString IniName;
+	FileHistory *UsedFileHistory;	//設定ファイル履歴
 
 	bool OptLocked;
 
-	UnicodeString VersionStr;	//バージョン
-	UnicodeString LastDir;		//参照ディレクトリ
-	UnicodeString OrgDir;		//変換元のディレクトリ
-	UnicodeString LastIniDir;	//設定ディレクトリ
+	UnicodeString VersionStr;		//バージョン
+	UnicodeString LastDir;			//参照ディレクトリ
+	UnicodeString OrgDir;			//変換元のディレクトリ
+	UnicodeString LastIniDir;		//設定ディレクトリ
 	UnicodeString LastTxtDir;
 
-	int  DestMode;				//出力先
+	int  DestMode;					//出力先
 	int  PopTag;
 	bool Compact;
 	bool ConvReady;

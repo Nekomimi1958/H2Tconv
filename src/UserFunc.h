@@ -13,6 +13,7 @@ UnicodeString get_tkn(UnicodeString s, UnicodeString sp);
 UnicodeString get_tkn_r(UnicodeString s, UnicodeString sp);
 UnicodeString split_tkn(UnicodeString &s, UnicodeString sp);
 int  pos_i(UnicodeString wd, UnicodeString s);
+int  pos_r(UnicodeString wd, UnicodeString s);
 bool contains_word(UnicodeString lst, UnicodeString wd);
 UnicodeString to_full_str(UnicodeString s);
 UnicodeString int_to_alpha(int n);
@@ -44,9 +45,6 @@ UnicodeString get_KeyStr(WORD Key, TShiftState Shift);
 void draw_ListItemLine(TCustomListBox *lp, int idx);
 
 UnicodeString get_VersionStr(UnicodeString fnam);
-
-//---------------------------------------------------------------------------
-#define UCAT_TSTR(str)	cat_sprintf(_T("%s"), _T(str))
 
 //---------------------------------------------------------------------------
 #endif

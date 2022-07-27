@@ -12,9 +12,10 @@
 //---------------------------------------------------------------------------
 int check_UTF8(BYTE *bp, int size);
 int get_MemoryCodePage(TMemoryStream *ms);
+UnicodeString rel_to_abs(UnicodeString fnam, UnicodeString rnam);
 
 //---------------------------------------------------------------------------
-#define NO_CRSPC_PTN	"^(#{1,6}|\\s*[\\*\\+\\-]|\\s*\\d+\\.)\\s.+"
+#define NO_CRSPC_PTN	"^(#{1,6}|\\s*[\\*\\+\\-]|\\s*\\d+\\.)\\s.+|^```"
 
 //---------------------------------------------------------------------------
 class HtmConv {
@@ -47,14 +48,15 @@ public:
 	UnicodeString  TempDir;
 	int OutCodePage;			//ファイル保存時のコードページ
 
-	bool IsMarkdown;			//Markdown 有効
+	bool ToMarkdown;			//Markdown 有効
 
-	UnicodeString  HeadStr;		//ヘッダ
-	UnicodeString  FootStr;		//フッタ
 	UnicodeString  FileName;	//入力ファイル名
 	UnicodeString  FileTime;	//ファイルのタイムスタンプ
 	UnicodeString  UrlStr;		//URL
-	UnicodeString  BaseStr;		//<base href=…>
+	UnicodeString  BaseStr;
+
+	UnicodeString  HeadStr;		//ヘッダ
+	UnicodeString  FootStr;		//フッタ
 	UnicodeString  TitleStr;	//タイトル
 	UnicodeString  StatMsg;		//ステータスメッセージ
 

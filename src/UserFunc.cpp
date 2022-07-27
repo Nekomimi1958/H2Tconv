@@ -57,12 +57,33 @@ int pos_i(UnicodeString wd, UnicodeString s)
 }
 
 //---------------------------------------------------------------------------
+//文字列が最後に現れる位置を取得
+//---------------------------------------------------------------------------
+int pos_r(
+	UnicodeString wd,	//検索語
+	UnicodeString s)	//対象文字列
+{
+	if (wd.IsEmpty()) return 0;
+
+	int p  = 0;
+	int p0 = 1;
+	for (;;) {
+		int p1 = PosEx(wd, s, p0);
+		if (p1==0) break;
+		p  = p1;
+		p0 = p + 1;
+	}
+
+	return p;
+}
+
+//---------------------------------------------------------------------------
 // | 区切りリストに指定語が含まれているか？
 //---------------------------------------------------------------------------
 bool contains_word(UnicodeString lst, UnicodeString wd)
 {
 	if (!StartsStr("|", lst)) lst.Insert("|" ,1);
-	if (!EndsStr("|", lst))   lst.UCAT_TSTR("|");
+	if (!EndsStr("|", lst))   lst += "|";
 	return ContainsText(lst, "|" + wd + "|");
 }
 
@@ -110,11 +131,11 @@ UnicodeString int_to_roman(int n)
 		switch (rn) {
 		case 1: case 2: case 3:
 			ret_str += StringOfChar(_T('c'), rn); break;
-		case 4: ret_str.UCAT_TSTR("cd"); break;
-		case 5: ret_str.UCAT_TSTR("d");  break;
+		case 4: ret_str += "cd"; break;
+		case 5: ret_str += "d";  break;
 		case 6: case 7: case 8:
 			ret_str.cat_sprintf(_T("d%s"), StringOfChar(_T('c'), rn - 5).c_str()); break;
-		case 9: ret_str.UCAT_TSTR("cm"); break;
+		case 9: ret_str += "cm"; break;
 		}
 	}
 
@@ -124,11 +145,11 @@ UnicodeString int_to_roman(int n)
 		switch (rn) {
 		case 1: case 2: case 3:
 			ret_str += StringOfChar(_T('x'), rn); break;
-		case 4: ret_str.UCAT_TSTR("xl"); break;
-		case 5: ret_str.UCAT_TSTR("l");  break;
+		case 4: ret_str += "xl"; break;
+		case 5: ret_str += "l";  break;
 		case 6: case 7: case 8:
 			ret_str.cat_sprintf(_T("l%s"), StringOfChar(_T('x'), rn - 5).c_str()); break;
-		case 9: ret_str.UCAT_TSTR("xc"); break;
+		case 9: ret_str += "xc"; break;
 		}
 	}
 
@@ -137,11 +158,11 @@ UnicodeString int_to_roman(int n)
 	switch (rn) {
 	case 1: case 2: case 3:
 		ret_str += StringOfChar(_T('i'), rn); break;
-	case 4: ret_str.UCAT_TSTR("iv"); break;
-	case 5: ret_str.UCAT_TSTR("v");  break;
+	case 4: ret_str += "iv"; break;
+	case 5: ret_str += "v";  break;
 	case 6: case 7: case 8:
 		ret_str.cat_sprintf(_T("v%s"), StringOfChar(_T('i'), rn - 5).c_str()); break;
-	case 9: ret_str.UCAT_TSTR("ix"); break;
+	case 9: ret_str += "ix"; break;
 	}
 	return ret_str;
 }

@@ -146,6 +146,11 @@ void __fastcall TH2TconvForm::FormCreate(TObject *Sender)
 		LoadIniFile();
 	}
 
+	//設定ファイル履歴メニュー項目を初期化
+	UsedFileHistory = new FileHistory(FileHistItem, FileHistItemClick);
+	UsedFileHistory->LoadHistory(IniFile, "IniHistory");
+	UsedFileHistory->ShowRel = true;
+
 	AutoStart = false;
 	if (HtmFileList->Items->Count>0) {
 		if (!OutDir.IsEmpty()) {
@@ -259,6 +264,9 @@ void __fastcall TH2TconvForm::FormClose(TObject *Sender, TCloseAction &Action)
 		IniFile->WriteString(sct, "LastIniDir",		LastIniDir);
 		IniFile->WriteString(sct, "LastTxtDir",		LastTxtDir);
 
+		//ファイル履歴を保存
+		UsedFileHistory->SaveHistory(IniFile, "IniHistory");
+
 		SaveIniFile();
 	}
 }
@@ -269,6 +277,7 @@ void __fastcall TH2TconvForm::FormDestroy(TObject *Sender)
 	::UnhookWindowsHookEx(hDlgHook);
 
 	delete HC;
+	delete UsedFileHistory;
 	delete IniFile;
 
 	DropUninitialize();
@@ -936,7 +945,8 @@ void __fastcall TH2TconvForm::SetFrmStyle()
 		ConvBtnC->Visible	  = false;
 		StatusBar1->Visible   = true;
 		CmpBtnPanel->Parent   = PageControl1;
-		CmpBtnPanel->Left	  = PageControl1->Width - CmpBtnPanel->Width;
+		CmpBtnPanel->Width	  = MenuBtn->Width + CompactBtn->Width + 8;
+		CmpBtnPanel->Left	  = PageControl1->Width - CmpBtnPanel->Width - 2;
 		CompactBtn->Caption   = "▲";
 		CompactBtn->Hint	  = "コンパクト表示";
 		GrpBox1_1->Parent	  = Panel1_1;
@@ -974,6 +984,8 @@ void __fastcall TH2TconvForm::SetFrmStyle()
 		StatusBar1->Visible   = false;
 		PageControl1->Visible = false;
 		CmpBtnPanel->Parent   = H2TconvForm;
+		CmpBtnPanel->Width	  = MenuBtn->Width + CompactBtn->Width + 2; 
+		CmpBtnPanel->Left	  = PageControl1->Width - CmpBtnPanel->Width - 2;
 		CompactBtn->Caption   = "▼";
 		CompactBtn->Hint	  = "通常表示";
 		GrpBox1_1->Parent	  = H2TconvForm;
@@ -1181,7 +1193,8 @@ void __fastcall TH2TconvForm::CompactBtnClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::MarkdownCheckClick(TObject *Sender)
 {
-	if (!OptLocked && MarkdownCheck->Checked) {
+	if (OptLocked) return;
+	if (MarkdownCheck->Checked) {
 		FrcCrCheck->Checked  = false;
 		PstHdrCheck->Checked = false;
 		H1Edit->Text         = "#\\s";
@@ -1210,6 +1223,9 @@ void __fastcall TH2TconvForm::MarkdownCheckClick(TObject *Sender)
 		LnkKetEdit->Text     = ")";
 		InsLineStrEdit->Text = "-";
 		FilExtEdit->Text     = "md";
+	}
+	else {
+		if (SameText(FilExtEdit->Text, "md")) FilExtEdit->Text = "txt";
 	}
 }
 
@@ -1543,7 +1559,7 @@ void __fastcall TH2TconvForm::ConvertExecute(TObject *Sender)
 	HC->CellSepStr	 = esc_to_str(CelSepEdit->Text);
 	HC->UseAlt		 = AltCheck->Checked;
 	HC->AddImgSrc	 = ImgSrcCheck->Checked;
-	HC->IsMarkdown	 = MarkdownCheck->Checked;
+	HC->ToMarkdown	 = MarkdownCheck->Checked;
 	HC->DefAltStr	 = esc_to_str(DefAltEdit->Text);
 	HC->AltBraStr	 = esc_to_str(AltBraEdit->Text);
 	HC->AltKetStr	 = esc_to_str(AltKetEdit->Text);
@@ -1738,6 +1754,19 @@ void __fastcall TH2TconvForm::ConvertActionUpdate(TObject *Sender)
 //---------------------------------------------------------------------------
 //メニュー
 //---------------------------------------------------------------------------
+void __fastcall TH2TconvForm::ToolMenuPopup(TObject *Sender)
+{
+	//設定ファイル履歴メニュー設定
+	UsedFileHistory->UpdateMenu();
+}
+//---------------------------------------------------------------------------
+void __fastcall TH2TconvForm::FileHistItemClick(TObject *Sender)
+{
+	UnicodeString fnam = UsedFileHistory->GetHistory(((TComponent *)Sender)->Tag);
+	LoadIniFile(fnam);
+	UsedFileHistory->AddHistory(fnam);
+}
+//---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::MenuActionExecute(TObject *Sender)
 {
 	TPoint p = MenuBtn->ClientToScreen(Point(MenuBtn->Left + 8, MenuBtn->Top + 8));
@@ -1790,6 +1819,12 @@ void __fastcall TH2TconvForm::MenuActionUpdate(TObject *Sender)
 	LnkBraEdit->Color = MdWinColor(LnkBraEdit->Text, "(");
 	LnkKetEdit->Color = MdWinColor(LnkKetEdit->Text, ")");
 	InsLineStrEdit->Color = MdWinColor(InsLineStrEdit->Text, "-\t_\t*");
+
+	PstHdrLabel->Font->Color = (MarkdownCheck->Checked && PstHdrCheck->Checked)? clRed : clWindowText;
+	ZenNoLabel->Font->Color  = (MarkdownCheck->Checked && ZenNoCheck->Checked)?  clRed : clWindowText;
+	LinkCrLabel->Font->Color = (MarkdownCheck->Checked && LinkCrCheck->Checked)? clRed : clWindowText;
+
+	FilExtEdit->Color = (!MarkdownCheck->Checked && SameText(FilExtEdit->Text, "md"))? clWebPink : clWindow;
 }
 //---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::AbautMeasureItem(TObject *Sender,
@@ -1894,8 +1929,12 @@ void __fastcall TH2TconvForm::LoadIniItemClick(TObject *Sender)
 	if (OpenDialog1->Execute()) {
 		LoadIniFile(OpenDialog1->FileName);
 		LastIniDir = ExtractFileDir(OpenDialog1->FileName);
+		UsedFileHistory->AddHistory(OpenDialog1->FileName);
 	}
 }
+
+//---------------------------------------------------------------------------
+//設定ファイルを上書き保存
 //---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::SaveIniActionExecute(TObject *Sender)
 {
