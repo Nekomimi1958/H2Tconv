@@ -1575,9 +1575,8 @@ void __fastcall TH2TconvForm::ConvertExecute(TObject *Sender)
 	HC->InsHrNav	 = InsHrNavCheckBox->Checked;
 	HC->DelBlkCls	 = DelBlkClsEdit->Text;
 	HC->DelBlkId	 = DelBlkIdEdit->Text;
-
-	if (InsHdCheck->Checked) HC->HeadStr = HeadMemo->Lines->Text;
-	if (InsFtCheck->Checked) HC->FootStr = FootMemo->Lines->Text;
+	HC->HeadStr		 = InsHdCheck->Checked? HeadMemo->Lines->Text : EmptyStr;
+	HC->FootStr		 = InsFtCheck->Checked? FootMemo->Lines->Text : EmptyStr;
 
 	//出力先ディレクトリ
 	UnicodeString dstdir = (DestMode==DSTMOD_SELDIR)? DstDirEdit->Text : OrgDir;

@@ -26,6 +26,7 @@ private:
 	bool fPRE, fXMP;
 	int  BQ_level;
 
+	UnicodeString ToAbsUrl(UnicodeString url);
 	void DelTagBlock(TStringList *lst, UnicodeString start_wd, UnicodeString end_wd);
 	void DelAtrBlock(TStringList *lst, UnicodeString anam, UnicodeString aval);
 	UnicodeString GetTagAtr(UnicodeString s, UnicodeString t, UnicodeString a);
@@ -33,6 +34,11 @@ private:
 	void AddText(UnicodeString s);
 	void FlushText();
 	void AddLine(UnicodeString hrstr = EmptyStr, UnicodeString wdstr = EmptyStr, UnicodeString alstr = EmptyStr);
+
+	bool is_rel_url(UnicodeString s)
+	{
+		return (!s.IsEmpty() && !TRegEx::IsMatch(s, "^(https?|mailto|file):|^//"));
+	}
 
 	void DecLevel(int &n)
 	{
@@ -50,15 +56,17 @@ public:
 
 	bool ToMarkdown;			//Markdown 有効
 
-	UnicodeString  FileName;	//入力ファイル名
-	UnicodeString  FileTime;	//ファイルのタイムスタンプ
-	UnicodeString  UrlStr;		//URL
-	UnicodeString  BaseStr;
+	UnicodeString FileName;		//入力ファイル名
+	UnicodeString FileTime;		//ファイルのタイムスタンプ
+	UnicodeString UrlStr;		//URL
+	UnicodeString TopLevel;		//トップレベル
+	UnicodeString Scheme;		//スキーム
+	UnicodeString BaseUrl;
 
-	UnicodeString  HeadStr;		//ヘッダ
-	UnicodeString  FootStr;		//フッタ
-	UnicodeString  TitleStr;	//タイトル
-	UnicodeString  StatMsg;		//ステータスメッセージ
+	UnicodeString HeadStr;		//ヘッダ
+	UnicodeString FootStr;		//フッタ
+	UnicodeString TitleStr;		//タイトル
+	UnicodeString StatMsg;		//ステータスメッセージ
 
 	int  LineWidth;				//桁数
 	bool ForceCr;				//強制改行

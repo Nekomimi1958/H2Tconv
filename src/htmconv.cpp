@@ -334,6 +334,25 @@ void HtmConv::DelTagBlock(TStringList *lst, UnicodeString start_wd, UnicodeStrin
 }
 
 //---------------------------------------------------------------------------
+//URLを絶対パスに変換
+//---------------------------------------------------------------------------
+UnicodeString HtmConv::ToAbsUrl(UnicodeString url)
+{
+	if (!url.IsEmpty()) {
+		if (!Scheme.IsEmpty() && TRegEx::IsMatch(url, "^//[^/]")) {
+			url.Insert(Scheme, 1);
+		}
+		else if (!TopLevel.IsEmpty() && TRegEx::IsMatch(url, "^/[^/]")) {
+			url.Insert(TopLevel, 1);
+		}
+		else if (!BaseUrl.IsEmpty() && is_rel_url(url)) {
+			url.Insert(BaseUrl, 1);
+		}
+	}
+	return url;
+}
+
+//---------------------------------------------------------------------------
 //指定属性のブロックを削除
 //---------------------------------------------------------------------------
 void HtmConv::DelAtrBlock(TStringList *lst, UnicodeString anam, UnicodeString aval)
@@ -883,12 +902,14 @@ UnicodeString HtmConv::GetTitle(UnicodeString fnam)
 bool HtmConv::LoadFile(UnicodeString fnam)
 {
 	HtmBuf->Clear();
-	StatMsg = EmptyStr;
-	UrlStr	= EmptyStr;
-	BaseStr = EmptyStr;
+	StatMsg  = EmptyStr;
+	UrlStr   = EmptyStr;
+	TopLevel = EmptyStr;
+	Scheme   = EmptyStr;
+	BaseUrl  = EmptyStr;
 	UnicodeString dl_file = EmptyStr;
 
-	if (StartsText("http://", fnam) || StartsText("https://", fnam)) {
+	if (TRegEx::IsMatch(fnam, "^https?://")) {
 		try {
 			UrlStr = fnam;
 			if (UrlStr.Pos("%")==0) UrlStr = TIdURI::URLEncode(UrlStr, IndyTextEncoding_UTF8());
@@ -914,21 +935,14 @@ bool HtmConv::LoadFile(UnicodeString fnam)
 
 	if (!UrlStr.IsEmpty()) {
 		//インターネットからHTML文書を取得
-		BaseStr = UrlStr;
-		if (!EndsStr("/", BaseStr)) {
-			UnicodeString tmpstr = BaseStr;
-			tmpstr.Delete(1, 7);
-			if (tmpstr.Pos("/")==0) {
-				BaseStr += "/";
-			}
-			else {
-				int i = BaseStr.Length();
-				while (i>7) {
-					if (BaseStr[i]=='/') break;
-					BaseStr.Delete(i--, 1);
-				}
-			}
+		TopLevel = TRegEx::Replace(UrlStr, "(^https?://[\\w\\.\\-]+)(/.*)*", "$1");
+		Scheme   = get_tkn(TopLevel, "//");
+		UnicodeString url = UrlStr;
+		if (!EndsStr("/", url)) {
+			int p = pos_r(_T("/"), url);
+			if (p>0) url = url.SubString(1, p);
 		}
+		BaseUrl = url;
 
 		DWORD flag;
 		if (InternetGetConnectedState(&flag, 0)) {
@@ -1553,23 +1567,17 @@ void HtmConv::Convert(
 			//リンク
 			else if (tag=="A" && InsLink) {
 				HrefStr = GetTagAtr(lbuf, tag, "HREF");
-				if (OnlyExLink) {
-					if (!TRegEx::IsMatch(HrefStr, "^(https?|mailto):|^//")) HrefStr = EmptyStr;
-				}
-				//可能なら絶対指定に
-				if (!HrefStr.IsEmpty() && !TRegEx::IsMatch(HrefStr, "^(https?|mailto|file):|^//")) {
-					if (!BaseStr.IsEmpty()) {
-						HrefStr = BaseStr + HrefStr;
-					}
-					else if (!FileName.IsEmpty()) {
-						UnicodeString fnam = ReplaceStr(get_tkn(HrefStr, '#'), "/", "\\");
-						UnicodeString anam = get_tkn_r(HrefStr, '#');
-						fnam = rel_to_abs(fnam, FileName);
-						if (FileExists(fnam)) HrefStr.sprintf(_T("file:///%s"), fnam.c_str());
-						if (!anam.IsEmpty())  HrefStr.cat_sprintf(_T("#s"), anam.c_str());
+				if (OnlyExLink && !TRegEx::IsMatch(HrefStr, "^(https?|mailto):|^//")) HrefStr = EmptyStr;
+				HrefStr = ToAbsUrl(HrefStr);
+				if (is_rel_url(HrefStr) && !FileName.IsEmpty()) {
+					UnicodeString fnam = ReplaceStr(get_tkn(HrefStr, '#'), "/", "\\");
+					UnicodeString anam = get_tkn_r(HrefStr, '#');
+					fnam = rel_to_abs(fnam, FileName);
+					if (FileExists(fnam)) {
+						HrefStr.sprintf(_T("file:///%s"), ReplaceStr(fnam, "\\", "/").c_str());
+						if (!anam.IsEmpty()) HrefStr.cat_sprintf(_T("#%s"), anam.c_str());
 					}
 				}
-
 				if (ToMarkdown && !HrefStr.IsEmpty()) TxtLineBuf += "[";
 				noSPC = true;
 			}
@@ -1592,11 +1600,8 @@ void HtmConv::Convert(
 					TxtLineBuf += tmpstr;
 				}
 				if (AddImgSrc) {
-					UnicodeString src_str = GetTagAtr(lbuf, tag, "SRC");
+					UnicodeString src_str = ToAbsUrl(GetTagAtr(lbuf, tag, "SRC"));
 					if (!src_str.IsEmpty()) {
-						if (!BaseStr.IsEmpty() && !TRegEx::IsMatch(src_str, "^(https?|file):")) {
-							src_str = BaseStr + src_str;
-						}
 						//"(ファイル名)" 後置
 						if (is_md) {
 							TxtLineBuf += AltKetStr;
@@ -1637,7 +1642,9 @@ void HtmConv::Convert(
 				tmpstr = GetTagAtr(lbuf, tag, "HREF");
 				if (!tmpstr.IsEmpty()) {
 					if (!EndsStr("/", tmpstr)) tmpstr += "/";
-					BaseStr = tmpstr;
+					BaseUrl  = tmpstr;
+					TopLevel = TRegEx::Replace(BaseUrl, "(^https?://[\\w\\.\\-]+)(/.*)*", "$1");
+					Scheme   = get_tkn(TopLevel, "//");
 				}
 			}
 			else if (tag=="META") {
@@ -1709,10 +1716,7 @@ void HtmConv::Convert(
 	//ヘッダ・フッタの挿入
 	TmpBuf->Clear();
 	for (int lopn = 0; lopn<2; lopn++) {
-		if (lopn==0)
-			TmpBuf->Text = HeadStr;
-		else
-			TmpBuf->Text = FootStr;
+		TmpBuf->Text = (lopn==0)? HeadStr : FootStr;
 		if (TmpBuf->Count==0) continue;
 
 		for (int i=0; i<TmpBuf->Count; i++) {
