@@ -158,7 +158,9 @@ void __fastcall TH2TconvForm::FormCreate(TObject *Sender)
 			DestMode = DSTMOD_SELDIR;
 		}
 		if (!OutNam.IsEmpty()) {
-			FilNamEdit->Text = OutNam;
+			FilNamEdit->Text = ChangeFileExt(OutNam, EmptyStr);
+			UnicodeString fext = ReplaceStr(ExtractFileExt(OutNam), ".", EmptyStr);
+			if (!fext.IsEmpty()) FilExtEdit->Text = fext;
 			FilNamEdit->Modified = true;
 			if (DestMode==DSTMOD_CLIPBD) DestMode = DSTMOD_ORGDIR;
 		}
@@ -168,7 +170,7 @@ void __fastcall TH2TconvForm::FormCreate(TObject *Sender)
 
 	if (AutoStart) {
 		//メイン画面を表示せず、変換実行後に終了
-		ConvertExecute(NULL);
+		ConvertAction->Execute();
 		Application->Terminate();
 	}
 	else {
@@ -334,9 +336,9 @@ void __fastcall TH2TconvForm::PageControl1Change(TObject *Sender)
 	}
 }
 
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 //画面が移動されたときの処理
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::WMMove(TMessage &Msg)
 {
 	if (Screen->MonitorCount==1) {
@@ -703,7 +705,7 @@ void __fastcall TH2TconvForm::AddStrToList(UnicodeString s)
 }
 //---------------------------------------------------------------------------
 //入力ファイル選択
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::AddBtnClick(TObject *Sender)
 {
 	OpenDialog1->Title		= "HTML文書の選択";
@@ -733,7 +735,7 @@ void __fastcall TH2TconvForm::AddBtnClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 //URL 入力
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::InputBtnClick(TObject *Sender)
 {
 	UnicodeString urlstr = InputBox("入力", "ファイル名やURLを入力してください", EmptyStr);
@@ -742,7 +744,7 @@ void __fastcall TH2TconvForm::InputBtnClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 //クリップボードから貼り付け
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::PasteBtnClick(TObject *Sender)
 {
 	if (!Clipboard()->HasFormat(CF_TEXT)) return;
@@ -755,7 +757,7 @@ void __fastcall TH2TconvForm::PasteBtnClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 //削除
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::DelBtnClick(TObject *Sender)
 {
 	TListBox *lp = HtmFileList;
@@ -767,7 +769,7 @@ void __fastcall TH2TconvForm::DelBtnClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 //クリア
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::ClrBtnClick(TObject *Sender)
 {
 	HtmFileList->Clear();
@@ -777,7 +779,7 @@ void __fastcall TH2TconvForm::ClrBtnClick(TObject *Sender)
 
 //---------------------------------------------------------------------------
 //ソート
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::SortBtnClick(TObject *Sender)
 {
 	TListBox *lp = HtmFileList;
@@ -806,7 +808,7 @@ void __fastcall TH2TconvForm::NaturalCheckClick(TObject *Sender)
 
 //---------------------------------------------------------------------------
 //一つ上へ
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::UpItemBtnClick(TObject *Sender)
 {
 	TListBox *lp = HtmFileList;
@@ -822,7 +824,7 @@ void __fastcall TH2TconvForm::UpItemBtnClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 //一つ下へ
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::DowItemBtnClick(TObject *Sender)
 {
 	TListBox *lp = HtmFileList;
@@ -839,7 +841,7 @@ void __fastcall TH2TconvForm::DowItemBtnClick(TObject *Sender)
 
 //---------------------------------------------------------------------------
 //一覧上でのキー操作
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::HtmFileListKeyDown(TObject *Sender, WORD &Key, TShiftState Shift)
 {
 	UnicodeString KeyStr = get_KeyStr(Key, Shift);	if (KeyStr.IsEmpty()) return;
@@ -854,7 +856,7 @@ void __fastcall TH2TconvForm::HtmFileListKeyDown(TObject *Sender, WORD &Key, TSh
 
 //---------------------------------------------------------------------------
 // URL ならファイルに適当な名前に変換
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 UnicodeString __fastcall TH2TconvForm::UrlToName(UnicodeString s)
 {
 	if (StartsText("http://", s) || StartsText("https://", s)) {
@@ -870,7 +872,7 @@ UnicodeString __fastcall TH2TconvForm::UrlToName(UnicodeString s)
 }
 //---------------------------------------------------------------------------
 // タイトル文字列から適当な名前をつくる
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 UnicodeString __fastcall TH2TconvForm::TitToName(UnicodeString s)
 {
 	// . \ / : * ? " < > |
@@ -916,7 +918,7 @@ UnicodeString __fastcall TH2TconvForm::TitToName(UnicodeString s)
 }
 //---------------------------------------------------------------------------
 // 重複する場合にファイル名に連番を付加
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 UnicodeString __fastcall TH2TconvForm::AddSerNo(UnicodeString s)
 {
 	UnicodeString ret = s;
@@ -937,7 +939,7 @@ UnicodeString __fastcall TH2TconvForm::AddSerNo(UnicodeString s)
 
 //---------------------------------------------------------------------------
 //表示スタイルの設定
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::SetFrmStyle()
 {
 	int w;
@@ -1031,12 +1033,13 @@ void __fastcall TH2TconvForm::SetFrmStyle()
 
 //---------------------------------------------------------------------------
 //設定情報の更新
-// chgf = true なら FilNamEdit->Text にデフォルトを設定
-//---------------------------------------------------------------------
-void __fastcall TH2TconvForm::UpdateInf(bool chgf)
+//---------------------------------------------------------------------------
+void __fastcall TH2TconvForm::UpdateInf(
+	bool chgf)	//true : FilNamEdit->Text にデフォルトを設定
 {
 	//多重呼び出しを抑止
 	if (InhUpdateInf) return;
+
 	InhUpdateInf = true;
 
 	TListBox *lp = HtmFileList;
@@ -1134,7 +1137,7 @@ void __fastcall TH2TconvForm::UpdateInf(bool chgf)
 
 //---------------------------------------------------------------------------
 //コンパクト／通常表示切り替え
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::CompactBtnClick(TObject *Sender)
 {
 	int w, h;
@@ -1231,21 +1234,21 @@ void __fastcall TH2TconvForm::MarkdownCheckClick(TObject *Sender)
 
 //---------------------------------------------------------------------------
 //桁数変更
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::LnWidEditChange(TObject *Sender)
 {
 	LnWidEdit->Font->Color = check_TUpDown(LnWidUpDown)? clWindowText : clRed;
 }
 //---------------------------------------------------------------------------
 //空行制限変更
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::BlkLmtEditaChange(TObject *Sender)
 {
 	BlkLmtEdit->Font->Color = check_TUpDown(BlkLmtUpDown)? clWindowText : clRed;
 }
 //---------------------------------------------------------------------------
 //字数制限
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::TitLmtEditChange(TObject *Sender)
 {
 	TitLmtEdit->Font->Color = check_TUpDown(TitLmtUpDown)? clWindowText : clRed;
@@ -1263,7 +1266,7 @@ void __fastcall TH2TconvForm::NumberEditExit(TObject *Sender)
 
 //---------------------------------------------------------------------------
 //アプリケーションの選択
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::RefAppBtnClick(TObject *Sender)
 {
 	OpenDialog1->Title		= "アプリケーションの選択";
@@ -1275,7 +1278,7 @@ void __fastcall TH2TconvForm::RefAppBtnClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 //出力場所の指定
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::RefDstBtnClick(TObject *Sender)
 {
 	UnicodeString dnam = DstDirEdit->Text;
@@ -1449,7 +1452,7 @@ void __fastcall TH2TconvForm::DownRepActionUpdate(TObject *Sender)
 
 //---------------------------------------------------------------------------
 //書式文字列の参照
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::RefMac1BtnClick(TObject *Sender)
 {
 	PopTag = ((TComponent *)Sender)->Tag;
@@ -1459,7 +1462,7 @@ void __fastcall TH2TconvForm::RefMac1BtnClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 //書式文字列の挿入
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::PopRefItemClick(TObject *Sender)
 {
 	UnicodeString mstr = ((TMenuItem*)Sender)->Caption;
@@ -1482,7 +1485,7 @@ void __fastcall TH2TconvForm::Tit2NamCheckClick(TObject *Sender)
 
 //---------------------------------------------------------------------------
 //終了音の指定
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::RefSndBtnClick(TObject *Sender)
 {
 	OpenDialog1->Title		= "終了音の指定";
@@ -1510,7 +1513,7 @@ void __fastcall TH2TconvForm::PlaySoundActionUpdate(TObject *Sender)
 
 //---------------------------------------------------------------------------
 //常に手前に表示
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::TopMostCheckClick(TObject *Sender)
 {
 	::EndDeferWindowPos(::DeferWindowPos(::BeginDeferWindowPos(1), Handle,
@@ -1519,7 +1522,7 @@ void __fastcall TH2TconvForm::TopMostCheckClick(TObject *Sender)
 
 //---------------------------------------------------------------------------
 //Webサイトを開く
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::UrlLabelClick(TObject *Sender)
 {
 	::ShellExecute(NULL, _T("open"), SUPPORT_URL, NULL, NULL, SW_SHOWNORMAL);
@@ -1528,7 +1531,7 @@ void __fastcall TH2TconvForm::UrlLabelClick(TObject *Sender)
 //---------------------------------------------------------------------------
 //変換開始
 //---------------------------------------------------------------------------
-void __fastcall TH2TconvForm::ConvertExecute(TObject *Sender)
+void __fastcall TH2TconvForm::ConvertActionExecute(TObject *Sender)
 {
 	Converting = true;
 	UpdateActions();

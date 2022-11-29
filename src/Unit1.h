@@ -238,7 +238,7 @@ __published:	// IDE 管理のコンポーネント
 	void __fastcall FormDestroy(TObject *Sender);
 	void __fastcall FormResize(TObject *Sender);
 	void __fastcall CompactBtnClick(TObject *Sender);
-	void __fastcall ConvertExecute(TObject *Sender);
+	void __fastcall ConvertActionExecute(TObject *Sender);
 	void __fastcall AddBtnClick(TObject *Sender);
 	void __fastcall InputBtnClick(TObject *Sender);
 	void __fastcall PasteBtnClick(TObject *Sender);

@@ -162,7 +162,7 @@ object H2TconvForm: TH2TconvForm
             Height = 23
             Anchors = [akLeft, akTop, akRight]
             EditLabel.Width = 64
-            EditLabel.Height = 15
+            EditLabel.Height = 23
             EditLabel.Caption = #12501#12449#12452#12523#21517'(&F)'
             LabelPosition = lpLeft
             TabOrder = 6
@@ -177,7 +177,7 @@ object H2TconvForm: TH2TconvForm
             Hint = #25313#24373#23376
             Anchors = [akTop, akRight]
             EditLabel.Width = 3
-            EditLabel.Height = 15
+            EditLabel.Height = 23
             EditLabel.Caption = '.'
             LabelPosition = lpLeft
             TabOrder = 7
@@ -1178,7 +1178,7 @@ object H2TconvForm: TH2TconvForm
           Width = 60
           Height = 23
           EditLabel.Width = 13
-          EditLabel.Height = 15
+          EditLabel.Height = 23
           EditLabel.Caption = 'h1'
           LabelPosition = lpLeft
           TabOrder = 0
@@ -1190,7 +1190,7 @@ object H2TconvForm: TH2TconvForm
           Width = 60
           Height = 23
           EditLabel.Width = 13
-          EditLabel.Height = 15
+          EditLabel.Height = 23
           EditLabel.Caption = 'h2'
           LabelPosition = lpLeft
           TabOrder = 1
@@ -1202,7 +1202,7 @@ object H2TconvForm: TH2TconvForm
           Width = 60
           Height = 23
           EditLabel.Width = 13
-          EditLabel.Height = 15
+          EditLabel.Height = 23
           EditLabel.Caption = 'h3'
           LabelPosition = lpLeft
           TabOrder = 2
@@ -1214,7 +1214,7 @@ object H2TconvForm: TH2TconvForm
           Width = 60
           Height = 23
           EditLabel.Width = 13
-          EditLabel.Height = 15
+          EditLabel.Height = 23
           EditLabel.Caption = 'h4'
           LabelPosition = lpLeft
           TabOrder = 3
@@ -1226,7 +1226,7 @@ object H2TconvForm: TH2TconvForm
           Width = 60
           Height = 23
           EditLabel.Width = 13
-          EditLabel.Height = 15
+          EditLabel.Height = 23
           EditLabel.Caption = 'h5'
           LabelPosition = lpLeft
           TabOrder = 4
@@ -1238,7 +1238,7 @@ object H2TconvForm: TH2TconvForm
           Width = 60
           Height = 23
           EditLabel.Width = 13
-          EditLabel.Height = 15
+          EditLabel.Height = 23
           EditLabel.Caption = 'h6'
           LabelPosition = lpLeft
           TabOrder = 5
@@ -1303,7 +1303,7 @@ object H2TconvForm: TH2TconvForm
           Height = 23
           Alignment = taRightJustify
           EditLabel.Width = 78
-          EditLabel.Height = 15
+          EditLabel.Height = 23
           EditLabel.Caption = #36899#32154#31354#34892#21046#38480
           LabelPosition = lpLeft
           NumbersOnly = True
@@ -1319,7 +1319,7 @@ object H2TconvForm: TH2TconvForm
           Height = 23
           Alignment = taRightJustify
           EditLabel.Width = 26
-          EditLabel.Height = 15
+          EditLabel.Height = 23
           EditLabel.Caption = #26689#25968
           LabelPosition = lpLeft
           NumbersOnly = True
@@ -1342,7 +1342,7 @@ object H2TconvForm: TH2TconvForm
           Width = 60
           Height = 23
           EditLabel.Width = 52
-          EditLabel.Height = 15
+          EditLabel.Height = 23
           EditLabel.Caption = #32619#32218#25991#23383
           LabelPosition = lpLeft
           TabOrder = 0
@@ -1376,7 +1376,7 @@ object H2TconvForm: TH2TconvForm
           Width = 60
           Height = 23
           EditLabel.Width = 49
-          EditLabel.Height = 15
+          EditLabel.Height = 23
           EditLabel.Caption = #12452#12531#12487#12531#12488
           LabelPosition = lpLeft
           TabOrder = 0
@@ -1388,7 +1388,7 @@ object H2TconvForm: TH2TconvForm
           Width = 60
           Height = 23
           EditLabel.Width = 30
-          EditLabel.Height = 15
+          EditLabel.Height = 23
           EditLabel.Caption = #12510#12540#12463
           LabelPosition = lpLeft
           TabOrder = 1
@@ -1431,7 +1431,7 @@ object H2TconvForm: TH2TconvForm
           Width = 77
           Height = 23
           EditLabel.Width = 49
-          EditLabel.Height = 15
+          EditLabel.Height = 23
           EditLabel.Caption = #12487#12501#12457#12523#12488
           LabelPosition = lpLeft
           TabOrder = 1
@@ -1443,7 +1443,7 @@ object H2TconvForm: TH2TconvForm
           Width = 36
           Height = 23
           EditLabel.Width = 25
-          EditLabel.Height = 15
+          EditLabel.Height = 23
           EditLabel.Caption = #22258#12415
           LabelPosition = lpLeft
           TabOrder = 3
@@ -1500,7 +1500,7 @@ object H2TconvForm: TH2TconvForm
           Width = 36
           Height = 23
           EditLabel.Width = 25
-          EditLabel.Height = 15
+          EditLabel.Height = 23
           EditLabel.Caption = #22258#12415
           LabelPosition = lpLeft
           TabOrder = 3
@@ -1527,7 +1527,7 @@ object H2TconvForm: TH2TconvForm
           Width = 38
           Height = 23
           EditLabel.Width = 25
-          EditLabel.Height = 15
+          EditLabel.Height = 23
           EditLabel.Caption = #22258#12415
           LabelPosition = lpLeft
           TabOrder = 0
@@ -1554,7 +1554,7 @@ object H2TconvForm: TH2TconvForm
           Width = 38
           Height = 23
           EditLabel.Width = 25
-          EditLabel.Height = 15
+          EditLabel.Height = 23
           EditLabel.Caption = #22258#12415
           LabelPosition = lpLeft
           TabOrder = 0
@@ -1581,7 +1581,7 @@ object H2TconvForm: TH2TconvForm
           Width = 38
           Height = 23
           EditLabel.Width = 25
-          EditLabel.Height = 15
+          EditLabel.Height = 23
           EditLabel.Caption = #22258#12415
           LabelPosition = lpLeft
           TabOrder = 0
@@ -1601,7 +1601,7 @@ object H2TconvForm: TH2TconvForm
           Width = 60
           Height = 23
           EditLabel.Width = 56
-          EditLabel.Height = 15
+          EditLabel.Height = 23
           EditLabel.Caption = #12475#12523#21306#20999#12426
           LabelPosition = lpLeft
           TabOrder = 0
@@ -1622,7 +1622,7 @@ object H2TconvForm: TH2TconvForm
           Height = 23
           Hint = '; '#12391#21306#20999#12387#12390#35079#25968#25351#23450#21487#33021
           EditLabel.Width = 60
-          EditLabel.Height = 15
+          EditLabel.Height = 23
           EditLabel.Caption = '<div> class'
           LabelPosition = lpLeft
           TabOrder = 1
@@ -1658,7 +1658,7 @@ object H2TconvForm: TH2TconvForm
           Width = 36
           Height = 23
           EditLabel.Width = 52
-          EditLabel.Height = 15
+          EditLabel.Height = 23
           EditLabel.Caption = #32619#32218#25991#23383
           LabelPosition = lpLeft
           TabOrder = 0
@@ -1679,7 +1679,7 @@ object H2TconvForm: TH2TconvForm
           Height = 23
           Hint = '; '#12391#21306#20999#12387#12390#35079#25968#25351#23450#21487#33021
           EditLabel.Width = 25
-          EditLabel.Height = 15
+          EditLabel.Height = 23
           EditLabel.Caption = 'class'
           LabelPosition = lpLeft
           TabOrder = 0
@@ -1692,7 +1692,7 @@ object H2TconvForm: TH2TconvForm
           Height = 23
           Hint = '; '#12391#21306#20999#12387#12390#35079#25968#25351#23450#21487#33021
           EditLabel.Width = 10
-          EditLabel.Height = 15
+          EditLabel.Height = 23
           EditLabel.Caption = 'id'
           LabelPosition = lpLeft
           TabOrder = 1
@@ -2051,7 +2051,7 @@ object H2TconvForm: TH2TconvForm
         Height = 23
         Alignment = taRightJustify
         EditLabel.Width = 52
-        EditLabel.Height = 15
+        EditLabel.Height = 23
         EditLabel.Caption = #23383#25968#21046#38480
         LabelPosition = lpLeft
         NumbersOnly = True
@@ -2067,7 +2067,7 @@ object H2TconvForm: TH2TconvForm
         Height = 23
         Anchors = [akLeft, akTop, akRight]
         EditLabel.Width = 39
-        EditLabel.Height = 15
+        EditLabel.Height = 23
         EditLabel.Caption = #32066#20102#38899
         LabelPosition = lpLeft
         TabOrder = 11
@@ -2225,7 +2225,7 @@ object H2TconvForm: TH2TconvForm
     object ConvertAction: TAction
       Caption = #38283#22987
       HelpType = htContext
-      OnExecute = ConvertExecute
+      OnExecute = ConvertActionExecute
       OnUpdate = ConvertActionUpdate
     end
     object PlaySoundAction: TAction
