@@ -23,12 +23,21 @@
 #include <Vcl.CheckLst.hpp>
 #include <Vcl.Clipbrd.hpp>
 #include <Vcl.Mask.hpp>
+#include <Vcl.BaseImageCollection.hpp>
+#include <Vcl.ImageCollection.hpp>
+#include <Vcl.VirtualImage.hpp>
+#include <Vcl.VirtualImageList.hpp>
 #include "usr_shell.h"
 #include "file_hist.h"
 #include "htmconv.h"
+#include <System.ImageList.hpp>
+#include <Vcl.ImgList.hpp>
 
 //---------------------------------------------------------------------------
 #define SUPPORT_URL	_T("http://nekomimi.la.coocan.jp/")
+
+//---------------------------------------------------------------------------
+#define SCALED_THIS(n)		MulDiv(n, CurrentPPI, 96)
 
 //---------------------------------------------------------------------------
 typedef HWND (WINAPI *FUNC_HtmlHelp)(HWND, LPCWSTR, UINT, DWORD);
@@ -50,7 +59,6 @@ class TH2TconvForm : public TForm
 __published:	// IDE 管理のコンポーネント
 	TAction *AddRepAction;
 	TAction *ChgRepAction;
-	TAction *ConvertAction;
 	TAction *CopyListAction;
 	TAction *DelRepAction;
 	TAction *DownRepAction;
@@ -136,7 +144,6 @@ __published:	// IDE 管理のコンポーネント
 	TGroupBox *GrpBox2_12;
 	TGroupBox *GrpBox3_1;
 	TGroupBox *GrpBox3_2;
-	TImage *ArrowImg;
 	TLabel *Label21;
 	TLabel *Label23;
 	TLabeledEdit *AltBraEdit;
@@ -231,6 +238,16 @@ __published:	// IDE 管理のコンポーネント
 	TLabel *ZenNoLabel;
 	TLabel *LinkCrLabel;
 	TMenuItem *FileHistItem;
+	TImageCollection *ImgArwCollection;
+	TVirtualImageList *VirtualImgArwList;
+	TVirtualImage *ArrowImg;
+	TVirtualImageList *VirtualImgIcoList;
+	TImageCollection *ImgIcoCollection;
+	TImageCollection *ImgBtnCollection;
+	TVirtualImageList *VirtualImgBtnList;
+	TAction *ConvertAction2;
+	TActionList *ActionList2;
+	TAction *ConvertAction;
 
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);

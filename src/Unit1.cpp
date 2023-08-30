@@ -196,26 +196,20 @@ void __fastcall TH2TconvForm::FormShow(TObject *Sender)
 	Compact = IniFile->ReadBool(sct, "Compact",	false);
 	int ww, hh;
 	if (Compact) {
-		Constraints->MinWidth  = CMP_MIN_WD;
-		Constraints->MinHeight = CMP_MIN_HI;
+		Constraints->MinWidth  = SCALED_THIS(CMP_MIN_WD);
+		Constraints->MinHeight = SCALED_THIS(CMP_MIN_HI);
 		ww = IniFile->ReadInteger(sct, "WinWidthC",  CMP_MIN_WD);
 		hh = IniFile->ReadInteger(sct, "WinHeightC", CMP_MIN_HI);
 	}
 	else {
-		Constraints->MinWidth  = NRM_MIN_WD;
-		Constraints->MinHeight = NRM_MIN_HI;
+		Constraints->MinWidth  = SCALED_THIS(NRM_MIN_WD);
+		Constraints->MinHeight = SCALED_THIS(NRM_MIN_HI);
 		ww = IniFile->ReadInteger(sct, "WinWidth",  NRM_MIN_WD);
 		hh = IniFile->ReadInteger(sct, "WinHeight", NRM_MIN_HI);
 	}
 
-	if (Scaled) {
-		Width  = ww * CurrentPPI / 96;
-		Height = hh * CurrentPPI / 96;
-	}
-	else {
-		Width  = ww;
-		Height = hh;
-	}
+	Width  = MulDiv(ww, CurrentPPI, 96);
+	Height = MulDiv(hh, CurrentPPI, 96);
 
 	TopMostCheck->Checked = IniFile->ReadBool(sct, "TopMost", false);
 	if (TopMostCheck->Checked) {
@@ -242,13 +236,8 @@ void __fastcall TH2TconvForm::FormClose(TObject *Sender, TCloseAction &Action)
 		UnicodeString sct = "General";
 		IniFile->WriteInteger(sct, "WinTop",	Top);
 		IniFile->WriteInteger(sct, "WinLeft",	Left);
-
-		int wd = Width;
-		int hi = Height;
-		if (this->Scaled) {
-			wd = wd * 96 / this->CurrentPPI;
-			hi = hi * 96 / this->CurrentPPI;
-		}
+		int wd = MulDiv(Width,  96, CurrentPPI);
+		int hi = MulDiv(Height, 96, CurrentPPI);
 		if (Compact) {
 			IniFile->WriteInteger(sct, "WinWidthC",  wd);
 			IniFile->WriteInteger(sct, "WinHeightC", hi);
@@ -942,43 +931,42 @@ UnicodeString __fastcall TH2TconvForm::AddSerNo(UnicodeString s)
 //---------------------------------------------------------------------------
 void __fastcall TH2TconvForm::SetFrmStyle()
 {
-	int w;
 	if (!Compact) {
 		ConvBtnC->Visible	  = false;
 		StatusBar1->Visible   = true;
 		CmpBtnPanel->Parent   = PageControl1;
-		CmpBtnPanel->Width	  = MenuBtn->Width + CompactBtn->Width + 8;
-		CmpBtnPanel->Left	  = PageControl1->Width - CmpBtnPanel->Width - 2;
+		CmpBtnPanel->Width	  = MenuBtn->Width + CompactBtn->Width + SCALED_THIS(8);
+		CmpBtnPanel->Left	  = PageControl1->Width - CmpBtnPanel->Width - SCALED_THIS(2);
 		CompactBtn->Caption   = "▲";
 		CompactBtn->Hint	  = "コンパクト表示";
 		GrpBox1_1->Parent	  = Panel1_1;
 		GrpBox1_1->Align	  = alClient;
-		w					  = 70;
-		AddBtn->Left		  = 8;
+		int w				  = SCALED_THIS(70);
+		AddBtn->Left		  = SCALED_THIS(8);
 		AddBtn->Caption 	  = "追加(&A)...";
 		AddBtn->Width		  = w;
 		InputBtn->Caption	  = "入力(&B)...";
 		InputBtn->Width 	  = w;
-		InputBtn->Left		  = AddBtn->Left + w + 4;
+		InputBtn->Left		  = AddBtn->Left + w + SCALED_THIS(4);
 		PasteBtn->Caption	  = "貼付(&P)";
 		PasteBtn->Width 	  = w;
-		PasteBtn->Left		  = InputBtn->Left + w + 4;
-		w					  = 56;
+		PasteBtn->Left		  = InputBtn->Left + w + SCALED_THIS(4);
+		w					  = SCALED_THIS(56);
 		DelBtn->Caption 	  = "解除";
 		DelBtn->Width		  = w;
-		DelBtn->Left		  = PasteBtn->Left + w + 16 + 16;
+		DelBtn->Left		  = PasteBtn->Left + w + SCALED_THIS(16 + 16);
 		ClrBtn->Caption 	  = "クリア";
 		ClrBtn->Width		  = w;
-		ClrBtn->Left		  = DelBtn->Left + w + 4;
+		ClrBtn->Left		  = DelBtn->Left + w + SCALED_THIS(4);
 		SortBtn->Caption	  = "ソート";
 		SortBtn->Width		  = w;
-		SortBtn->Left		  = ClrBtn->Left + w + 16;
+		SortBtn->Left		  = ClrBtn->Left + w + SCALED_THIS(16);
 		UpItemBtn->Caption	  = "上へ(&U)";
 		UpItemBtn->Width	  = w;
-		UpItemBtn->Left 	  = SortBtn->Left + w + 4;
+		UpItemBtn->Left 	  = SortBtn->Left + w + SCALED_THIS(4);
 		DowItemBtn->Caption   = "下へ(&D)";
 		DowItemBtn->Width	  = w;
-		DowItemBtn->Left	  = UpItemBtn->Left + w + 4;
+		DowItemBtn->Left	  = UpItemBtn->Left + w + SCALED_THIS(4);
 		Panel3->Height		  = TabSheet3->Height/2;
 		PageControl1->Visible = true;
 	}
@@ -986,44 +974,44 @@ void __fastcall TH2TconvForm::SetFrmStyle()
 		StatusBar1->Visible   = false;
 		PageControl1->Visible = false;
 		CmpBtnPanel->Parent   = H2TconvForm;
-		CmpBtnPanel->Width	  = MenuBtn->Width + CompactBtn->Width + 2; 
-		CmpBtnPanel->Left	  = PageControl1->Width - CmpBtnPanel->Width - 2;
+		CmpBtnPanel->Width	  = MenuBtn->Width + CompactBtn->Width + SCALED_THIS(2); 
+		CmpBtnPanel->Left	  = ClientWidth - CmpBtnPanel->Width - SCALED_THIS(2);
 		CompactBtn->Caption   = "▼";
 		CompactBtn->Hint	  = "通常表示";
 		GrpBox1_1->Parent	  = H2TconvForm;
 		GrpBox1_1->Align	  = alNone;
 		GrpBox1_1->Left 	  = 0;
 		GrpBox1_1->Top		  = 0;
-		GrpBox1_1->Width	  = ClientWidth - ConvBtnC->Width - 10;
+		GrpBox1_1->Width	  = ClientWidth - ConvBtnC->Width - SCALED_THIS(10);
 		GrpBox1_1->Height	  = ClientHeight;
-		ConvBtnC->Left		  = ClientWidth - ConvBtnC->Width - 2;
-		ConvBtnC->Top		  = ClientHeight - ConvBtnC->Height - 2;
+		ConvBtnC->Left		  = ClientWidth - ConvBtnC->Width - SCALED_THIS(2);
+		ConvBtnC->Top		  = ClientHeight - ConvBtnC->Height - SCALED_THIS(2);
 		ConvBtnC->Visible	  = true;
-		w					  = 28;
-		AddBtn->Left		  = 4;
+		int w				  = SCALED_THIS(28);
+		AddBtn->Left		  = SCALED_THIS(4);
 		AddBtn->Caption 	  = "追";
 		AddBtn->Width		  = w;
 		InputBtn->Caption	  = "入";
 		InputBtn->Width 	  = w;
-		InputBtn->Left		  = AddBtn->Left + w + 1;
+		InputBtn->Left		  = AddBtn->Left + w + SCALED_THIS(1);
 		PasteBtn->Caption	  = "貼";
 		PasteBtn->Width 	  = w;
-		PasteBtn->Left		  = InputBtn->Left + w + 1;
+		PasteBtn->Left		  = InputBtn->Left + w + SCALED_THIS(1);
 		DelBtn->Caption 	  = "除";
 		DelBtn->Width		  = w;
-		DelBtn->Left		  = PasteBtn->Left + w + 4;
+		DelBtn->Left		  = PasteBtn->Left + w + SCALED_THIS(4);
 		ClrBtn->Caption 	  = "消";
 		ClrBtn->Width		  = w;
-		ClrBtn->Left		  = DelBtn->Left + w + 1;
+		ClrBtn->Left		  = DelBtn->Left + w + SCALED_THIS(1);
 		SortBtn->Caption	  = "並";
 		SortBtn->Width		  = w;
-		SortBtn->Left		  = ClrBtn->Left + w + 4;
+		SortBtn->Left		  = ClrBtn->Left + w + SCALED_THIS(4);
 		UpItemBtn->Caption	  = "↑";
 		UpItemBtn->Width	  = w;
-		UpItemBtn->Left 	  = SortBtn->Left + w + 1;
+		UpItemBtn->Left 	  = SortBtn->Left + w + SCALED_THIS(1);
 		DowItemBtn->Caption   = "↓";
 		DowItemBtn->Width	  = w;
-		DowItemBtn->Left	  = UpItemBtn->Left + w + 1;
+		DowItemBtn->Left	  = UpItemBtn->Left + w + SCALED_THIS(1);
 	}
 
 	SortBtn->Visible	= ((SortBtn->Left + SortBtn->Width) < GrpBox1_1->Width);
@@ -1992,17 +1980,17 @@ void __fastcall TH2TconvForm::AbautInfItemDrawItem(TObject *Sender,
 
 	switch (tp->Tag) {
 	case 1001:	//上半分
-		ACanvas->Draw(ARect.Left + 4, ARect.Bottom - 16, Application->Icon);
+		ACanvas->Draw(ARect.Left + SCALED_THIS(4), ARect.Bottom - SCALED_THIS(16), Application->Icon);
 		fstyle.Clear(); fstyle << fsBold;
 		ACanvas->Font->Style = fstyle;
 		ACanvas->Font->Color = clWhite;
-		ACanvas->TextOut(ARect.Left + 44, ARect.Top + 2, Application->Title);
+		ACanvas->TextOut(ARect.Left + SCALED_THIS(44), ARect.Top + SCALED_THIS(2), Application->Title);
 		DrawEdge(ACanvas->Handle, &rc, BDR_SUNKENOUTER, BF_TOP|BF_LEFT|BF_RIGHT);
 		break;
 	case 1002:	//下半分
-		ACanvas->Draw(ARect.Left + 4, ARect.Top - 16, Application->Icon);
+		ACanvas->Draw(ARect.Left + SCALED_THIS(4), ARect.Top - SCALED_THIS(16), Application->Icon);
 		ACanvas->Font->Color = clWhite;
-		ACanvas->TextOut(ARect.Left + 48, ARect.Top + 2, VersionStr);
+		ACanvas->TextOut(ARect.Left + SCALED_THIS(48), ARect.Top + SCALED_THIS(2), VersionStr);
 		DrawEdge(ACanvas->Handle, &rc, BDR_SUNKENOUTER, BF_BOTTOM|BF_LEFT|BF_RIGHT);
 		break;
 	}
@@ -2016,4 +2004,3 @@ void __fastcall TH2TconvForm::GoWebItemClick(TObject *Sender)
 	::ShellExecute(NULL, _T("open"), SUPPORT_URL, NULL, NULL, SW_SHOWNORMAL);
 }
 //---------------------------------------------------------------------------
-
